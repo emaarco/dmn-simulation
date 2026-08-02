@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: CI (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Architecture check (dependency-cruiser)
+        # dependency-cruiser requires Node >= 22; the library still supports
+        # Node 20 at runtime, so only run this dev-time check on 22.
+        if: matrix.node-version == 22
+        run: npm run lint:deps
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build library
+        run: npm run build
+
+      - name: Distro smoke test
+        run: npm run test:distro -w @emaarco/dmn-js-simulation
+
+      # E2E drives a real browser and is Node-version-agnostic — run it once, on 22.
+      - name: Install Playwright browser
+        if: matrix.node-version == 22
+        run: npx playwright install --with-deps chromium
+        working-directory: packages/example
+
+      - name: E2E tests
+        if: matrix.node-version == 22
+        run: npm run test:e2e

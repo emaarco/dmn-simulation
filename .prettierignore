@@ -1,0 +1,12 @@
+dist
+node_modules
+coverage
+.context
+package-lock.json
+CHANGELOG.md
+packages/example/playwright-report
+packages/example/test-results
+**/*.dmn
+
+# Vendored verbatim from Miragon/corporate-identity — never hand-edit.
+**/cd-tokens.generated.css

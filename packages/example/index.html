@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>DMN Simulation</title>
+  </head>
+  <body>
+    <div id="canvas" class="app-canvas"></div>
+
+    <!-- Floating burger menu, top-right (wardley-maps style): icon + label. -->
+    <div class="app-menu">
+      <button
+        id="btn-menu"
+        type="button"
+        class="app-menu-btn"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-controls="menu-dropdown"
+      >
+        <svg class="app-burger" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+        <span>Menu</span>
+      </button>
+      <div id="menu-dropdown" class="app-menu-dropdown" role="menu" hidden>
+        <label class="app-menu-field">
+          <span>Beispiel-Modell</span>
+          <select id="file-picker" data-testid="file-picker">
+            <optgroup label="MiraVelo — echte Modelle">
+              <option value="/recommend-bike.dmn">Recommend Bike (FIRST)</option>
+              <option value="/miravelo/check-credit-rating.dmn">Check Credit Rating (FIRST)</option>
+              <option value="/miravelo/categorize-applicant.dmn">Categorize Applicant (FIRST)</option>
+            </optgroup>
+            <optgroup label="Hit-Policies (Tabellenansicht)">
+              <option value="/hit-policies/unique.dmn">UNIQUE — Inner-Circle Tier</option>
+              <option value="/hit-policies/first.dmn">FIRST — Bundle Discount</option>
+              <option value="/hit-policies/any.dmn">ANY — Test-Ride Eligibility</option>
+              <option value="/hit-policies/priority.dmn">PRIORITY — Leasing Risk</option>
+              <option value="/hit-policies/collect.dmn">COLLECT — Leasing Perks</option>
+              <option value="/hit-policies/collect-sum.dmn">COLLECT (SUM) — Reward Points</option>
+              <option value="/hit-policies/rule-order.dmn">RULE ORDER — Service Reminders</option>
+              <option value="/hit-policies/output-order.dmn">OUTPUT ORDER — Wear Warnings</option>
+            </optgroup>
+            <optgroup label="DRD-Chaining (DRD-Ansicht)">
+              <option value="/chaining/inner-circle.dmn">Inner-Circle Eligibility — 2 Ebenen</option>
+              <option value="/chaining/bike-leasing.dmn">Bike-Leasing Approval — 3 Ebenen</option>
+            </optgroup>
+          </select>
+        </label>
+        <div class="app-menu-sep" role="separator"></div>
+        <button id="btn-open" type="button" class="app-menu-item" role="menuitem">Datei öffnen…</button>
+        <button id="btn-share" type="button" class="app-menu-item" role="menuitem">Link teilen</button>
+        <button id="btn-reset" type="button" class="app-menu-item" role="menuitem">Beispiele zurücksetzen</button>
+        <p class="app-menu-hint">oder eine <code>.dmn</code>-Datei auf die Fläche ziehen</p>
+      </div>
+    </div>
+
+    <!-- Kept for the E2E readiness signal; only shown when a load fails. -->
+    <span id="status" class="app-status" data-testid="status" role="status" aria-live="polite"></span>
+
+    <!-- Transient feedback (e.g. "link copied"). -->
+    <div id="toast" class="app-toast" role="status" aria-live="polite" hidden></div>
+
+    <footer class="app-legal">
+      <span class="footer-credit">
+        Created with &hearts; by
+        <a href="https://www.linkedin.com/in/schaeckm" target="_blank" rel="noopener">Marco Schäck</a>
+      </span>
+      <span class="app-spacer"></span>
+      <a
+        class="footer-social"
+        href="https://www.linkedin.com/in/schaeckm"
+        target="_blank"
+        rel="noopener"
+        aria-label="LinkedIn"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.852 3.37-1.852 3.601 0 4.267 2.37 4.267 5.455v6.288zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+          />
+        </svg>
+      </a>
+      <a
+        class="footer-social"
+        href="https://github.com/emaarco/dmn-simulation"
+        target="_blank"
+        rel="noopener"
+        aria-label="GitHub"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.66-.22.66-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0C18.14 4.18 19 4.45 19 4.45c.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.69 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"
+          />
+        </svg>
+      </a>
+    </footer>
+
+    <input id="file-input" type="file" accept=".dmn,.xml" hidden />
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="Definitions_BikeLeasing" name="Bike-Leasing Approval"
+             namespace="http://miragon.io/miravelo/bike-leasing">
+  <inputData id="InputData_Age" name="Age">
+    <variable id="Var_Age" name="Age" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_Income" name="Monthly Net Income">
+    <variable id="Var_Income" name="MonthlyNetIncome" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_Term" name="Requested Term">
+    <variable id="Var_Term" name="RequestedTerm" typeRef="integer" />
+  </inputData>
+
+  <!-- Level 1: Age -> Age Group -->
+  <decision id="Decision_AgeGroup" name="Age Group">
+    <variable id="Var_AgeGroup" name="AgeGroup" typeRef="string" />
+    <informationRequirement id="ir_ag_age">
+      <requiredInput href="#InputData_Age" />
+    </informationRequirement>
+    <decisionTable id="Table_AgeGroup" hitPolicy="FIRST">
+      <input id="ag_in" label="Age">
+        <inputExpression id="ag_in_expr" typeRef="integer"><text>Age</text></inputExpression>
+      </input>
+      <output id="ag_out" label="Age Group" name="AgeGroup" typeRef="string" />
+      <rule id="ag_r1">
+        <inputEntry id="ag_r1_in"><text>&lt; 18</text></inputEntry>
+        <outputEntry id="ag_r1_out"><text>"minor"</text></outputEntry>
+      </rule>
+      <rule id="ag_r2">
+        <inputEntry id="ag_r2_in"><text>-</text></inputEntry>
+        <outputEntry id="ag_r2_out"><text>"adult"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- Level 2: Age Group + Monthly Net Income -> Credit Rating -->
+  <decision id="Decision_CreditRating" name="Credit Rating">
+    <variable id="Var_CreditRating" name="CreditRating" typeRef="string" />
+    <informationRequirement id="ir_cr_ag">
+      <requiredDecision href="#Decision_AgeGroup" />
+    </informationRequirement>
+    <informationRequirement id="ir_cr_income">
+      <requiredInput href="#InputData_Income" />
+    </informationRequirement>
+    <decisionTable id="Table_CreditRating" hitPolicy="FIRST">
+      <input id="cr_in_ag" label="Age Group">
+        <inputExpression id="cr_in_ag_expr" typeRef="string"><text>AgeGroup</text></inputExpression>
+      </input>
+      <input id="cr_in_income" label="Monthly Net Income">
+        <inputExpression id="cr_in_income_expr" typeRef="double"><text>MonthlyNetIncome</text></inputExpression>
+      </input>
+      <output id="cr_out" label="Credit Rating" name="CreditRating" typeRef="string" />
+      <rule id="cr_r1">
+        <inputEntry id="cr_r1_ag"><text>"minor"</text></inputEntry>
+        <inputEntry id="cr_r1_income"><text>-</text></inputEntry>
+        <outputEntry id="cr_r1_out"><text>"reject"</text></outputEntry>
+      </rule>
+      <rule id="cr_r2">
+        <inputEntry id="cr_r2_ag"><text>-</text></inputEntry>
+        <inputEntry id="cr_r2_income"><text>&lt; 1500</text></inputEntry>
+        <outputEntry id="cr_r2_out"><text>"low"</text></outputEntry>
+      </rule>
+      <rule id="cr_r3">
+        <inputEntry id="cr_r3_ag"><text>-</text></inputEntry>
+        <inputEntry id="cr_r3_income"><text>-</text></inputEntry>
+        <outputEntry id="cr_r3_out"><text>"high"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- Level 3: Credit Rating + Requested Term -> Leasing Approval -->
+  <decision id="Decision_LeasingApproval" name="Leasing Approval">
+    <variable id="Var_Approval" name="Approval" typeRef="string" />
+    <informationRequirement id="ir_la_cr">
+      <requiredDecision href="#Decision_CreditRating" />
+    </informationRequirement>
+    <informationRequirement id="ir_la_term">
+      <requiredInput href="#InputData_Term" />
+    </informationRequirement>
+    <decisionTable id="Table_LeasingApproval" hitPolicy="FIRST">
+      <input id="la_in_cr" label="Credit Rating">
+        <inputExpression id="la_in_cr_expr" typeRef="string"><text>CreditRating</text></inputExpression>
+      </input>
+      <input id="la_in_term" label="Requested Term">
+        <inputExpression id="la_in_term_expr" typeRef="integer"><text>RequestedTerm</text></inputExpression>
+      </input>
+      <output id="la_out" label="Approval" name="Approval" typeRef="string" />
+      <rule id="la_r1">
+        <inputEntry id="la_r1_cr"><text>"reject"</text></inputEntry>
+        <inputEntry id="la_r1_term"><text>-</text></inputEntry>
+        <outputEntry id="la_r1_out"><text>"rejected"</text></outputEntry>
+      </rule>
+      <rule id="la_r2">
+        <inputEntry id="la_r2_cr"><text>"low"</text></inputEntry>
+        <inputEntry id="la_r2_term"><text>-</text></inputEntry>
+        <outputEntry id="la_r2_out"><text>"review"</text></outputEntry>
+      </rule>
+      <rule id="la_r3">
+        <inputEntry id="la_r3_cr"><text>-</text></inputEntry>
+        <inputEntry id="la_r3_term"><text>&gt; 48</text></inputEntry>
+        <outputEntry id="la_r3_out"><text>"review"</text></outputEntry>
+      </rule>
+      <rule id="la_r4">
+        <inputEntry id="la_r4_cr"><text>-</text></inputEntry>
+        <inputEntry id="la_r4_term"><text>-</text></inputEntry>
+        <outputEntry id="la_r4_out"><text>"approved"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_BikeLeasing">
+      <dmndi:DMNShape id="DMNShape_Decision_LeasingApproval" dmnElementRef="Decision_LeasingApproval">
+        <dc:Bounds height="80" width="180" x="300" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_CreditRating" dmnElementRef="Decision_CreditRating">
+        <dc:Bounds height="80" width="180" x="300" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_AgeGroup" dmnElementRef="Decision_AgeGroup">
+        <dc:Bounds height="80" width="180" x="300" y="440" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Age" dmnElementRef="InputData_Age">
+        <dc:Bounds height="45" width="125" x="337" y="620" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Income" dmnElementRef="InputData_Income">
+        <dc:Bounds height="45" width="125" x="560" y="278" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Term" dmnElementRef="InputData_Term">
+        <dc:Bounds height="45" width="125" x="560" y="98" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_ag_age" dmnElementRef="ir_ag_age">
+        <di:waypoint x="399" y="620" />
+        <di:waypoint x="390" y="520" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_cr_ag" dmnElementRef="ir_cr_ag">
+        <di:waypoint x="390" y="440" />
+        <di:waypoint x="390" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_cr_income" dmnElementRef="ir_cr_income">
+        <di:waypoint x="560" y="300" />
+        <di:waypoint x="480" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_la_cr" dmnElementRef="ir_la_cr">
+        <di:waypoint x="390" y="260" />
+        <di:waypoint x="390" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_la_term" dmnElementRef="ir_la_term">
+        <di:waypoint x="560" y="120" />
+        <di:waypoint x="480" y="120" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

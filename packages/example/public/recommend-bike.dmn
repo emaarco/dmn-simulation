@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="Definitions_RecommendBike"
+             name="Recommend Bike"
+             namespace="http://miragon.io/miravelo/shop">
+
+  <inputData id="InputData_Terrain" name="Terrain">
+    <variable id="Variable_Terrain" name="Terrain" typeRef="string" />
+  </inputData>
+
+  <inputData id="InputData_Budget" name="Budget (€)">
+    <variable id="Variable_Budget" name="Budget" typeRef="integer" />
+  </inputData>
+
+  <decision id="Decision_RecommendBike" name="Recommend Bike">
+    <variable id="Variable_Model" name="Model" typeRef="string" />
+    <informationRequirement id="IR_Terrain">
+      <requiredInput href="#InputData_Terrain" />
+    </informationRequirement>
+    <informationRequirement id="IR_Budget">
+      <requiredInput href="#InputData_Budget" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_RecommendBike" hitPolicy="FIRST">
+      <input id="Input_Terrain" label="Terrain">
+        <inputExpression id="InputExpression_Terrain" typeRef="string">
+          <text>Terrain</text>
+        </inputExpression>
+      </input>
+      <input id="Input_Budget" label="Budget (€)">
+        <inputExpression id="InputExpression_Budget" typeRef="integer">
+          <text>Budget</text>
+        </inputExpression>
+      </input>
+      <output id="Output_Model" label="Model" typeRef="string" />
+      <rule id="Rule_1">
+        <inputEntry id="IE_1_1"><text>"Gravel"</text></inputEntry>
+        <inputEntry id="IE_1_2"><text>&gt;= 2000</text></inputEntry>
+        <outputEntry id="OE_1"><text>"Gravel Pro"</text></outputEntry>
+      </rule>
+      <rule id="Rule_2">
+        <inputEntry id="IE_2_1"><text>"Gravel"</text></inputEntry>
+        <inputEntry id="IE_2_2"><text>&gt;= 1000</text></inputEntry>
+        <outputEntry id="OE_2"><text>"Gravel Lite"</text></outputEntry>
+      </rule>
+      <rule id="Rule_3">
+        <inputEntry id="IE_3_1"><text>"Road"</text></inputEntry>
+        <inputEntry id="IE_3_2"><text>&gt;= 2000</text></inputEntry>
+        <outputEntry id="OE_3"><text>"Road Pro"</text></outputEntry>
+      </rule>
+      <rule id="Rule_4">
+        <inputEntry id="IE_4_1"><text>"Road"</text></inputEntry>
+        <inputEntry id="IE_4_2"><text>&gt;= 1000</text></inputEntry>
+        <outputEntry id="OE_4"><text>"Road Lite"</text></outputEntry>
+      </rule>
+      <rule id="Rule_5">
+        <inputEntry id="IE_5_1"><text>"City"</text></inputEntry>
+        <inputEntry id="IE_5_2"><text>&gt;= 800</text></inputEntry>
+        <outputEntry id="OE_5"><text>"City Cruiser"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_1">
+      <dmndi:DMNShape id="DMNShape_Decision_RecommendBike" dmnElementRef="Decision_RecommendBike">
+        <dc:Bounds height="80" width="180" x="260" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Terrain" dmnElementRef="InputData_Terrain">
+        <dc:Bounds height="45" width="125" x="160" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Budget" dmnElementRef="InputData_Budget">
+        <dc:Bounds height="45" width="125" x="380" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_IR_Terrain" dmnElementRef="IR_Terrain">
+        <di:waypoint x="223" y="230" />
+        <di:waypoint x="310" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_IR_Budget" dmnElementRef="IR_Budget">
+        <di:waypoint x="443" y="230" />
+        <di:waypoint x="390" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+
+</definitions>

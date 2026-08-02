@@ -1,0 +1,23 @@
+{
+  "name": "@emaarco/dmn-js-simulation-example",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Example dmn-js modeler demonstrating @emaarco/dmn-js-simulation",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@emaarco/dmn-js-simulation": "*",
+    "dmn-js": "17.10.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/geist": "5.2.5",
+    "@fontsource-variable/geist-mono": "5.2.5",
+    "@playwright/test": "1.61.1",
+    "vite": "6.0.7"
+  }
+}

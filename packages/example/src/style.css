@@ -1,0 +1,305 @@
+:root {
+  --cd-blau: #335de5;
+  --cd-blau-link: #2b50d4;
+  --cd-gruen: #00e676;
+  --cd-grau: #f9f7f7;
+  --cd-schwarz: #1d1d1d;
+  --line: #e6e2e2;
+  --cd-radius-sm: 6px;
+  --cd-shadow-1: 0 1px 2px rgba(29, 29, 29, 0.06), 0 1px 3px rgba(29, 29, 29, 0.1);
+  --cd-shadow-2: 0 6px 16px rgba(29, 29, 29, 0.12), 0 2px 6px rgba(29, 29, 29, 0.08);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family:
+    'Geist Variable',
+    'Geist',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: var(--cd-schwarz);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--cd-grau);
+}
+
+/* ---- Canvas ---------------------------------------------------------- */
+
+.app-canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  background: var(--cd-grau);
+}
+
+/* Give the decision table breathing room; the DRD canvas stays full-bleed. */
+.app-canvas[data-view='decisionTable'] {
+  padding: 24px;
+}
+
+/* Drag & drop affordance for importing a .dmn file. */
+.app-canvas.is-dragover {
+  outline: 2px dashed var(--cd-blau);
+  outline-offset: -8px;
+  background: rgba(51, 93, 229, 0.04);
+}
+
+/* ---- Floating burger menu (top-left, over the canvas) ---------------- */
+
+/* Top-right, over the canvas. The DRD simulation panel is dropped below it so
+   the two stack (see the override further down); dmn-js's top-left chrome
+   (palette, definitions name, "View DRD" button) is on the opposite side. */
+.app-menu {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 30;
+}
+
+.app-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--cd-schwarz);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--cd-radius-sm);
+  padding: 8px 14px 8px 12px;
+  box-shadow: var(--cd-shadow-1);
+  cursor: pointer;
+  transition:
+    background 150ms,
+    border-color 150ms;
+}
+
+.app-menu-btn:hover,
+.app-menu-btn[aria-expanded='true'] {
+  border-color: var(--cd-blau);
+  background: rgba(51, 93, 229, 0.06);
+}
+
+.app-burger {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.app-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--cd-shadow-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-menu-dropdown[hidden] {
+  display: none;
+}
+
+.app-menu-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px 8px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.app-menu-field select {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--cd-schwarz);
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.app-menu-field select:focus,
+.app-menu-field select:focus-visible {
+  outline: none;
+  border-color: var(--cd-blau);
+  box-shadow: 0 0 0 3px rgba(43, 80, 212, 0.12);
+}
+
+.app-menu-sep {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--line);
+}
+
+.app-menu-item {
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  color: var(--cd-schwarz);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 10px;
+  cursor: pointer;
+}
+
+.app-menu-item:hover {
+  background: rgba(51, 93, 229, 0.06);
+}
+
+.app-menu-hint {
+  margin: 6px 2px 2px;
+  font-size: 12px;
+  color: #9aa0aa;
+}
+
+.app-menu-hint code {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11px;
+}
+
+/* ---- Status ---------------------------------------------------------- */
+
+/* Kept in the DOM as the E2E readiness signal, but visually hidden — it only
+   surfaces (top-right) when an import/load actually fails. */
+.app-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.app-status[data-state='error'] {
+  position: fixed;
+  bottom: 52px;
+  right: 12px;
+  z-index: 20;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #fff;
+  background: #c0392b;
+  border-radius: var(--cd-radius-sm);
+  box-shadow: var(--cd-shadow-1);
+}
+
+/* ---- Footer ---------------------------------------------------------- */
+
+.app-legal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 13px;
+  color: #6b7280;
+  background: #fff;
+  border-top: 1px solid var(--line);
+}
+
+.app-spacer {
+  flex: 1;
+}
+
+.footer-credit a {
+  color: var(--cd-blau-link);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-credit a:hover {
+  text-decoration: underline;
+}
+
+.footer-social {
+  display: inline-flex;
+  color: #9aa0aa;
+  transition: color 150ms;
+}
+
+.footer-social:hover {
+  color: var(--cd-blau-link);
+}
+
+.footer-social svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* ---- Toast ----------------------------------------------------------- */
+
+.app-toast {
+  position: fixed;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  padding: 9px 14px;
+  font-size: 13px;
+  color: #fff;
+  background: var(--cd-schwarz);
+  border-radius: var(--cd-radius-sm);
+  box-shadow: var(--cd-shadow-2);
+}
+
+.app-toast[hidden] {
+  display: none;
+}
+
+/* ---- dmn-js chrome overrides ----------------------------------------- */
+
+/* The floating menu sits top-right; drop the DRD simulation panel below it so
+   the two stack instead of overlapping, and align its edge offset + shadow with
+   the menu button so the two cards read as one family. */
+.app-canvas .dmn-sim-decision-requirements-diagram-panel {
+  top: 64px;
+  right: 12px;
+  box-shadow: var(--cd-shadow-1);
+}
+
+/* Make the decision-table "View DRD" button match the floating menu button. */
+.app-canvas .view-drd .view-drd-button {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--cd-radius-sm);
+  background: #fff;
+  box-shadow: var(--cd-shadow-1);
+  font-weight: 600;
+  color: var(--cd-schwarz);
+}
+
+.app-canvas .view-drd .view-drd-button:hover {
+  border-color: var(--cd-blau);
+  background: rgba(51, 93, 229, 0.06);
+}

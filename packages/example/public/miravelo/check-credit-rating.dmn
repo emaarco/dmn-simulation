@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="checkCreditRatingDefinitions" name="Check Credit Rating" namespace="http://miragon.io/miravelo/bike-leasing">
+  <decision id="checkCreditRating" name="Check Credit Rating" camunda:historyTimeToLive="180">
+    <decisionTable id="decisionTable_checkCreditRating" hitPolicy="FIRST">
+      <input id="input_age" label="Age">
+        <inputExpression id="inputExpression_age" typeRef="integer">
+          <text>age</text>
+        </inputExpression>
+      </input>
+      <input id="input_monthlyNetIncome" label="Monthly Net Income">
+        <inputExpression id="inputExpression_monthlyNetIncome" typeRef="double">
+          <text>monthlyNetIncome</text>
+        </inputExpression>
+      </input>
+      <output id="output_solvent" label="Solvent?" name="solvent" typeRef="boolean" />
+      <rule id="rule_tooYoung">
+        <description>Minors may ride, but they can't sign a leasing contract</description>
+        <inputEntry id="inputEntry_tooYoung_age">
+          <text>&lt; 18</text>
+        </inputEntry>
+        <inputEntry id="inputEntry_tooYoung_income">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_tooYoung">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_lowIncome">
+        <description>Ramen-noodle budget: the monthly rate would hurt</description>
+        <inputEntry id="inputEntry_lowIncome_age">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="inputEntry_lowIncome_income">
+          <text>&lt; 1500</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_lowIncome">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_tooOld">
+        <description>Respect the energy — but the leasing term would outlive the warranty</description>
+        <inputEntry id="inputEntry_tooOld_age">
+          <text>&gt; 99</text>
+        </inputEntry>
+        <inputEntry id="inputEntry_tooOld_income">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_tooOld">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_solvent">
+        <description>Grown-up enough and enough income to pedal away</description>
+        <inputEntry id="inputEntry_solvent_age">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="inputEntry_solvent_income">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_solvent">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="checkCreditRating">
+        <dc:Bounds height="80" width="180" x="200" y="210" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
