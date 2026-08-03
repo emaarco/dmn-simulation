@@ -1,6 +1,6 @@
 {
   "name": "@emaarco/dmn-js-simulation",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Simulate DMN decision tables directly in a dmn-js modeler — see which rules match and what the decision returns.",
   "type": "module",
   "license": "MIT",
