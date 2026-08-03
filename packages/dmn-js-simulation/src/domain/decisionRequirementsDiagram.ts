@@ -23,9 +23,7 @@ export interface DecisionRequirementsDiagramInputData {
 }
 
 export type DecisionLogic =
-  | { kind: 'decisionTable'; model: DecisionModel }
-  | { kind: 'literalExpression'; expression: string }
-  | { kind: 'none' }
+  { kind: 'decisionTable'; model: DecisionModel } | { kind: 'literalExpression'; expression: string } | { kind: 'none' }
 
 export interface DecisionRequirementsDiagramDecision {
   id: string

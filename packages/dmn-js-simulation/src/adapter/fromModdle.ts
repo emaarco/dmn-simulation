@@ -56,8 +56,7 @@ export function decisionTableToModel(decisionTable: ModdleElement): DecisionMode
   const hitPolicy = (str(decisionTable.hitPolicy) || 'UNIQUE').toUpperCase() as HitPolicy
   const aggregationAttr = str(decisionTable.aggregation).toUpperCase()
   const aggregation = (['SUM', 'MIN', 'MAX', 'COUNT'] as const).find(a => a === aggregationAttr) as
-    | Aggregation
-    | undefined
+    Aggregation | undefined
 
   const inputEls = asArray(decisionTable.input)
   const outputEls = asArray(decisionTable.output)
