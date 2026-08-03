@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="Definitions_InnerCircle" name="Inner-Circle Eligibility"
+             namespace="http://miragon.io/miravelo/membership">
+  <inputData id="InputData_Age" name="Age">
+    <variable id="Var_Age" name="Age" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_AnnualSpend" name="Annual Spend">
+    <variable id="Var_AnnualSpend" name="AnnualSpend" typeRef="double" />
+  </inputData>
+
+  <!-- Level 1: Age -> Segment -->
+  <decision id="Decision_Segment" name="Customer Segment">
+    <variable id="Var_Segment" name="Segment" typeRef="string" />
+    <informationRequirement id="ir_seg_age">
+      <requiredInput href="#InputData_Age" />
+    </informationRequirement>
+    <decisionTable id="Table_Segment" hitPolicy="UNIQUE">
+      <input id="seg_in" label="Age">
+        <inputExpression id="seg_in_expr" typeRef="integer"><text>Age</text></inputExpression>
+      </input>
+      <output id="seg_out" label="Segment" name="Segment" typeRef="string" />
+      <rule id="seg_r1">
+        <inputEntry id="seg_r1_in"><text>&lt; 30</text></inputEntry>
+        <outputEntry id="seg_r1_out"><text>"core"</text></outputEntry>
+      </rule>
+      <rule id="seg_r2">
+        <inputEntry id="seg_r2_in"><text>&gt;= 30</text></inputEntry>
+        <outputEntry id="seg_r2_out"><text>"casual"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- Level 2: Segment + Annual Spend -> Offer -->
+  <decision id="Decision_Offer" name="Inner-Circle Offer">
+    <variable id="Var_Offer" name="Offer" typeRef="string" />
+    <informationRequirement id="ir_offer_segment">
+      <requiredDecision href="#Decision_Segment" />
+    </informationRequirement>
+    <informationRequirement id="ir_offer_spend">
+      <requiredInput href="#InputData_AnnualSpend" />
+    </informationRequirement>
+    <decisionTable id="Table_Offer" hitPolicy="FIRST">
+      <input id="offer_in_seg" label="Segment">
+        <inputExpression id="offer_in_seg_expr" typeRef="string"><text>Segment</text></inputExpression>
+      </input>
+      <input id="offer_in_spend" label="Annual Spend">
+        <inputExpression id="offer_in_spend_expr" typeRef="double"><text>AnnualSpend</text></inputExpression>
+      </input>
+      <output id="offer_out" label="Offer" name="Offer" typeRef="string" />
+      <rule id="offer_r1">
+        <inputEntry id="offer_r1_seg"><text>"core"</text></inputEntry>
+        <inputEntry id="offer_r1_spend"><text>&gt;= 1000</text></inputEntry>
+        <outputEntry id="offer_r1_out"><text>"InnerCircle"</text></outputEntry>
+      </rule>
+      <rule id="offer_r2">
+        <inputEntry id="offer_r2_seg"><text>"casual"</text></inputEntry>
+        <inputEntry id="offer_r2_spend"><text>&gt;= 1000</text></inputEntry>
+        <outputEntry id="offer_r2_out"><text>"Newsletter"</text></outputEntry>
+      </rule>
+      <rule id="offer_r3">
+        <inputEntry id="offer_r3_seg"><text>-</text></inputEntry>
+        <inputEntry id="offer_r3_spend"><text>-</text></inputEntry>
+        <outputEntry id="offer_r3_out"><text>"None"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_InnerCircle">
+      <dmndi:DMNShape id="DMNShape_Decision_Offer" dmnElementRef="Decision_Offer">
+        <dc:Bounds height="80" width="180" x="300" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_Segment" dmnElementRef="Decision_Segment">
+        <dc:Bounds height="80" width="180" x="300" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Age" dmnElementRef="InputData_Age">
+        <dc:Bounds height="45" width="125" x="337" y="440" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_AnnualSpend" dmnElementRef="InputData_AnnualSpend">
+        <dc:Bounds height="45" width="125" x="560" y="98" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_seg_age" dmnElementRef="ir_seg_age">
+        <di:waypoint x="399" y="440" />
+        <di:waypoint x="390" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_offer_segment" dmnElementRef="ir_offer_segment">
+        <di:waypoint x="390" y="260" />
+        <di:waypoint x="390" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_offer_spend" dmnElementRef="ir_offer_spend">
+        <di:waypoint x="560" y="120" />
+        <di:waypoint x="480" y="120" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

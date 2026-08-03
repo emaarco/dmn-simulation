@@ -1,0 +1,17 @@
+.claude/logs/
+
+# dependencies
+node_modules/
+
+# build output
+dist/
+coverage/
+*.tsbuildinfo
+
+# test artifacts
+/packages/example/test-results/
+/packages/example/playwright-report/
+
+# editor / os
+.DS_Store
+*.log

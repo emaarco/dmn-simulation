@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             id="Definitions_RuleOrder" name="RuleOrder" namespace="http://miragon.io/miravelo/service">
+  <decision id="Decision_Warnings" name="Service Reminders">
+    <decisionTable id="DT_RuleOrder" hitPolicy="RULE ORDER">
+      <input id="in_temp" label="Kilometers Ridden">
+        <inputExpression id="ie_temp" typeRef="integer"><text>Kilometers</text></inputExpression>
+      </input>
+      <output id="out_warn" label="Reminder" name="Reminder" typeRef="string" />
+      <rule id="r1">
+        <inputEntry id="r1i"><text>&gt; 1000</text></inputEntry>
+        <outputEntry id="r1o"><text>"Basic Service"</text></outputEntry>
+      </rule>
+      <rule id="r2">
+        <inputEntry id="r2i"><text>&gt; 3000</text></inputEntry>
+        <outputEntry id="r2o"><text>"Full Service"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

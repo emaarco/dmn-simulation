@@ -1,0 +1,34 @@
+{
+  "name": "dmn-simulation-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for @emaarco/dmn-js-simulation — a DMN simulation add-on for dmn-js",
+  "type": "module",
+  "license": "MIT",
+  "author": "Marco Schäck (https://github.com/emaarco)",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/dmn-js-simulation",
+    "packages/example"
+  ],
+  "scripts": {
+    "build": "npm run build -w @emaarco/dmn-js-simulation",
+    "dev": "npm run dev -w @emaarco/dmn-js-simulation-example",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w @emaarco/dmn-js-simulation-example --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "lint:deps": "npm run lint:deps -w @emaarco/dmn-js-simulation",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "9.18.0",
+    "eslint": "9.18.0",
+    "eslint-config-prettier": "9.1.0",
+    "prettier": "3.4.2",
+    "typescript-eslint": "8.20.0"
+  }
+}

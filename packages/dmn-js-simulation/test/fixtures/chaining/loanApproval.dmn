@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="Definitions_LoanApproval" name="Loan Approval"
+             namespace="http://camunda.org/schema/1.0/dmn">
+  <inputData id="InputData_Age" name="Age">
+    <variable id="Var_Age" name="Age" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_Income" name="Income">
+    <variable id="Var_Income" name="Income" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_RequestedAmount" name="Requested Amount">
+    <variable id="Var_RequestedAmount" name="RequestedAmount" typeRef="integer" />
+  </inputData>
+
+  <!-- Level 1: Age -> AgeGroup -->
+  <decision id="Decision_AgeGroup" name="Age Group">
+    <variable id="Var_AgeGroup" name="AgeGroup" typeRef="string" />
+    <informationRequirement id="ir_ag_age">
+      <requiredInput href="#InputData_Age" />
+    </informationRequirement>
+    <decisionTable id="Table_AgeGroup" hitPolicy="FIRST">
+      <input id="ag_in" label="Age">
+        <inputExpression id="ag_in_expr" typeRef="integer"><text>Age</text></inputExpression>
+      </input>
+      <output id="ag_out" label="Age Group" name="AgeGroup" typeRef="string" />
+      <rule id="ag_r1">
+        <inputEntry id="ag_r1_in"><text>&lt; 25</text></inputEntry>
+        <outputEntry id="ag_r1_out"><text>"young"</text></outputEntry>
+      </rule>
+      <rule id="ag_r2">
+        <inputEntry id="ag_r2_in"><text>&lt; 60</text></inputEntry>
+        <outputEntry id="ag_r2_out"><text>"adult"</text></outputEntry>
+      </rule>
+      <rule id="ag_r3">
+        <inputEntry id="ag_r3_in"><text>-</text></inputEntry>
+        <outputEntry id="ag_r3_out"><text>"senior"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- Level 2: AgeGroup + Income -> Risk -->
+  <decision id="Decision_Risk" name="Risk Category">
+    <variable id="Var_Risk" name="Risk" typeRef="string" />
+    <informationRequirement id="ir_risk_ag">
+      <requiredDecision href="#Decision_AgeGroup" />
+    </informationRequirement>
+    <informationRequirement id="ir_risk_income">
+      <requiredInput href="#InputData_Income" />
+    </informationRequirement>
+    <decisionTable id="Table_Risk" hitPolicy="FIRST">
+      <input id="risk_in_ag" label="Age Group">
+        <inputExpression id="risk_in_ag_expr" typeRef="string"><text>AgeGroup</text></inputExpression>
+      </input>
+      <input id="risk_in_income" label="Income">
+        <inputExpression id="risk_in_income_expr" typeRef="integer"><text>Income</text></inputExpression>
+      </input>
+      <output id="risk_out" label="Risk" name="Risk" typeRef="string" />
+      <rule id="risk_r1">
+        <inputEntry id="risk_r1_ag"><text>"young"</text></inputEntry>
+        <inputEntry id="risk_r1_income"><text>&lt; 30000</text></inputEntry>
+        <outputEntry id="risk_r1_out"><text>"high"</text></outputEntry>
+      </rule>
+      <rule id="risk_r2">
+        <inputEntry id="risk_r2_ag"><text>-</text></inputEntry>
+        <inputEntry id="risk_r2_income"><text>&gt;= 60000</text></inputEntry>
+        <outputEntry id="risk_r2_out"><text>"low"</text></outputEntry>
+      </rule>
+      <rule id="risk_r3">
+        <inputEntry id="risk_r3_ag"><text>-</text></inputEntry>
+        <inputEntry id="risk_r3_income"><text>-</text></inputEntry>
+        <outputEntry id="risk_r3_out"><text>"medium"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- Level 3: Risk + RequestedAmount -> Approval -->
+  <decision id="Decision_Approval" name="Loan Approval">
+    <variable id="Var_Approval" name="Approval" typeRef="string" />
+    <informationRequirement id="ir_appr_risk">
+      <requiredDecision href="#Decision_Risk" />
+    </informationRequirement>
+    <informationRequirement id="ir_appr_amount">
+      <requiredInput href="#InputData_RequestedAmount" />
+    </informationRequirement>
+    <decisionTable id="Table_Approval" hitPolicy="FIRST">
+      <input id="appr_in_risk" label="Risk">
+        <inputExpression id="appr_in_risk_expr" typeRef="string"><text>Risk</text></inputExpression>
+      </input>
+      <input id="appr_in_amount" label="Requested Amount">
+        <inputExpression id="appr_in_amount_expr" typeRef="integer"><text>RequestedAmount</text></inputExpression>
+      </input>
+      <output id="appr_out" label="Approval" name="Approval" typeRef="string" />
+      <rule id="appr_r1">
+        <inputEntry id="appr_r1_risk"><text>"high"</text></inputEntry>
+        <inputEntry id="appr_r1_amount"><text>-</text></inputEntry>
+        <outputEntry id="appr_r1_out"><text>"rejected"</text></outputEntry>
+      </rule>
+      <rule id="appr_r2">
+        <inputEntry id="appr_r2_risk"><text>"low"</text></inputEntry>
+        <inputEntry id="appr_r2_amount"><text>-</text></inputEntry>
+        <outputEntry id="appr_r2_out"><text>"approved"</text></outputEntry>
+      </rule>
+      <rule id="appr_r3">
+        <inputEntry id="appr_r3_risk"><text>-</text></inputEntry>
+        <inputEntry id="appr_r3_amount"><text>&lt;= 10000</text></inputEntry>
+        <outputEntry id="appr_r3_out"><text>"approved"</text></outputEntry>
+      </rule>
+      <rule id="appr_r4">
+        <inputEntry id="appr_r4_risk"><text>-</text></inputEntry>
+        <inputEntry id="appr_r4_amount"><text>-</text></inputEntry>
+        <outputEntry id="appr_r4_out"><text>"review"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_LoanApproval">
+      <dmndi:DMNShape id="DMNShape_Decision_Approval" dmnElementRef="Decision_Approval">
+        <dc:Bounds height="80" width="180" x="300" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_Risk" dmnElementRef="Decision_Risk">
+        <dc:Bounds height="80" width="180" x="300" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_AgeGroup" dmnElementRef="Decision_AgeGroup">
+        <dc:Bounds height="80" width="180" x="300" y="440" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Age" dmnElementRef="InputData_Age">
+        <dc:Bounds height="45" width="125" x="337" y="620" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Income" dmnElementRef="InputData_Income">
+        <dc:Bounds height="45" width="125" x="560" y="278" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_RequestedAmount" dmnElementRef="InputData_RequestedAmount">
+        <dc:Bounds height="45" width="125" x="560" y="98" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_ag_age" dmnElementRef="ir_ag_age">
+        <di:waypoint x="399" y="620" />
+        <di:waypoint x="390" y="520" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_risk_ag" dmnElementRef="ir_risk_ag">
+        <di:waypoint x="390" y="440" />
+        <di:waypoint x="390" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_risk_income" dmnElementRef="ir_risk_income">
+        <di:waypoint x="560" y="300" />
+        <di:waypoint x="480" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_appr_risk" dmnElementRef="ir_appr_risk">
+        <di:waypoint x="390" y="260" />
+        <di:waypoint x="390" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_appr_amount" dmnElementRef="ir_appr_amount">
+        <di:waypoint x="560" y="120" />
+        <di:waypoint x="480" y="120" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

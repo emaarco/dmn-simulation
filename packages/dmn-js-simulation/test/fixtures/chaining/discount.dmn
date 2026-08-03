@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="Definitions_Discount" name="Discount" namespace="http://camunda.org/schema/1.0/dmn">
+  <inputData id="InputData_Age" name="Age">
+    <variable id="Var_Age" name="Age" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_Amount" name="Amount">
+    <variable id="Var_Amount" name="Amount" typeRef="double" />
+  </inputData>
+
+  <decision id="Decision_Level" name="Level">
+    <variable id="Var_Level" name="Level" typeRef="string" />
+    <informationRequirement id="ir_level_age">
+      <requiredInput href="#InputData_Age" />
+    </informationRequirement>
+    <decisionTable id="Table_Level" hitPolicy="UNIQUE">
+      <input id="in_age" label="Age">
+        <inputExpression id="in_age_expr" typeRef="integer"><text>Age</text></inputExpression>
+      </input>
+      <output id="out_level" label="Level" name="Level" typeRef="string" />
+      <rule id="rl1">
+        <inputEntry id="rl1_in"><text>&lt; 30</text></inputEntry>
+        <outputEntry id="rl1_out"><text>"young"</text></outputEntry>
+      </rule>
+      <rule id="rl2">
+        <inputEntry id="rl2_in"><text>&gt;= 30</text></inputEntry>
+        <outputEntry id="rl2_out"><text>"senior"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <decision id="Decision_Discount" name="Discount">
+    <variable id="Var_Discount" name="Discount" typeRef="double" />
+    <informationRequirement id="ir_disc_level">
+      <requiredDecision href="#Decision_Level" />
+    </informationRequirement>
+    <informationRequirement id="ir_disc_amount">
+      <requiredInput href="#InputData_Amount" />
+    </informationRequirement>
+    <decisionTable id="Table_Discount" hitPolicy="FIRST">
+      <input id="in_level" label="Level">
+        <inputExpression id="in_level_expr" typeRef="string"><text>Level</text></inputExpression>
+      </input>
+      <input id="in_amount" label="Amount">
+        <inputExpression id="in_amount_expr" typeRef="double"><text>Amount</text></inputExpression>
+      </input>
+      <output id="out_discount" label="Discount" name="Discount" typeRef="double" />
+      <rule id="rd1">
+        <inputEntry id="rd1_lvl"><text>"young"</text></inputEntry>
+        <inputEntry id="rd1_amt"><text>&gt;= 100</text></inputEntry>
+        <outputEntry id="rd1_out"><text>5</text></outputEntry>
+      </rule>
+      <rule id="rd2">
+        <inputEntry id="rd2_lvl"><text>"senior"</text></inputEntry>
+        <inputEntry id="rd2_amt"><text>&gt;= 100</text></inputEntry>
+        <outputEntry id="rd2_out"><text>10</text></outputEntry>
+      </rule>
+      <rule id="rd3">
+        <inputEntry id="rd3_lvl"><text>-</text></inputEntry>
+        <inputEntry id="rd3_amt"><text>-</text></inputEntry>
+        <outputEntry id="rd3_out"><text>0</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_Discount">
+      <dmndi:DMNShape id="DMNShape_Decision_Discount" dmnElementRef="Decision_Discount">
+        <dc:Bounds height="80" width="180" x="300" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Decision_Level" dmnElementRef="Decision_Level">
+        <dc:Bounds height="80" width="180" x="300" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Age" dmnElementRef="InputData_Age">
+        <dc:Bounds height="45" width="125" x="337" y="440" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Amount" dmnElementRef="InputData_Amount">
+        <dc:Bounds height="45" width="125" x="560" y="98" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_level_age" dmnElementRef="ir_level_age">
+        <di:waypoint x="399" y="440" />
+        <di:waypoint x="390" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_disc_level" dmnElementRef="ir_disc_level">
+        <di:waypoint x="390" y="260" />
+        <di:waypoint x="390" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_disc_amount" dmnElementRef="ir_disc_amount">
+        <di:waypoint x="560" y="120" />
+        <di:waypoint x="480" y="120" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

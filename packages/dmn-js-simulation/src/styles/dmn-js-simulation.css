@@ -1,0 +1,281 @@
+/**
+ * Styles for @emaarco/dmn-js-simulation.
+ *
+ * Design language: Miragon modeler-tool design (blue leads, green accents, Geist,
+ * 8-point spacing, soft elevation). The canonical `--cd-*` tokens are vendored
+ * verbatim from Miragon/corporate-identity — do not hand-edit that file.
+ *
+ * Everything is namespaced under `.dmn-sim*` and driven by CSS variables, so
+ * consumers can re-theme by overriding any `--dmn-sim-*` (or `--cd-*`) variable
+ * without touching the markup. Geist is used when the host app loads it; a system
+ * sans is the fallback.
+ */
+@import './cd-tokens.generated.css';
+
+:root {
+  --dmn-sim-font: 'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --dmn-sim-font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --dmn-sim-surface: var(--cd-weiss);
+  --dmn-sim-ink: var(--cd-schwarz);
+  --dmn-sim-muted: #5b5b5b; /* labels / secondary text (AA on white) */
+  --dmn-sim-line: #e6e2e2;
+  --dmn-sim-accent: var(--cd-blau); /* primary button fill, focus */
+  --dmn-sim-accent-ink: var(--cd-blau-link); /* hover / link text (AA) */
+  --dmn-sim-accent-soft: var(--cd-info-soft); /* focus ring, selected row */
+
+  /* row highlighting */
+  --dmn-sim-match-bg: var(--cd-info-soft); /* reported (result) row */
+  --dmn-sim-match-accent: var(--cd-blau); /* left rail on the reported row */
+  --dmn-sim-candidate-bg: rgba(29, 29, 29, 0.05); /* matched-but-dropped row */
+
+  /* DRD fired-decision indicator */
+  --dmn-sim-fired: var(--cd-success);
+}
+
+/* --- toolbar above the decision table --- */
+.dmn-sim {
+  font-family: var(--dmn-sim-font);
+  color: var(--dmn-sim-ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cd-space-2);
+  /* No horizontal padding by default — the form aligns with the table's left
+     edge; any surrounding inset is the host app's decision. */
+  padding: var(--cd-space-3) 0;
+}
+
+/* --- input form --- */
+.dmn-sim-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--cd-space-3);
+}
+
+.dmn-sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cd-space-1);
+}
+
+.dmn-sim-field-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--dmn-sim-muted);
+}
+
+.dmn-sim-input {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 7px 10px;
+  min-width: 140px;
+  color: var(--dmn-sim-ink);
+  background: var(--dmn-sim-surface);
+  border: 1px solid var(--dmn-sim-line);
+  border-radius: var(--cd-radius-md);
+  transition:
+    border-color var(--cd-motion-fast) var(--cd-ease),
+    box-shadow var(--cd-motion-fast) var(--cd-ease);
+}
+
+.dmn-sim-input:focus,
+.dmn-sim-input:focus-visible {
+  outline: none;
+  border-color: var(--dmn-sim-accent);
+  box-shadow: 0 0 0 3px var(--dmn-sim-accent-soft);
+}
+
+/* --- buttons --- */
+.dmn-sim-run,
+.dmn-sim-reset {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--cd-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform var(--cd-motion-fast) var(--cd-ease),
+    background var(--cd-motion-fast) var(--cd-ease),
+    box-shadow var(--cd-motion-fast) var(--cd-ease),
+    border-color var(--cd-motion-fast) var(--cd-ease);
+}
+
+.dmn-sim-run {
+  background: var(--dmn-sim-accent);
+  color: var(--cd-weiss);
+  box-shadow: var(--cd-shadow-1);
+}
+
+.dmn-sim-run:hover:not(:disabled) {
+  background: var(--dmn-sim-accent-ink);
+  box-shadow: var(--cd-shadow-2);
+  transform: translateY(-1px);
+}
+
+.dmn-sim-run:disabled {
+  background: var(--dmn-sim-line);
+  color: #9a9a9a;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.dmn-sim-reset {
+  background: var(--dmn-sim-surface);
+  color: var(--dmn-sim-ink);
+  border-color: var(--dmn-sim-line);
+  box-shadow: var(--cd-shadow-1);
+}
+
+.dmn-sim-reset:hover {
+  border-color: var(--dmn-sim-accent);
+  color: var(--dmn-sim-accent-ink);
+  background: var(--dmn-sim-accent-soft);
+}
+
+.dmn-sim-run:focus-visible,
+.dmn-sim-reset:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--dmn-sim-accent-soft);
+}
+
+/* --- result bar (functional colours) --- */
+.dmn-sim-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--cd-space-2);
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: var(--cd-radius-md);
+  border: 1px solid var(--cd-success-soft);
+  background: var(--cd-success-soft);
+  color: var(--cd-success);
+}
+
+.dmn-sim-result--miss {
+  border-color: var(--cd-danger-soft);
+  background: var(--cd-danger-soft);
+  color: var(--cd-danger);
+}
+
+.dmn-sim-result--warn {
+  border-color: var(--cd-warning-soft);
+  background: var(--cd-warning-soft);
+  color: var(--cd-warning);
+}
+
+.dmn-sim-arrow {
+  font-weight: 700;
+}
+
+.dmn-sim-output {
+  padding: 2px 8px;
+  background: rgba(29, 29, 29, 0.05);
+  border-radius: var(--cd-radius-sm);
+  font-family: var(--dmn-sim-font-mono);
+}
+
+.dmn-sim-violation {
+  flex-basis: 100%;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dmn-sim-rule {
+  margin-left: auto;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* --- row highlighting in the dmn-js decision table --- */
+/* Reported rule(s): the actual result of the hit policy. */
+.dmn-decision-table-container tbody tr.dmn-sim-match td,
+tbody tr.dmn-sim-match td {
+  background: var(--dmn-sim-match-bg) !important;
+}
+
+.dmn-decision-table-container tbody tr.dmn-sim-match td:first-child,
+tbody tr.dmn-sim-match td:first-child {
+  box-shadow: inset 3px 0 0 0 var(--dmn-sim-match-accent);
+}
+
+/* Candidate rule(s): matched but dropped by the policy (e.g. FIRST / PRIORITY). */
+.dmn-decision-table-container tbody tr.dmn-sim-candidate td,
+tbody tr.dmn-sim-candidate td {
+  background: var(--dmn-sim-candidate-bg) !important;
+}
+
+/* --- DRD (diagram-js) simulation --- */
+/* Floating input panel inside the DRD canvas — translucent glass card. */
+.dmn-sim-decision-requirements-diagram-panel {
+  position: absolute;
+  top: var(--cd-space-3);
+  right: var(--cd-space-3);
+  z-index: 30;
+  max-width: 280px;
+  padding: var(--cd-space-3);
+  font-family: var(--dmn-sim-font);
+  color: var(--dmn-sim-ink);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--dmn-sim-line);
+  border-radius: var(--cd-radius-lg);
+  box-shadow: var(--cd-shadow-3);
+}
+
+.dmn-sim-decision-requirements-diagram-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: var(--cd-space-2);
+}
+
+.dmn-sim-decision-requirements-diagram-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cd-space-2);
+  margin-bottom: var(--cd-space-2);
+}
+
+.dmn-sim-decision-requirements-diagram-actions {
+  display: flex;
+  column-gap: var(--cd-space-2);
+  margin-top: 1rem;
+}
+
+.dmn-sim-decision-requirements-diagram-empty {
+  font-size: 12px;
+  color: var(--dmn-sim-muted);
+}
+
+/* Fired decision shape highlight (marker class is set on the djs element). */
+.djs-element.dmn-sim-fired .djs-visual > :first-child {
+  stroke: var(--dmn-sim-fired) !important;
+  stroke-width: 2.5px !important;
+  fill: var(--cd-success-soft) !important;
+}
+
+/* Result badge overlay under a decision. */
+.dmn-sim-badge {
+  padding: 3px 9px;
+  background: var(--dmn-sim-fired);
+  color: var(--cd-weiss);
+  font-family: var(--dmn-sim-font);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--cd-radius-pill);
+  white-space: nowrap;
+  box-shadow: var(--cd-shadow-1);
+}
+
+/* Honour reduced-motion (§7 of the design system). */
+@media (prefers-reduced-motion: reduce) {
+  .dmn-sim *,
+  .dmn-sim-decision-requirements-diagram-panel * {
+    transition-duration: 0.001ms !important;
+  }
+}
