@@ -15,3 +15,4 @@ coverage/
 # editor / os
 .DS_Store
 *.log
+.gstack/
