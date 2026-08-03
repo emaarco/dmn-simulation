@@ -9,7 +9,8 @@
   "prerelease": false,
   "packages": {
     "packages/dmn-js-simulation": {
-      "package-name": "@emaarco/dmn-js-simulation"
+      "package-name": "@emaarco/dmn-js-simulation",
+      "initial-version": "0.1.0"
     }
   }
 }
