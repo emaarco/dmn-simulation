@@ -62,21 +62,6 @@ const result = evaluateDecision(model, ['Fall', 8])
 
 `evaluateDecisionRequirementsDiagram` + `definitionsToDecisionRequirementsDiagramModel` do the same for a whole DRD graph.
 
-## Theming
-
-The UI follows the [Miragon modeler-tool design](https://corporate-identity.netlify.app/skills/modeler-tool-design) — blue leads, green accents, [Geist](https://vercel.com/font) typography, soft elevation. The canonical `--cd-*` design tokens are vendored alongside the stylesheet; text renders in Geist when the host app loads it (a system sans otherwise).
-
-Re-theme by overriding any `--cd-*` token or the `--dmn-sim-*` semantic variables after importing the stylesheet — no markup changes needed:
-
-```css
-:root {
-  --dmn-sim-accent: #6d28d9; /* primary buttons / focus */
-  --dmn-sim-match-bg: #ede9fe; /* reported (result) row */
-  --dmn-sim-candidate-bg: #f1f5f9; /* matched-but-dropped row */
-  --dmn-sim-fired: #7c3aed; /* fired decision in the DRD */
-}
-```
-
 ## Contributing
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the
