@@ -71,6 +71,11 @@ const result = evaluateDecision(model, ['Fall', 8])
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the
 monorepo layout, scripts, and how to build, test and run the example locally.
 
+## Credits
+
+- [dmn-js](https://github.com/bpmn-io/dmn-js) by [bpmn.io](https://bpmn.io/) — the DMN modeler this add-on plugs into.
+- Inspired by [bpmn-js-token-simulation](https://github.com/bpmn-io/bpmn-js-token-simulation), the BPMN token simulator by [bpmn.io](https://bpmn.io/).
+
 ## License
 
 [MIT](LICENSE) © Marco Schäck
