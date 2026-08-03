@@ -86,7 +86,7 @@ export function applyHitPolicy(
   matchedRuleIndices: number[],
   outputsByRule: Record<number, RuleOutput>,
 ): HitPolicyResult {
-  let reportedRuleIndices = [...matchedRuleIndices]
+  let reportedRuleIndices: number[]
   let aggregation: AggregationResult | undefined
   let violation: string | undefined
 
