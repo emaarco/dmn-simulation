@@ -2,14 +2,14 @@
 
 > Simulate DMN decision tables directly in a [dmn-js](https://github.com/bpmn-io/dmn-js) modeler — feed in concrete inputs and instantly see which rules match, which don't, and what the decision returns.
 
-`@emaarco/dmn-js-simulation` is to DMN what [`bpmn-js-token-simulation`](https://github.com/bpmn-io/bpmn-js-token-simulation) is to BPMN: it lets you validate decision logic **while you model it**, instead of discovering mistakes later in process code, tests, or production. It supports **all DMN hit policies** (UNIQUE, FIRST, ANY, PRIORITY, COLLECT with SUM/MIN/MAX/COUNT, RULE ORDER, OUTPUT ORDER) and **multi-decision DRD chaining**.
+`@emaarco/dmn-js-simulation` is to DMN what [`bpmn-js-token-simulation`](https://github.com/bpmn-io/bpmn-js-token-simulation) is to BPMN: it lets you validate decision logic **while you model it**, instead of discovering mistakes later in process code, tests, or production. It supports **all DMN hit policies** (`UNIQUE`, `FIRST`, `ANY`, `PRIORITY`, `COLLECT` with `SUM`/`MIN`/`MAX`/`COUNT`, `RULE ORDER`, `OUTPUT ORDER`) and **multi-decision DRD chaining**.
 
 ![Simulating a DMN decision table — the input form runs the decision and highlights the matched rule](docs/screenshots/simulation.png)
 
 ## Features
 
-- **Decision-table simulation** — an input form appears above the table; run it to highlight the matched rule(s) and read off the result. Rules dropped by the hit policy (e.g. under FIRST/PRIORITY) are shown as dimmed _candidates_, so the policy's effect is visible.
-- **All hit policies**, including COLLECT aggregations and policy-violation warnings (e.g. UNIQUE matched twice).
+- **Decision-table simulation** — an input form appears above the table; run it to highlight the matched rule(s) and read off the result. Rules dropped by the hit policy (e.g. under `FIRST`/`PRIORITY`) are shown as dimmed _candidates_, so the policy's effect is visible.
+- **All hit policies**, including `COLLECT` aggregations and policy-violation warnings (e.g. `UNIQUE` matched twice).
 - **DRD chaining** — simulate a whole decision requirement graph: set the input-data leaves once, and every decision is evaluated in dependency order. Fired decisions are highlighted and annotated with their result; drilling into a decision reflects that run's row highlights.
 - **Drop-in** — installs like any dmn-js module via `additionalModules`; `dmn-js` is a peer dependency, so it drives the modeler you already use.
 - **Themeable** — all UI is class-namespaced and driven by CSS variables you can override.
