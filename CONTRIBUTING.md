@@ -6,8 +6,8 @@ kinds are welcome — bug reports, feature ideas, docs, and code.
 ## Getting started
 
 ```bash
-git clone https://github.com/emaarco/dmn-simulation.git
-cd dmn-simulation
+git clone https://github.com/emaarco/dmn-js-simulation.git
+cd dmn-js-simulation
 npm install
 npm test
 ```
