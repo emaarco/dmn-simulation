@@ -1,17 +1,13 @@
 import DmnModeler from 'dmn-js/lib/Modeler'
 
-// Geist — the Miragon typeface (self-hosted variable fonts).
 import '@fontsource-variable/geist'
 import '@fontsource-variable/geist-mono'
-
 import 'dmn-js/dist/assets/diagram-js.css'
 import 'dmn-js/dist/assets/dmn-js-shared.css'
 import 'dmn-js/dist/assets/dmn-js-drd.css'
 import 'dmn-js/dist/assets/dmn-js-decision-table.css'
 import 'dmn-js/dist/assets/dmn-js-decision-table-controls.css'
 import 'dmn-js/dist/assets/dmn-js-literal-expression.css'
-// The DRD editor palette (and decision-table controls) use the dmn icon font;
-// without it those toolbar icons render blank.
 import 'dmn-js/dist/assets/dmn-font/css/dmn-embedded.css'
 
 import DmnSimulationModule from '@emaarco/dmn-js-simulation'
@@ -121,7 +117,8 @@ async function loadExample(path: string): Promise<void> {
   status.textContent = 'loading…'
   status.dataset.state = 'loading'
   try {
-    const xml = await fetch(path).then(r => {
+    const url = new URL(path.replace(/^\//, ''), new URL(import.meta.env.BASE_URL, location.href)).href
+    const xml = await fetch(url).then(r => {
       if (!r.ok) throw new Error(`${r.status} ${r.statusText}`)
       return r.text()
     })
