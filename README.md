@@ -68,6 +68,19 @@ const result = evaluateDecision(model, ['Fall', 8])
 
 `evaluateDecisionRequirementsDiagram` + `definitionsToDecisionRequirementsDiagramModel` do the same for a whole DRD graph.
 
+## Where to try it
+
+Besides the [GitHub Pages demo](https://emaarco.github.io/dmn-js-simulation/), the
+add-on already ships inside other tools — so you can reach for it wherever you
+happen to be working on your decisions:
+
+- **[miragon/bpmn-modeler](https://github.com/miragon/bpmn-modeler)** — the
+  simulation is built into the modeler, ready to use right where you design your
+  BPMN & DMN diagrams.
+- **[emaarco/slidev-addon-dmn](https://github.com/emaarco/slidev-addon-dmn)** —
+  embed live, simulatable DMN tables straight into your [Slidev](https://sli.dev/)
+  presentations.
+
 ## Contributing
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the
