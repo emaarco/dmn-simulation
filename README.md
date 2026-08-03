@@ -1,10 +1,16 @@
 # dmn-js-simulation
 
+[![npm version](https://img.shields.io/npm/v/@emaarco/dmn-js-simulation)](https://www.npmjs.com/package/@emaarco/dmn-js-simulation)
+[![license](https://img.shields.io/npm/l/@emaarco/dmn-js-simulation)](https://github.com/emaarco/dmn-js-simulation/blob/main/LICENSE)
+[![live demo](https://img.shields.io/badge/live%20demo-GitHub%20Pages-blue)](https://emaarco.github.io/dmn-js-simulation/)
+
 > Simulate DMN decision tables directly in a [dmn-js](https://github.com/bpmn-io/dmn-js) modeler — feed in concrete inputs and instantly see which rules match, which don't, and what the decision returns.
 
-`@emaarco/dmn-js-simulation` is to DMN what [`bpmn-js-token-simulation`](https://github.com/bpmn-io/bpmn-js-token-simulation) is to BPMN: it lets you validate decision logic **while you model it**, instead of discovering mistakes later in process code, tests, or production. It supports **all DMN hit policies** (`UNIQUE`, `FIRST`, `ANY`, `PRIORITY`, `COLLECT` with `SUM`/`MIN`/`MAX`/`COUNT`, `RULE ORDER`, `OUTPUT ORDER`) and **multi-decision DRD chaining**.
-
 ![Simulating a DMN decision table — the input form runs the decision and highlights the matched rule](docs/screenshots/simulation.png)
+
+## The idea behind this project
+
+`@emaarco/dmn-js-simulation` is to DMN what [`bpmn-js-token-simulation`](https://github.com/bpmn-io/bpmn-js-token-simulation) is to BPMN: it lets you validate decision logic **while you model it**, instead of discovering mistakes later in process code, tests, or production. It supports **all DMN hit policies** (`UNIQUE`, `FIRST`, `ANY`, `PRIORITY`, `COLLECT` with `SUM`/`MIN`/`MAX`/`COUNT`, `RULE ORDER`, `OUTPUT ORDER`) and **multi-decision DRD chaining**.
 
 ## Features
 
@@ -66,6 +72,11 @@ const result = evaluateDecision(model, ['Fall', 8])
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the
 monorepo layout, scripts, and how to build, test and run the example locally.
+
+## Credits
+
+- [dmn-js](https://github.com/bpmn-io/dmn-js) by [bpmn.io](https://bpmn.io/) — the DMN modeler this add-on plugs into.
+- Inspired by [bpmn-js-token-simulation](https://github.com/bpmn-io/bpmn-js-token-simulation), the BPMN token simulator by [bpmn.io](https://bpmn.io/).
 
 ## License
 
