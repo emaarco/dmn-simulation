@@ -80,11 +80,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emaarco/dmn-simulation.git",
+    "url": "git+https://github.com/emaarco/dmn-js-simulation.git",
     "directory": "packages/dmn-js-simulation"
   },
   "bugs": {
-    "url": "https://github.com/emaarco/dmn-simulation/issues"
+    "url": "https://github.com/emaarco/dmn-js-simulation/issues"
   },
-  "homepage": "https://github.com/emaarco/dmn-simulation#readme"
+  "homepage": "https://github.com/emaarco/dmn-js-simulation#readme"
 }
