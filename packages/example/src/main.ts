@@ -21,6 +21,7 @@ const picker = document.querySelector<HTMLSelectElement>('#file-picker')!
 const canvas = document.querySelector<HTMLElement>('#canvas')!
 const btnMenu = document.querySelector<HTMLButtonElement>('#btn-menu')!
 const menu = document.querySelector<HTMLElement>('#menu-dropdown')!
+const btnNew = document.querySelector<HTMLButtonElement>('#btn-new')!
 const btnOpen = document.querySelector<HTMLButtonElement>('#btn-open')!
 const btnShare = document.querySelector<HTMLButtonElement>('#btn-share')!
 const btnReset = document.querySelector<HTMLButtonElement>('#btn-reset')!
@@ -39,6 +40,38 @@ interface View {
   type: string
   element: { id: string }
 }
+
+/**
+ * A minimal, empty DMN diagram: one decision holding a bare decision table with
+ * a single input, output and rule — the smallest model you can meaningfully edit
+ * from. Loading it lets the user model a diagram from scratch. The DMNDI shape
+ * makes the decision appear in the DRD view, so the palette is usable straight
+ * away.
+ */
+const BLANK_DMN = `<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_new" name="Neues Diagramm" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="Decision_1" name="Neue Entscheidung">
+    <decisionTable id="DecisionTable_1">
+      <input id="Input_1" label="Eingabe">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Ausgabe" name="ausgabe" typeRef="string" />
+      <rule id="Rule_1">
+        <inputEntry id="InputEntry_1"><text></text></inputEntry>
+        <outputEntry id="OutputEntry_1"><text></text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>`
 
 const modeler = new DmnModeler({
   container: '#canvas',
@@ -158,6 +191,14 @@ btnReset.addEventListener('click', () => {
   picker.selectedIndex = 0
   setMenuOpen(false)
   void loadExample(picker.value)
+})
+
+// ---- New (start modelling from a blank diagram) -----------------------
+
+btnNew.addEventListener('click', () => {
+  setMenuOpen(false)
+  picker.selectedIndex = -1
+  void applyXml(BLANK_DMN)
 })
 
 // ---- Import (file dialog + drag & drop) -------------------------------
