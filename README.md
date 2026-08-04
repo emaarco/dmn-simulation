@@ -74,7 +74,7 @@ Besides the [GitHub Pages demo](https://emaarco.github.io/dmn-js-simulation/), t
 add-on already ships inside other tools — so you can reach for it wherever you
 happen to be working on your decisions:
 
-- **[miragon/bpmn-modeler](https://github.com/miragon/bpmn-modeler)** — the
+- **[miragon/bpmn-modeler](https://miragon.github.io/bpmn-modeler/)** — the
   simulation is built into the modeler, ready to use right where you design your
   BPMN & DMN diagrams.
 - **[emaarco/slidev-addon-dmn](https://github.com/emaarco/slidev-addon-dmn)** —
