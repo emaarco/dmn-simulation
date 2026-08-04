@@ -1,0 +1,2036 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="Definitions_CreditScore" name="Credit Score Banding" namespace="http://miragon.io/miravelo/scoring">
+  <inputData id="InputData_Score" name="Score">
+    <variable id="Variable_Score" name="Score" typeRef="integer" />
+  </inputData>
+  <decision id="Decision_CreditBand" name="Credit Score Band">
+    <informationRequirement id="ir_Score">
+      <requiredInput href="#InputData_Score" />
+    </informationRequirement>
+    <decisionTable id="DT_CreditBand" hitPolicy="FIRST">
+      <input id="in_score" label="Score">
+        <inputExpression id="ie_score" typeRef="integer"><text>Score</text></inputExpression>
+      </input>
+      <output id="out_band" label="Band" name="Band" typeRef="string" />
+      <output id="out_rate" label="Rate (%)" name="Rate" typeRef="double" />
+      <rule id="r0">
+        <inputEntry id="r0i"><text>[0..9]</text></inputEntry>
+        <outputEntry id="r0b"><text>"Band 0"</text></outputEntry>
+        <outputEntry id="r0r"><text>1.50</text></outputEntry>
+      </rule>
+      <rule id="r1">
+        <inputEntry id="r1i"><text>[10..19]</text></inputEntry>
+        <outputEntry id="r1b"><text>"Band 1"</text></outputEntry>
+        <outputEntry id="r1r"><text>1.51</text></outputEntry>
+      </rule>
+      <rule id="r2">
+        <inputEntry id="r2i"><text>[20..29]</text></inputEntry>
+        <outputEntry id="r2b"><text>"Band 2"</text></outputEntry>
+        <outputEntry id="r2r"><text>1.52</text></outputEntry>
+      </rule>
+      <rule id="r3">
+        <inputEntry id="r3i"><text>[30..39]</text></inputEntry>
+        <outputEntry id="r3b"><text>"Band 3"</text></outputEntry>
+        <outputEntry id="r3r"><text>1.53</text></outputEntry>
+      </rule>
+      <rule id="r4">
+        <inputEntry id="r4i"><text>[40..49]</text></inputEntry>
+        <outputEntry id="r4b"><text>"Band 4"</text></outputEntry>
+        <outputEntry id="r4r"><text>1.54</text></outputEntry>
+      </rule>
+      <rule id="r5">
+        <inputEntry id="r5i"><text>[50..59]</text></inputEntry>
+        <outputEntry id="r5b"><text>"Band 5"</text></outputEntry>
+        <outputEntry id="r5r"><text>1.55</text></outputEntry>
+      </rule>
+      <rule id="r6">
+        <inputEntry id="r6i"><text>[60..69]</text></inputEntry>
+        <outputEntry id="r6b"><text>"Band 6"</text></outputEntry>
+        <outputEntry id="r6r"><text>1.56</text></outputEntry>
+      </rule>
+      <rule id="r7">
+        <inputEntry id="r7i"><text>[70..79]</text></inputEntry>
+        <outputEntry id="r7b"><text>"Band 7"</text></outputEntry>
+        <outputEntry id="r7r"><text>1.57</text></outputEntry>
+      </rule>
+      <rule id="r8">
+        <inputEntry id="r8i"><text>[80..89]</text></inputEntry>
+        <outputEntry id="r8b"><text>"Band 8"</text></outputEntry>
+        <outputEntry id="r8r"><text>1.58</text></outputEntry>
+      </rule>
+      <rule id="r9">
+        <inputEntry id="r9i"><text>[90..99]</text></inputEntry>
+        <outputEntry id="r9b"><text>"Band 9"</text></outputEntry>
+        <outputEntry id="r9r"><text>1.59</text></outputEntry>
+      </rule>
+      <rule id="r10">
+        <inputEntry id="r10i"><text>[100..109]</text></inputEntry>
+        <outputEntry id="r10b"><text>"Band 10"</text></outputEntry>
+        <outputEntry id="r10r"><text>1.60</text></outputEntry>
+      </rule>
+      <rule id="r11">
+        <inputEntry id="r11i"><text>[110..119]</text></inputEntry>
+        <outputEntry id="r11b"><text>"Band 11"</text></outputEntry>
+        <outputEntry id="r11r"><text>1.61</text></outputEntry>
+      </rule>
+      <rule id="r12">
+        <inputEntry id="r12i"><text>[120..129]</text></inputEntry>
+        <outputEntry id="r12b"><text>"Band 12"</text></outputEntry>
+        <outputEntry id="r12r"><text>1.62</text></outputEntry>
+      </rule>
+      <rule id="r13">
+        <inputEntry id="r13i"><text>[130..139]</text></inputEntry>
+        <outputEntry id="r13b"><text>"Band 13"</text></outputEntry>
+        <outputEntry id="r13r"><text>1.63</text></outputEntry>
+      </rule>
+      <rule id="r14">
+        <inputEntry id="r14i"><text>[140..149]</text></inputEntry>
+        <outputEntry id="r14b"><text>"Band 14"</text></outputEntry>
+        <outputEntry id="r14r"><text>1.64</text></outputEntry>
+      </rule>
+      <rule id="r15">
+        <inputEntry id="r15i"><text>[150..159]</text></inputEntry>
+        <outputEntry id="r15b"><text>"Band 15"</text></outputEntry>
+        <outputEntry id="r15r"><text>1.65</text></outputEntry>
+      </rule>
+      <rule id="r16">
+        <inputEntry id="r16i"><text>[160..169]</text></inputEntry>
+        <outputEntry id="r16b"><text>"Band 16"</text></outputEntry>
+        <outputEntry id="r16r"><text>1.66</text></outputEntry>
+      </rule>
+      <rule id="r17">
+        <inputEntry id="r17i"><text>[170..179]</text></inputEntry>
+        <outputEntry id="r17b"><text>"Band 17"</text></outputEntry>
+        <outputEntry id="r17r"><text>1.67</text></outputEntry>
+      </rule>
+      <rule id="r18">
+        <inputEntry id="r18i"><text>[180..189]</text></inputEntry>
+        <outputEntry id="r18b"><text>"Band 18"</text></outputEntry>
+        <outputEntry id="r18r"><text>1.68</text></outputEntry>
+      </rule>
+      <rule id="r19">
+        <inputEntry id="r19i"><text>[190..199]</text></inputEntry>
+        <outputEntry id="r19b"><text>"Band 19"</text></outputEntry>
+        <outputEntry id="r19r"><text>1.69</text></outputEntry>
+      </rule>
+      <rule id="r20">
+        <inputEntry id="r20i"><text>[200..209]</text></inputEntry>
+        <outputEntry id="r20b"><text>"Band 20"</text></outputEntry>
+        <outputEntry id="r20r"><text>1.70</text></outputEntry>
+      </rule>
+      <rule id="r21">
+        <inputEntry id="r21i"><text>[210..219]</text></inputEntry>
+        <outputEntry id="r21b"><text>"Band 21"</text></outputEntry>
+        <outputEntry id="r21r"><text>1.71</text></outputEntry>
+      </rule>
+      <rule id="r22">
+        <inputEntry id="r22i"><text>[220..229]</text></inputEntry>
+        <outputEntry id="r22b"><text>"Band 22"</text></outputEntry>
+        <outputEntry id="r22r"><text>1.72</text></outputEntry>
+      </rule>
+      <rule id="r23">
+        <inputEntry id="r23i"><text>[230..239]</text></inputEntry>
+        <outputEntry id="r23b"><text>"Band 23"</text></outputEntry>
+        <outputEntry id="r23r"><text>1.73</text></outputEntry>
+      </rule>
+      <rule id="r24">
+        <inputEntry id="r24i"><text>[240..249]</text></inputEntry>
+        <outputEntry id="r24b"><text>"Band 24"</text></outputEntry>
+        <outputEntry id="r24r"><text>1.74</text></outputEntry>
+      </rule>
+      <rule id="r25">
+        <inputEntry id="r25i"><text>[250..259]</text></inputEntry>
+        <outputEntry id="r25b"><text>"Band 25"</text></outputEntry>
+        <outputEntry id="r25r"><text>1.75</text></outputEntry>
+      </rule>
+      <rule id="r26">
+        <inputEntry id="r26i"><text>[260..269]</text></inputEntry>
+        <outputEntry id="r26b"><text>"Band 26"</text></outputEntry>
+        <outputEntry id="r26r"><text>1.76</text></outputEntry>
+      </rule>
+      <rule id="r27">
+        <inputEntry id="r27i"><text>[270..279]</text></inputEntry>
+        <outputEntry id="r27b"><text>"Band 27"</text></outputEntry>
+        <outputEntry id="r27r"><text>1.77</text></outputEntry>
+      </rule>
+      <rule id="r28">
+        <inputEntry id="r28i"><text>[280..289]</text></inputEntry>
+        <outputEntry id="r28b"><text>"Band 28"</text></outputEntry>
+        <outputEntry id="r28r"><text>1.78</text></outputEntry>
+      </rule>
+      <rule id="r29">
+        <inputEntry id="r29i"><text>[290..299]</text></inputEntry>
+        <outputEntry id="r29b"><text>"Band 29"</text></outputEntry>
+        <outputEntry id="r29r"><text>1.79</text></outputEntry>
+      </rule>
+      <rule id="r30">
+        <inputEntry id="r30i"><text>[300..309]</text></inputEntry>
+        <outputEntry id="r30b"><text>"Band 30"</text></outputEntry>
+        <outputEntry id="r30r"><text>1.80</text></outputEntry>
+      </rule>
+      <rule id="r31">
+        <inputEntry id="r31i"><text>[310..319]</text></inputEntry>
+        <outputEntry id="r31b"><text>"Band 31"</text></outputEntry>
+        <outputEntry id="r31r"><text>1.81</text></outputEntry>
+      </rule>
+      <rule id="r32">
+        <inputEntry id="r32i"><text>[320..329]</text></inputEntry>
+        <outputEntry id="r32b"><text>"Band 32"</text></outputEntry>
+        <outputEntry id="r32r"><text>1.82</text></outputEntry>
+      </rule>
+      <rule id="r33">
+        <inputEntry id="r33i"><text>[330..339]</text></inputEntry>
+        <outputEntry id="r33b"><text>"Band 33"</text></outputEntry>
+        <outputEntry id="r33r"><text>1.83</text></outputEntry>
+      </rule>
+      <rule id="r34">
+        <inputEntry id="r34i"><text>[340..349]</text></inputEntry>
+        <outputEntry id="r34b"><text>"Band 34"</text></outputEntry>
+        <outputEntry id="r34r"><text>1.84</text></outputEntry>
+      </rule>
+      <rule id="r35">
+        <inputEntry id="r35i"><text>[350..359]</text></inputEntry>
+        <outputEntry id="r35b"><text>"Band 35"</text></outputEntry>
+        <outputEntry id="r35r"><text>1.85</text></outputEntry>
+      </rule>
+      <rule id="r36">
+        <inputEntry id="r36i"><text>[360..369]</text></inputEntry>
+        <outputEntry id="r36b"><text>"Band 36"</text></outputEntry>
+        <outputEntry id="r36r"><text>1.86</text></outputEntry>
+      </rule>
+      <rule id="r37">
+        <inputEntry id="r37i"><text>[370..379]</text></inputEntry>
+        <outputEntry id="r37b"><text>"Band 37"</text></outputEntry>
+        <outputEntry id="r37r"><text>1.87</text></outputEntry>
+      </rule>
+      <rule id="r38">
+        <inputEntry id="r38i"><text>[380..389]</text></inputEntry>
+        <outputEntry id="r38b"><text>"Band 38"</text></outputEntry>
+        <outputEntry id="r38r"><text>1.88</text></outputEntry>
+      </rule>
+      <rule id="r39">
+        <inputEntry id="r39i"><text>[390..399]</text></inputEntry>
+        <outputEntry id="r39b"><text>"Band 39"</text></outputEntry>
+        <outputEntry id="r39r"><text>1.89</text></outputEntry>
+      </rule>
+      <rule id="r40">
+        <inputEntry id="r40i"><text>[400..409]</text></inputEntry>
+        <outputEntry id="r40b"><text>"Band 40"</text></outputEntry>
+        <outputEntry id="r40r"><text>1.90</text></outputEntry>
+      </rule>
+      <rule id="r41">
+        <inputEntry id="r41i"><text>[410..419]</text></inputEntry>
+        <outputEntry id="r41b"><text>"Band 41"</text></outputEntry>
+        <outputEntry id="r41r"><text>1.91</text></outputEntry>
+      </rule>
+      <rule id="r42">
+        <inputEntry id="r42i"><text>[420..429]</text></inputEntry>
+        <outputEntry id="r42b"><text>"Band 42"</text></outputEntry>
+        <outputEntry id="r42r"><text>1.92</text></outputEntry>
+      </rule>
+      <rule id="r43">
+        <inputEntry id="r43i"><text>[430..439]</text></inputEntry>
+        <outputEntry id="r43b"><text>"Band 43"</text></outputEntry>
+        <outputEntry id="r43r"><text>1.93</text></outputEntry>
+      </rule>
+      <rule id="r44">
+        <inputEntry id="r44i"><text>[440..449]</text></inputEntry>
+        <outputEntry id="r44b"><text>"Band 44"</text></outputEntry>
+        <outputEntry id="r44r"><text>1.94</text></outputEntry>
+      </rule>
+      <rule id="r45">
+        <inputEntry id="r45i"><text>[450..459]</text></inputEntry>
+        <outputEntry id="r45b"><text>"Band 45"</text></outputEntry>
+        <outputEntry id="r45r"><text>1.95</text></outputEntry>
+      </rule>
+      <rule id="r46">
+        <inputEntry id="r46i"><text>[460..469]</text></inputEntry>
+        <outputEntry id="r46b"><text>"Band 46"</text></outputEntry>
+        <outputEntry id="r46r"><text>1.96</text></outputEntry>
+      </rule>
+      <rule id="r47">
+        <inputEntry id="r47i"><text>[470..479]</text></inputEntry>
+        <outputEntry id="r47b"><text>"Band 47"</text></outputEntry>
+        <outputEntry id="r47r"><text>1.97</text></outputEntry>
+      </rule>
+      <rule id="r48">
+        <inputEntry id="r48i"><text>[480..489]</text></inputEntry>
+        <outputEntry id="r48b"><text>"Band 48"</text></outputEntry>
+        <outputEntry id="r48r"><text>1.98</text></outputEntry>
+      </rule>
+      <rule id="r49">
+        <inputEntry id="r49i"><text>[490..499]</text></inputEntry>
+        <outputEntry id="r49b"><text>"Band 49"</text></outputEntry>
+        <outputEntry id="r49r"><text>1.99</text></outputEntry>
+      </rule>
+      <rule id="r50">
+        <inputEntry id="r50i"><text>[500..509]</text></inputEntry>
+        <outputEntry id="r50b"><text>"Band 50"</text></outputEntry>
+        <outputEntry id="r50r"><text>2.00</text></outputEntry>
+      </rule>
+      <rule id="r51">
+        <inputEntry id="r51i"><text>[510..519]</text></inputEntry>
+        <outputEntry id="r51b"><text>"Band 51"</text></outputEntry>
+        <outputEntry id="r51r"><text>2.01</text></outputEntry>
+      </rule>
+      <rule id="r52">
+        <inputEntry id="r52i"><text>[520..529]</text></inputEntry>
+        <outputEntry id="r52b"><text>"Band 52"</text></outputEntry>
+        <outputEntry id="r52r"><text>2.02</text></outputEntry>
+      </rule>
+      <rule id="r53">
+        <inputEntry id="r53i"><text>[530..539]</text></inputEntry>
+        <outputEntry id="r53b"><text>"Band 53"</text></outputEntry>
+        <outputEntry id="r53r"><text>2.03</text></outputEntry>
+      </rule>
+      <rule id="r54">
+        <inputEntry id="r54i"><text>[540..549]</text></inputEntry>
+        <outputEntry id="r54b"><text>"Band 54"</text></outputEntry>
+        <outputEntry id="r54r"><text>2.04</text></outputEntry>
+      </rule>
+      <rule id="r55">
+        <inputEntry id="r55i"><text>[550..559]</text></inputEntry>
+        <outputEntry id="r55b"><text>"Band 55"</text></outputEntry>
+        <outputEntry id="r55r"><text>2.05</text></outputEntry>
+      </rule>
+      <rule id="r56">
+        <inputEntry id="r56i"><text>[560..569]</text></inputEntry>
+        <outputEntry id="r56b"><text>"Band 56"</text></outputEntry>
+        <outputEntry id="r56r"><text>2.06</text></outputEntry>
+      </rule>
+      <rule id="r57">
+        <inputEntry id="r57i"><text>[570..579]</text></inputEntry>
+        <outputEntry id="r57b"><text>"Band 57"</text></outputEntry>
+        <outputEntry id="r57r"><text>2.07</text></outputEntry>
+      </rule>
+      <rule id="r58">
+        <inputEntry id="r58i"><text>[580..589]</text></inputEntry>
+        <outputEntry id="r58b"><text>"Band 58"</text></outputEntry>
+        <outputEntry id="r58r"><text>2.08</text></outputEntry>
+      </rule>
+      <rule id="r59">
+        <inputEntry id="r59i"><text>[590..599]</text></inputEntry>
+        <outputEntry id="r59b"><text>"Band 59"</text></outputEntry>
+        <outputEntry id="r59r"><text>2.09</text></outputEntry>
+      </rule>
+      <rule id="r60">
+        <inputEntry id="r60i"><text>[600..609]</text></inputEntry>
+        <outputEntry id="r60b"><text>"Band 60"</text></outputEntry>
+        <outputEntry id="r60r"><text>2.10</text></outputEntry>
+      </rule>
+      <rule id="r61">
+        <inputEntry id="r61i"><text>[610..619]</text></inputEntry>
+        <outputEntry id="r61b"><text>"Band 61"</text></outputEntry>
+        <outputEntry id="r61r"><text>2.11</text></outputEntry>
+      </rule>
+      <rule id="r62">
+        <inputEntry id="r62i"><text>[620..629]</text></inputEntry>
+        <outputEntry id="r62b"><text>"Band 62"</text></outputEntry>
+        <outputEntry id="r62r"><text>2.12</text></outputEntry>
+      </rule>
+      <rule id="r63">
+        <inputEntry id="r63i"><text>[630..639]</text></inputEntry>
+        <outputEntry id="r63b"><text>"Band 63"</text></outputEntry>
+        <outputEntry id="r63r"><text>2.13</text></outputEntry>
+      </rule>
+      <rule id="r64">
+        <inputEntry id="r64i"><text>[640..649]</text></inputEntry>
+        <outputEntry id="r64b"><text>"Band 64"</text></outputEntry>
+        <outputEntry id="r64r"><text>2.14</text></outputEntry>
+      </rule>
+      <rule id="r65">
+        <inputEntry id="r65i"><text>[650..659]</text></inputEntry>
+        <outputEntry id="r65b"><text>"Band 65"</text></outputEntry>
+        <outputEntry id="r65r"><text>2.15</text></outputEntry>
+      </rule>
+      <rule id="r66">
+        <inputEntry id="r66i"><text>[660..669]</text></inputEntry>
+        <outputEntry id="r66b"><text>"Band 66"</text></outputEntry>
+        <outputEntry id="r66r"><text>2.16</text></outputEntry>
+      </rule>
+      <rule id="r67">
+        <inputEntry id="r67i"><text>[670..679]</text></inputEntry>
+        <outputEntry id="r67b"><text>"Band 67"</text></outputEntry>
+        <outputEntry id="r67r"><text>2.17</text></outputEntry>
+      </rule>
+      <rule id="r68">
+        <inputEntry id="r68i"><text>[680..689]</text></inputEntry>
+        <outputEntry id="r68b"><text>"Band 68"</text></outputEntry>
+        <outputEntry id="r68r"><text>2.18</text></outputEntry>
+      </rule>
+      <rule id="r69">
+        <inputEntry id="r69i"><text>[690..699]</text></inputEntry>
+        <outputEntry id="r69b"><text>"Band 69"</text></outputEntry>
+        <outputEntry id="r69r"><text>2.19</text></outputEntry>
+      </rule>
+      <rule id="r70">
+        <inputEntry id="r70i"><text>[700..709]</text></inputEntry>
+        <outputEntry id="r70b"><text>"Band 70"</text></outputEntry>
+        <outputEntry id="r70r"><text>2.20</text></outputEntry>
+      </rule>
+      <rule id="r71">
+        <inputEntry id="r71i"><text>[710..719]</text></inputEntry>
+        <outputEntry id="r71b"><text>"Band 71"</text></outputEntry>
+        <outputEntry id="r71r"><text>2.21</text></outputEntry>
+      </rule>
+      <rule id="r72">
+        <inputEntry id="r72i"><text>[720..729]</text></inputEntry>
+        <outputEntry id="r72b"><text>"Band 72"</text></outputEntry>
+        <outputEntry id="r72r"><text>2.22</text></outputEntry>
+      </rule>
+      <rule id="r73">
+        <inputEntry id="r73i"><text>[730..739]</text></inputEntry>
+        <outputEntry id="r73b"><text>"Band 73"</text></outputEntry>
+        <outputEntry id="r73r"><text>2.23</text></outputEntry>
+      </rule>
+      <rule id="r74">
+        <inputEntry id="r74i"><text>[740..749]</text></inputEntry>
+        <outputEntry id="r74b"><text>"Band 74"</text></outputEntry>
+        <outputEntry id="r74r"><text>2.24</text></outputEntry>
+      </rule>
+      <rule id="r75">
+        <inputEntry id="r75i"><text>[750..759]</text></inputEntry>
+        <outputEntry id="r75b"><text>"Band 75"</text></outputEntry>
+        <outputEntry id="r75r"><text>2.25</text></outputEntry>
+      </rule>
+      <rule id="r76">
+        <inputEntry id="r76i"><text>[760..769]</text></inputEntry>
+        <outputEntry id="r76b"><text>"Band 76"</text></outputEntry>
+        <outputEntry id="r76r"><text>2.26</text></outputEntry>
+      </rule>
+      <rule id="r77">
+        <inputEntry id="r77i"><text>[770..779]</text></inputEntry>
+        <outputEntry id="r77b"><text>"Band 77"</text></outputEntry>
+        <outputEntry id="r77r"><text>2.27</text></outputEntry>
+      </rule>
+      <rule id="r78">
+        <inputEntry id="r78i"><text>[780..789]</text></inputEntry>
+        <outputEntry id="r78b"><text>"Band 78"</text></outputEntry>
+        <outputEntry id="r78r"><text>2.28</text></outputEntry>
+      </rule>
+      <rule id="r79">
+        <inputEntry id="r79i"><text>[790..799]</text></inputEntry>
+        <outputEntry id="r79b"><text>"Band 79"</text></outputEntry>
+        <outputEntry id="r79r"><text>2.29</text></outputEntry>
+      </rule>
+      <rule id="r80">
+        <inputEntry id="r80i"><text>[800..809]</text></inputEntry>
+        <outputEntry id="r80b"><text>"Band 80"</text></outputEntry>
+        <outputEntry id="r80r"><text>2.30</text></outputEntry>
+      </rule>
+      <rule id="r81">
+        <inputEntry id="r81i"><text>[810..819]</text></inputEntry>
+        <outputEntry id="r81b"><text>"Band 81"</text></outputEntry>
+        <outputEntry id="r81r"><text>2.31</text></outputEntry>
+      </rule>
+      <rule id="r82">
+        <inputEntry id="r82i"><text>[820..829]</text></inputEntry>
+        <outputEntry id="r82b"><text>"Band 82"</text></outputEntry>
+        <outputEntry id="r82r"><text>2.32</text></outputEntry>
+      </rule>
+      <rule id="r83">
+        <inputEntry id="r83i"><text>[830..839]</text></inputEntry>
+        <outputEntry id="r83b"><text>"Band 83"</text></outputEntry>
+        <outputEntry id="r83r"><text>2.33</text></outputEntry>
+      </rule>
+      <rule id="r84">
+        <inputEntry id="r84i"><text>[840..849]</text></inputEntry>
+        <outputEntry id="r84b"><text>"Band 84"</text></outputEntry>
+        <outputEntry id="r84r"><text>2.34</text></outputEntry>
+      </rule>
+      <rule id="r85">
+        <inputEntry id="r85i"><text>[850..859]</text></inputEntry>
+        <outputEntry id="r85b"><text>"Band 85"</text></outputEntry>
+        <outputEntry id="r85r"><text>2.35</text></outputEntry>
+      </rule>
+      <rule id="r86">
+        <inputEntry id="r86i"><text>[860..869]</text></inputEntry>
+        <outputEntry id="r86b"><text>"Band 86"</text></outputEntry>
+        <outputEntry id="r86r"><text>2.36</text></outputEntry>
+      </rule>
+      <rule id="r87">
+        <inputEntry id="r87i"><text>[870..879]</text></inputEntry>
+        <outputEntry id="r87b"><text>"Band 87"</text></outputEntry>
+        <outputEntry id="r87r"><text>2.37</text></outputEntry>
+      </rule>
+      <rule id="r88">
+        <inputEntry id="r88i"><text>[880..889]</text></inputEntry>
+        <outputEntry id="r88b"><text>"Band 88"</text></outputEntry>
+        <outputEntry id="r88r"><text>2.38</text></outputEntry>
+      </rule>
+      <rule id="r89">
+        <inputEntry id="r89i"><text>[890..899]</text></inputEntry>
+        <outputEntry id="r89b"><text>"Band 89"</text></outputEntry>
+        <outputEntry id="r89r"><text>2.39</text></outputEntry>
+      </rule>
+      <rule id="r90">
+        <inputEntry id="r90i"><text>[900..909]</text></inputEntry>
+        <outputEntry id="r90b"><text>"Band 90"</text></outputEntry>
+        <outputEntry id="r90r"><text>2.40</text></outputEntry>
+      </rule>
+      <rule id="r91">
+        <inputEntry id="r91i"><text>[910..919]</text></inputEntry>
+        <outputEntry id="r91b"><text>"Band 91"</text></outputEntry>
+        <outputEntry id="r91r"><text>2.41</text></outputEntry>
+      </rule>
+      <rule id="r92">
+        <inputEntry id="r92i"><text>[920..929]</text></inputEntry>
+        <outputEntry id="r92b"><text>"Band 92"</text></outputEntry>
+        <outputEntry id="r92r"><text>2.42</text></outputEntry>
+      </rule>
+      <rule id="r93">
+        <inputEntry id="r93i"><text>[930..939]</text></inputEntry>
+        <outputEntry id="r93b"><text>"Band 93"</text></outputEntry>
+        <outputEntry id="r93r"><text>2.43</text></outputEntry>
+      </rule>
+      <rule id="r94">
+        <inputEntry id="r94i"><text>[940..949]</text></inputEntry>
+        <outputEntry id="r94b"><text>"Band 94"</text></outputEntry>
+        <outputEntry id="r94r"><text>2.44</text></outputEntry>
+      </rule>
+      <rule id="r95">
+        <inputEntry id="r95i"><text>[950..959]</text></inputEntry>
+        <outputEntry id="r95b"><text>"Band 95"</text></outputEntry>
+        <outputEntry id="r95r"><text>2.45</text></outputEntry>
+      </rule>
+      <rule id="r96">
+        <inputEntry id="r96i"><text>[960..969]</text></inputEntry>
+        <outputEntry id="r96b"><text>"Band 96"</text></outputEntry>
+        <outputEntry id="r96r"><text>2.46</text></outputEntry>
+      </rule>
+      <rule id="r97">
+        <inputEntry id="r97i"><text>[970..979]</text></inputEntry>
+        <outputEntry id="r97b"><text>"Band 97"</text></outputEntry>
+        <outputEntry id="r97r"><text>2.47</text></outputEntry>
+      </rule>
+      <rule id="r98">
+        <inputEntry id="r98i"><text>[980..989]</text></inputEntry>
+        <outputEntry id="r98b"><text>"Band 98"</text></outputEntry>
+        <outputEntry id="r98r"><text>2.48</text></outputEntry>
+      </rule>
+      <rule id="r99">
+        <inputEntry id="r99i"><text>[990..999]</text></inputEntry>
+        <outputEntry id="r99b"><text>"Band 99"</text></outputEntry>
+        <outputEntry id="r99r"><text>2.49</text></outputEntry>
+      </rule>
+      <rule id="r100">
+        <inputEntry id="r100i"><text>[1000..1009]</text></inputEntry>
+        <outputEntry id="r100b"><text>"Band 100"</text></outputEntry>
+        <outputEntry id="r100r"><text>2.50</text></outputEntry>
+      </rule>
+      <rule id="r101">
+        <inputEntry id="r101i"><text>[1010..1019]</text></inputEntry>
+        <outputEntry id="r101b"><text>"Band 101"</text></outputEntry>
+        <outputEntry id="r101r"><text>2.51</text></outputEntry>
+      </rule>
+      <rule id="r102">
+        <inputEntry id="r102i"><text>[1020..1029]</text></inputEntry>
+        <outputEntry id="r102b"><text>"Band 102"</text></outputEntry>
+        <outputEntry id="r102r"><text>2.52</text></outputEntry>
+      </rule>
+      <rule id="r103">
+        <inputEntry id="r103i"><text>[1030..1039]</text></inputEntry>
+        <outputEntry id="r103b"><text>"Band 103"</text></outputEntry>
+        <outputEntry id="r103r"><text>2.53</text></outputEntry>
+      </rule>
+      <rule id="r104">
+        <inputEntry id="r104i"><text>[1040..1049]</text></inputEntry>
+        <outputEntry id="r104b"><text>"Band 104"</text></outputEntry>
+        <outputEntry id="r104r"><text>2.54</text></outputEntry>
+      </rule>
+      <rule id="r105">
+        <inputEntry id="r105i"><text>[1050..1059]</text></inputEntry>
+        <outputEntry id="r105b"><text>"Band 105"</text></outputEntry>
+        <outputEntry id="r105r"><text>2.55</text></outputEntry>
+      </rule>
+      <rule id="r106">
+        <inputEntry id="r106i"><text>[1060..1069]</text></inputEntry>
+        <outputEntry id="r106b"><text>"Band 106"</text></outputEntry>
+        <outputEntry id="r106r"><text>2.56</text></outputEntry>
+      </rule>
+      <rule id="r107">
+        <inputEntry id="r107i"><text>[1070..1079]</text></inputEntry>
+        <outputEntry id="r107b"><text>"Band 107"</text></outputEntry>
+        <outputEntry id="r107r"><text>2.57</text></outputEntry>
+      </rule>
+      <rule id="r108">
+        <inputEntry id="r108i"><text>[1080..1089]</text></inputEntry>
+        <outputEntry id="r108b"><text>"Band 108"</text></outputEntry>
+        <outputEntry id="r108r"><text>2.58</text></outputEntry>
+      </rule>
+      <rule id="r109">
+        <inputEntry id="r109i"><text>[1090..1099]</text></inputEntry>
+        <outputEntry id="r109b"><text>"Band 109"</text></outputEntry>
+        <outputEntry id="r109r"><text>2.59</text></outputEntry>
+      </rule>
+      <rule id="r110">
+        <inputEntry id="r110i"><text>[1100..1109]</text></inputEntry>
+        <outputEntry id="r110b"><text>"Band 110"</text></outputEntry>
+        <outputEntry id="r110r"><text>2.60</text></outputEntry>
+      </rule>
+      <rule id="r111">
+        <inputEntry id="r111i"><text>[1110..1119]</text></inputEntry>
+        <outputEntry id="r111b"><text>"Band 111"</text></outputEntry>
+        <outputEntry id="r111r"><text>2.61</text></outputEntry>
+      </rule>
+      <rule id="r112">
+        <inputEntry id="r112i"><text>[1120..1129]</text></inputEntry>
+        <outputEntry id="r112b"><text>"Band 112"</text></outputEntry>
+        <outputEntry id="r112r"><text>2.62</text></outputEntry>
+      </rule>
+      <rule id="r113">
+        <inputEntry id="r113i"><text>[1130..1139]</text></inputEntry>
+        <outputEntry id="r113b"><text>"Band 113"</text></outputEntry>
+        <outputEntry id="r113r"><text>2.63</text></outputEntry>
+      </rule>
+      <rule id="r114">
+        <inputEntry id="r114i"><text>[1140..1149]</text></inputEntry>
+        <outputEntry id="r114b"><text>"Band 114"</text></outputEntry>
+        <outputEntry id="r114r"><text>2.64</text></outputEntry>
+      </rule>
+      <rule id="r115">
+        <inputEntry id="r115i"><text>[1150..1159]</text></inputEntry>
+        <outputEntry id="r115b"><text>"Band 115"</text></outputEntry>
+        <outputEntry id="r115r"><text>2.65</text></outputEntry>
+      </rule>
+      <rule id="r116">
+        <inputEntry id="r116i"><text>[1160..1169]</text></inputEntry>
+        <outputEntry id="r116b"><text>"Band 116"</text></outputEntry>
+        <outputEntry id="r116r"><text>2.66</text></outputEntry>
+      </rule>
+      <rule id="r117">
+        <inputEntry id="r117i"><text>[1170..1179]</text></inputEntry>
+        <outputEntry id="r117b"><text>"Band 117"</text></outputEntry>
+        <outputEntry id="r117r"><text>2.67</text></outputEntry>
+      </rule>
+      <rule id="r118">
+        <inputEntry id="r118i"><text>[1180..1189]</text></inputEntry>
+        <outputEntry id="r118b"><text>"Band 118"</text></outputEntry>
+        <outputEntry id="r118r"><text>2.68</text></outputEntry>
+      </rule>
+      <rule id="r119">
+        <inputEntry id="r119i"><text>[1190..1199]</text></inputEntry>
+        <outputEntry id="r119b"><text>"Band 119"</text></outputEntry>
+        <outputEntry id="r119r"><text>2.69</text></outputEntry>
+      </rule>
+      <rule id="r120">
+        <inputEntry id="r120i"><text>[1200..1209]</text></inputEntry>
+        <outputEntry id="r120b"><text>"Band 120"</text></outputEntry>
+        <outputEntry id="r120r"><text>2.70</text></outputEntry>
+      </rule>
+      <rule id="r121">
+        <inputEntry id="r121i"><text>[1210..1219]</text></inputEntry>
+        <outputEntry id="r121b"><text>"Band 121"</text></outputEntry>
+        <outputEntry id="r121r"><text>2.71</text></outputEntry>
+      </rule>
+      <rule id="r122">
+        <inputEntry id="r122i"><text>[1220..1229]</text></inputEntry>
+        <outputEntry id="r122b"><text>"Band 122"</text></outputEntry>
+        <outputEntry id="r122r"><text>2.72</text></outputEntry>
+      </rule>
+      <rule id="r123">
+        <inputEntry id="r123i"><text>[1230..1239]</text></inputEntry>
+        <outputEntry id="r123b"><text>"Band 123"</text></outputEntry>
+        <outputEntry id="r123r"><text>2.73</text></outputEntry>
+      </rule>
+      <rule id="r124">
+        <inputEntry id="r124i"><text>[1240..1249]</text></inputEntry>
+        <outputEntry id="r124b"><text>"Band 124"</text></outputEntry>
+        <outputEntry id="r124r"><text>2.74</text></outputEntry>
+      </rule>
+      <rule id="r125">
+        <inputEntry id="r125i"><text>[1250..1259]</text></inputEntry>
+        <outputEntry id="r125b"><text>"Band 125"</text></outputEntry>
+        <outputEntry id="r125r"><text>2.75</text></outputEntry>
+      </rule>
+      <rule id="r126">
+        <inputEntry id="r126i"><text>[1260..1269]</text></inputEntry>
+        <outputEntry id="r126b"><text>"Band 126"</text></outputEntry>
+        <outputEntry id="r126r"><text>2.76</text></outputEntry>
+      </rule>
+      <rule id="r127">
+        <inputEntry id="r127i"><text>[1270..1279]</text></inputEntry>
+        <outputEntry id="r127b"><text>"Band 127"</text></outputEntry>
+        <outputEntry id="r127r"><text>2.77</text></outputEntry>
+      </rule>
+      <rule id="r128">
+        <inputEntry id="r128i"><text>[1280..1289]</text></inputEntry>
+        <outputEntry id="r128b"><text>"Band 128"</text></outputEntry>
+        <outputEntry id="r128r"><text>2.78</text></outputEntry>
+      </rule>
+      <rule id="r129">
+        <inputEntry id="r129i"><text>[1290..1299]</text></inputEntry>
+        <outputEntry id="r129b"><text>"Band 129"</text></outputEntry>
+        <outputEntry id="r129r"><text>2.79</text></outputEntry>
+      </rule>
+      <rule id="r130">
+        <inputEntry id="r130i"><text>[1300..1309]</text></inputEntry>
+        <outputEntry id="r130b"><text>"Band 130"</text></outputEntry>
+        <outputEntry id="r130r"><text>2.80</text></outputEntry>
+      </rule>
+      <rule id="r131">
+        <inputEntry id="r131i"><text>[1310..1319]</text></inputEntry>
+        <outputEntry id="r131b"><text>"Band 131"</text></outputEntry>
+        <outputEntry id="r131r"><text>2.81</text></outputEntry>
+      </rule>
+      <rule id="r132">
+        <inputEntry id="r132i"><text>[1320..1329]</text></inputEntry>
+        <outputEntry id="r132b"><text>"Band 132"</text></outputEntry>
+        <outputEntry id="r132r"><text>2.82</text></outputEntry>
+      </rule>
+      <rule id="r133">
+        <inputEntry id="r133i"><text>[1330..1339]</text></inputEntry>
+        <outputEntry id="r133b"><text>"Band 133"</text></outputEntry>
+        <outputEntry id="r133r"><text>2.83</text></outputEntry>
+      </rule>
+      <rule id="r134">
+        <inputEntry id="r134i"><text>[1340..1349]</text></inputEntry>
+        <outputEntry id="r134b"><text>"Band 134"</text></outputEntry>
+        <outputEntry id="r134r"><text>2.84</text></outputEntry>
+      </rule>
+      <rule id="r135">
+        <inputEntry id="r135i"><text>[1350..1359]</text></inputEntry>
+        <outputEntry id="r135b"><text>"Band 135"</text></outputEntry>
+        <outputEntry id="r135r"><text>2.85</text></outputEntry>
+      </rule>
+      <rule id="r136">
+        <inputEntry id="r136i"><text>[1360..1369]</text></inputEntry>
+        <outputEntry id="r136b"><text>"Band 136"</text></outputEntry>
+        <outputEntry id="r136r"><text>2.86</text></outputEntry>
+      </rule>
+      <rule id="r137">
+        <inputEntry id="r137i"><text>[1370..1379]</text></inputEntry>
+        <outputEntry id="r137b"><text>"Band 137"</text></outputEntry>
+        <outputEntry id="r137r"><text>2.87</text></outputEntry>
+      </rule>
+      <rule id="r138">
+        <inputEntry id="r138i"><text>[1380..1389]</text></inputEntry>
+        <outputEntry id="r138b"><text>"Band 138"</text></outputEntry>
+        <outputEntry id="r138r"><text>2.88</text></outputEntry>
+      </rule>
+      <rule id="r139">
+        <inputEntry id="r139i"><text>[1390..1399]</text></inputEntry>
+        <outputEntry id="r139b"><text>"Band 139"</text></outputEntry>
+        <outputEntry id="r139r"><text>2.89</text></outputEntry>
+      </rule>
+      <rule id="r140">
+        <inputEntry id="r140i"><text>[1400..1409]</text></inputEntry>
+        <outputEntry id="r140b"><text>"Band 140"</text></outputEntry>
+        <outputEntry id="r140r"><text>2.90</text></outputEntry>
+      </rule>
+      <rule id="r141">
+        <inputEntry id="r141i"><text>[1410..1419]</text></inputEntry>
+        <outputEntry id="r141b"><text>"Band 141"</text></outputEntry>
+        <outputEntry id="r141r"><text>2.91</text></outputEntry>
+      </rule>
+      <rule id="r142">
+        <inputEntry id="r142i"><text>[1420..1429]</text></inputEntry>
+        <outputEntry id="r142b"><text>"Band 142"</text></outputEntry>
+        <outputEntry id="r142r"><text>2.92</text></outputEntry>
+      </rule>
+      <rule id="r143">
+        <inputEntry id="r143i"><text>[1430..1439]</text></inputEntry>
+        <outputEntry id="r143b"><text>"Band 143"</text></outputEntry>
+        <outputEntry id="r143r"><text>2.93</text></outputEntry>
+      </rule>
+      <rule id="r144">
+        <inputEntry id="r144i"><text>[1440..1449]</text></inputEntry>
+        <outputEntry id="r144b"><text>"Band 144"</text></outputEntry>
+        <outputEntry id="r144r"><text>2.94</text></outputEntry>
+      </rule>
+      <rule id="r145">
+        <inputEntry id="r145i"><text>[1450..1459]</text></inputEntry>
+        <outputEntry id="r145b"><text>"Band 145"</text></outputEntry>
+        <outputEntry id="r145r"><text>2.95</text></outputEntry>
+      </rule>
+      <rule id="r146">
+        <inputEntry id="r146i"><text>[1460..1469]</text></inputEntry>
+        <outputEntry id="r146b"><text>"Band 146"</text></outputEntry>
+        <outputEntry id="r146r"><text>2.96</text></outputEntry>
+      </rule>
+      <rule id="r147">
+        <inputEntry id="r147i"><text>[1470..1479]</text></inputEntry>
+        <outputEntry id="r147b"><text>"Band 147"</text></outputEntry>
+        <outputEntry id="r147r"><text>2.97</text></outputEntry>
+      </rule>
+      <rule id="r148">
+        <inputEntry id="r148i"><text>[1480..1489]</text></inputEntry>
+        <outputEntry id="r148b"><text>"Band 148"</text></outputEntry>
+        <outputEntry id="r148r"><text>2.98</text></outputEntry>
+      </rule>
+      <rule id="r149">
+        <inputEntry id="r149i"><text>[1490..1499]</text></inputEntry>
+        <outputEntry id="r149b"><text>"Band 149"</text></outputEntry>
+        <outputEntry id="r149r"><text>2.99</text></outputEntry>
+      </rule>
+      <rule id="r150">
+        <inputEntry id="r150i"><text>[1500..1509]</text></inputEntry>
+        <outputEntry id="r150b"><text>"Band 150"</text></outputEntry>
+        <outputEntry id="r150r"><text>3.00</text></outputEntry>
+      </rule>
+      <rule id="r151">
+        <inputEntry id="r151i"><text>[1510..1519]</text></inputEntry>
+        <outputEntry id="r151b"><text>"Band 151"</text></outputEntry>
+        <outputEntry id="r151r"><text>3.01</text></outputEntry>
+      </rule>
+      <rule id="r152">
+        <inputEntry id="r152i"><text>[1520..1529]</text></inputEntry>
+        <outputEntry id="r152b"><text>"Band 152"</text></outputEntry>
+        <outputEntry id="r152r"><text>3.02</text></outputEntry>
+      </rule>
+      <rule id="r153">
+        <inputEntry id="r153i"><text>[1530..1539]</text></inputEntry>
+        <outputEntry id="r153b"><text>"Band 153"</text></outputEntry>
+        <outputEntry id="r153r"><text>3.03</text></outputEntry>
+      </rule>
+      <rule id="r154">
+        <inputEntry id="r154i"><text>[1540..1549]</text></inputEntry>
+        <outputEntry id="r154b"><text>"Band 154"</text></outputEntry>
+        <outputEntry id="r154r"><text>3.04</text></outputEntry>
+      </rule>
+      <rule id="r155">
+        <inputEntry id="r155i"><text>[1550..1559]</text></inputEntry>
+        <outputEntry id="r155b"><text>"Band 155"</text></outputEntry>
+        <outputEntry id="r155r"><text>3.05</text></outputEntry>
+      </rule>
+      <rule id="r156">
+        <inputEntry id="r156i"><text>[1560..1569]</text></inputEntry>
+        <outputEntry id="r156b"><text>"Band 156"</text></outputEntry>
+        <outputEntry id="r156r"><text>3.06</text></outputEntry>
+      </rule>
+      <rule id="r157">
+        <inputEntry id="r157i"><text>[1570..1579]</text></inputEntry>
+        <outputEntry id="r157b"><text>"Band 157"</text></outputEntry>
+        <outputEntry id="r157r"><text>3.07</text></outputEntry>
+      </rule>
+      <rule id="r158">
+        <inputEntry id="r158i"><text>[1580..1589]</text></inputEntry>
+        <outputEntry id="r158b"><text>"Band 158"</text></outputEntry>
+        <outputEntry id="r158r"><text>3.08</text></outputEntry>
+      </rule>
+      <rule id="r159">
+        <inputEntry id="r159i"><text>[1590..1599]</text></inputEntry>
+        <outputEntry id="r159b"><text>"Band 159"</text></outputEntry>
+        <outputEntry id="r159r"><text>3.09</text></outputEntry>
+      </rule>
+      <rule id="r160">
+        <inputEntry id="r160i"><text>[1600..1609]</text></inputEntry>
+        <outputEntry id="r160b"><text>"Band 160"</text></outputEntry>
+        <outputEntry id="r160r"><text>3.10</text></outputEntry>
+      </rule>
+      <rule id="r161">
+        <inputEntry id="r161i"><text>[1610..1619]</text></inputEntry>
+        <outputEntry id="r161b"><text>"Band 161"</text></outputEntry>
+        <outputEntry id="r161r"><text>3.11</text></outputEntry>
+      </rule>
+      <rule id="r162">
+        <inputEntry id="r162i"><text>[1620..1629]</text></inputEntry>
+        <outputEntry id="r162b"><text>"Band 162"</text></outputEntry>
+        <outputEntry id="r162r"><text>3.12</text></outputEntry>
+      </rule>
+      <rule id="r163">
+        <inputEntry id="r163i"><text>[1630..1639]</text></inputEntry>
+        <outputEntry id="r163b"><text>"Band 163"</text></outputEntry>
+        <outputEntry id="r163r"><text>3.13</text></outputEntry>
+      </rule>
+      <rule id="r164">
+        <inputEntry id="r164i"><text>[1640..1649]</text></inputEntry>
+        <outputEntry id="r164b"><text>"Band 164"</text></outputEntry>
+        <outputEntry id="r164r"><text>3.14</text></outputEntry>
+      </rule>
+      <rule id="r165">
+        <inputEntry id="r165i"><text>[1650..1659]</text></inputEntry>
+        <outputEntry id="r165b"><text>"Band 165"</text></outputEntry>
+        <outputEntry id="r165r"><text>3.15</text></outputEntry>
+      </rule>
+      <rule id="r166">
+        <inputEntry id="r166i"><text>[1660..1669]</text></inputEntry>
+        <outputEntry id="r166b"><text>"Band 166"</text></outputEntry>
+        <outputEntry id="r166r"><text>3.16</text></outputEntry>
+      </rule>
+      <rule id="r167">
+        <inputEntry id="r167i"><text>[1670..1679]</text></inputEntry>
+        <outputEntry id="r167b"><text>"Band 167"</text></outputEntry>
+        <outputEntry id="r167r"><text>3.17</text></outputEntry>
+      </rule>
+      <rule id="r168">
+        <inputEntry id="r168i"><text>[1680..1689]</text></inputEntry>
+        <outputEntry id="r168b"><text>"Band 168"</text></outputEntry>
+        <outputEntry id="r168r"><text>3.18</text></outputEntry>
+      </rule>
+      <rule id="r169">
+        <inputEntry id="r169i"><text>[1690..1699]</text></inputEntry>
+        <outputEntry id="r169b"><text>"Band 169"</text></outputEntry>
+        <outputEntry id="r169r"><text>3.19</text></outputEntry>
+      </rule>
+      <rule id="r170">
+        <inputEntry id="r170i"><text>[1700..1709]</text></inputEntry>
+        <outputEntry id="r170b"><text>"Band 170"</text></outputEntry>
+        <outputEntry id="r170r"><text>3.20</text></outputEntry>
+      </rule>
+      <rule id="r171">
+        <inputEntry id="r171i"><text>[1710..1719]</text></inputEntry>
+        <outputEntry id="r171b"><text>"Band 171"</text></outputEntry>
+        <outputEntry id="r171r"><text>3.21</text></outputEntry>
+      </rule>
+      <rule id="r172">
+        <inputEntry id="r172i"><text>[1720..1729]</text></inputEntry>
+        <outputEntry id="r172b"><text>"Band 172"</text></outputEntry>
+        <outputEntry id="r172r"><text>3.22</text></outputEntry>
+      </rule>
+      <rule id="r173">
+        <inputEntry id="r173i"><text>[1730..1739]</text></inputEntry>
+        <outputEntry id="r173b"><text>"Band 173"</text></outputEntry>
+        <outputEntry id="r173r"><text>3.23</text></outputEntry>
+      </rule>
+      <rule id="r174">
+        <inputEntry id="r174i"><text>[1740..1749]</text></inputEntry>
+        <outputEntry id="r174b"><text>"Band 174"</text></outputEntry>
+        <outputEntry id="r174r"><text>3.24</text></outputEntry>
+      </rule>
+      <rule id="r175">
+        <inputEntry id="r175i"><text>[1750..1759]</text></inputEntry>
+        <outputEntry id="r175b"><text>"Band 175"</text></outputEntry>
+        <outputEntry id="r175r"><text>3.25</text></outputEntry>
+      </rule>
+      <rule id="r176">
+        <inputEntry id="r176i"><text>[1760..1769]</text></inputEntry>
+        <outputEntry id="r176b"><text>"Band 176"</text></outputEntry>
+        <outputEntry id="r176r"><text>3.26</text></outputEntry>
+      </rule>
+      <rule id="r177">
+        <inputEntry id="r177i"><text>[1770..1779]</text></inputEntry>
+        <outputEntry id="r177b"><text>"Band 177"</text></outputEntry>
+        <outputEntry id="r177r"><text>3.27</text></outputEntry>
+      </rule>
+      <rule id="r178">
+        <inputEntry id="r178i"><text>[1780..1789]</text></inputEntry>
+        <outputEntry id="r178b"><text>"Band 178"</text></outputEntry>
+        <outputEntry id="r178r"><text>3.28</text></outputEntry>
+      </rule>
+      <rule id="r179">
+        <inputEntry id="r179i"><text>[1790..1799]</text></inputEntry>
+        <outputEntry id="r179b"><text>"Band 179"</text></outputEntry>
+        <outputEntry id="r179r"><text>3.29</text></outputEntry>
+      </rule>
+      <rule id="r180">
+        <inputEntry id="r180i"><text>[1800..1809]</text></inputEntry>
+        <outputEntry id="r180b"><text>"Band 180"</text></outputEntry>
+        <outputEntry id="r180r"><text>3.30</text></outputEntry>
+      </rule>
+      <rule id="r181">
+        <inputEntry id="r181i"><text>[1810..1819]</text></inputEntry>
+        <outputEntry id="r181b"><text>"Band 181"</text></outputEntry>
+        <outputEntry id="r181r"><text>3.31</text></outputEntry>
+      </rule>
+      <rule id="r182">
+        <inputEntry id="r182i"><text>[1820..1829]</text></inputEntry>
+        <outputEntry id="r182b"><text>"Band 182"</text></outputEntry>
+        <outputEntry id="r182r"><text>3.32</text></outputEntry>
+      </rule>
+      <rule id="r183">
+        <inputEntry id="r183i"><text>[1830..1839]</text></inputEntry>
+        <outputEntry id="r183b"><text>"Band 183"</text></outputEntry>
+        <outputEntry id="r183r"><text>3.33</text></outputEntry>
+      </rule>
+      <rule id="r184">
+        <inputEntry id="r184i"><text>[1840..1849]</text></inputEntry>
+        <outputEntry id="r184b"><text>"Band 184"</text></outputEntry>
+        <outputEntry id="r184r"><text>3.34</text></outputEntry>
+      </rule>
+      <rule id="r185">
+        <inputEntry id="r185i"><text>[1850..1859]</text></inputEntry>
+        <outputEntry id="r185b"><text>"Band 185"</text></outputEntry>
+        <outputEntry id="r185r"><text>3.35</text></outputEntry>
+      </rule>
+      <rule id="r186">
+        <inputEntry id="r186i"><text>[1860..1869]</text></inputEntry>
+        <outputEntry id="r186b"><text>"Band 186"</text></outputEntry>
+        <outputEntry id="r186r"><text>3.36</text></outputEntry>
+      </rule>
+      <rule id="r187">
+        <inputEntry id="r187i"><text>[1870..1879]</text></inputEntry>
+        <outputEntry id="r187b"><text>"Band 187"</text></outputEntry>
+        <outputEntry id="r187r"><text>3.37</text></outputEntry>
+      </rule>
+      <rule id="r188">
+        <inputEntry id="r188i"><text>[1880..1889]</text></inputEntry>
+        <outputEntry id="r188b"><text>"Band 188"</text></outputEntry>
+        <outputEntry id="r188r"><text>3.38</text></outputEntry>
+      </rule>
+      <rule id="r189">
+        <inputEntry id="r189i"><text>[1890..1899]</text></inputEntry>
+        <outputEntry id="r189b"><text>"Band 189"</text></outputEntry>
+        <outputEntry id="r189r"><text>3.39</text></outputEntry>
+      </rule>
+      <rule id="r190">
+        <inputEntry id="r190i"><text>[1900..1909]</text></inputEntry>
+        <outputEntry id="r190b"><text>"Band 190"</text></outputEntry>
+        <outputEntry id="r190r"><text>3.40</text></outputEntry>
+      </rule>
+      <rule id="r191">
+        <inputEntry id="r191i"><text>[1910..1919]</text></inputEntry>
+        <outputEntry id="r191b"><text>"Band 191"</text></outputEntry>
+        <outputEntry id="r191r"><text>3.41</text></outputEntry>
+      </rule>
+      <rule id="r192">
+        <inputEntry id="r192i"><text>[1920..1929]</text></inputEntry>
+        <outputEntry id="r192b"><text>"Band 192"</text></outputEntry>
+        <outputEntry id="r192r"><text>3.42</text></outputEntry>
+      </rule>
+      <rule id="r193">
+        <inputEntry id="r193i"><text>[1930..1939]</text></inputEntry>
+        <outputEntry id="r193b"><text>"Band 193"</text></outputEntry>
+        <outputEntry id="r193r"><text>3.43</text></outputEntry>
+      </rule>
+      <rule id="r194">
+        <inputEntry id="r194i"><text>[1940..1949]</text></inputEntry>
+        <outputEntry id="r194b"><text>"Band 194"</text></outputEntry>
+        <outputEntry id="r194r"><text>3.44</text></outputEntry>
+      </rule>
+      <rule id="r195">
+        <inputEntry id="r195i"><text>[1950..1959]</text></inputEntry>
+        <outputEntry id="r195b"><text>"Band 195"</text></outputEntry>
+        <outputEntry id="r195r"><text>3.45</text></outputEntry>
+      </rule>
+      <rule id="r196">
+        <inputEntry id="r196i"><text>[1960..1969]</text></inputEntry>
+        <outputEntry id="r196b"><text>"Band 196"</text></outputEntry>
+        <outputEntry id="r196r"><text>3.46</text></outputEntry>
+      </rule>
+      <rule id="r197">
+        <inputEntry id="r197i"><text>[1970..1979]</text></inputEntry>
+        <outputEntry id="r197b"><text>"Band 197"</text></outputEntry>
+        <outputEntry id="r197r"><text>3.47</text></outputEntry>
+      </rule>
+      <rule id="r198">
+        <inputEntry id="r198i"><text>[1980..1989]</text></inputEntry>
+        <outputEntry id="r198b"><text>"Band 198"</text></outputEntry>
+        <outputEntry id="r198r"><text>3.48</text></outputEntry>
+      </rule>
+      <rule id="r199">
+        <inputEntry id="r199i"><text>[1990..1999]</text></inputEntry>
+        <outputEntry id="r199b"><text>"Band 199"</text></outputEntry>
+        <outputEntry id="r199r"><text>3.49</text></outputEntry>
+      </rule>
+      <rule id="r200">
+        <inputEntry id="r200i"><text>[2000..2009]</text></inputEntry>
+        <outputEntry id="r200b"><text>"Band 200"</text></outputEntry>
+        <outputEntry id="r200r"><text>3.50</text></outputEntry>
+      </rule>
+      <rule id="r201">
+        <inputEntry id="r201i"><text>[2010..2019]</text></inputEntry>
+        <outputEntry id="r201b"><text>"Band 201"</text></outputEntry>
+        <outputEntry id="r201r"><text>3.51</text></outputEntry>
+      </rule>
+      <rule id="r202">
+        <inputEntry id="r202i"><text>[2020..2029]</text></inputEntry>
+        <outputEntry id="r202b"><text>"Band 202"</text></outputEntry>
+        <outputEntry id="r202r"><text>3.52</text></outputEntry>
+      </rule>
+      <rule id="r203">
+        <inputEntry id="r203i"><text>[2030..2039]</text></inputEntry>
+        <outputEntry id="r203b"><text>"Band 203"</text></outputEntry>
+        <outputEntry id="r203r"><text>3.53</text></outputEntry>
+      </rule>
+      <rule id="r204">
+        <inputEntry id="r204i"><text>[2040..2049]</text></inputEntry>
+        <outputEntry id="r204b"><text>"Band 204"</text></outputEntry>
+        <outputEntry id="r204r"><text>3.54</text></outputEntry>
+      </rule>
+      <rule id="r205">
+        <inputEntry id="r205i"><text>[2050..2059]</text></inputEntry>
+        <outputEntry id="r205b"><text>"Band 205"</text></outputEntry>
+        <outputEntry id="r205r"><text>3.55</text></outputEntry>
+      </rule>
+      <rule id="r206">
+        <inputEntry id="r206i"><text>[2060..2069]</text></inputEntry>
+        <outputEntry id="r206b"><text>"Band 206"</text></outputEntry>
+        <outputEntry id="r206r"><text>3.56</text></outputEntry>
+      </rule>
+      <rule id="r207">
+        <inputEntry id="r207i"><text>[2070..2079]</text></inputEntry>
+        <outputEntry id="r207b"><text>"Band 207"</text></outputEntry>
+        <outputEntry id="r207r"><text>3.57</text></outputEntry>
+      </rule>
+      <rule id="r208">
+        <inputEntry id="r208i"><text>[2080..2089]</text></inputEntry>
+        <outputEntry id="r208b"><text>"Band 208"</text></outputEntry>
+        <outputEntry id="r208r"><text>3.58</text></outputEntry>
+      </rule>
+      <rule id="r209">
+        <inputEntry id="r209i"><text>[2090..2099]</text></inputEntry>
+        <outputEntry id="r209b"><text>"Band 209"</text></outputEntry>
+        <outputEntry id="r209r"><text>3.59</text></outputEntry>
+      </rule>
+      <rule id="r210">
+        <inputEntry id="r210i"><text>[2100..2109]</text></inputEntry>
+        <outputEntry id="r210b"><text>"Band 210"</text></outputEntry>
+        <outputEntry id="r210r"><text>3.60</text></outputEntry>
+      </rule>
+      <rule id="r211">
+        <inputEntry id="r211i"><text>[2110..2119]</text></inputEntry>
+        <outputEntry id="r211b"><text>"Band 211"</text></outputEntry>
+        <outputEntry id="r211r"><text>3.61</text></outputEntry>
+      </rule>
+      <rule id="r212">
+        <inputEntry id="r212i"><text>[2120..2129]</text></inputEntry>
+        <outputEntry id="r212b"><text>"Band 212"</text></outputEntry>
+        <outputEntry id="r212r"><text>3.62</text></outputEntry>
+      </rule>
+      <rule id="r213">
+        <inputEntry id="r213i"><text>[2130..2139]</text></inputEntry>
+        <outputEntry id="r213b"><text>"Band 213"</text></outputEntry>
+        <outputEntry id="r213r"><text>3.63</text></outputEntry>
+      </rule>
+      <rule id="r214">
+        <inputEntry id="r214i"><text>[2140..2149]</text></inputEntry>
+        <outputEntry id="r214b"><text>"Band 214"</text></outputEntry>
+        <outputEntry id="r214r"><text>3.64</text></outputEntry>
+      </rule>
+      <rule id="r215">
+        <inputEntry id="r215i"><text>[2150..2159]</text></inputEntry>
+        <outputEntry id="r215b"><text>"Band 215"</text></outputEntry>
+        <outputEntry id="r215r"><text>3.65</text></outputEntry>
+      </rule>
+      <rule id="r216">
+        <inputEntry id="r216i"><text>[2160..2169]</text></inputEntry>
+        <outputEntry id="r216b"><text>"Band 216"</text></outputEntry>
+        <outputEntry id="r216r"><text>3.66</text></outputEntry>
+      </rule>
+      <rule id="r217">
+        <inputEntry id="r217i"><text>[2170..2179]</text></inputEntry>
+        <outputEntry id="r217b"><text>"Band 217"</text></outputEntry>
+        <outputEntry id="r217r"><text>3.67</text></outputEntry>
+      </rule>
+      <rule id="r218">
+        <inputEntry id="r218i"><text>[2180..2189]</text></inputEntry>
+        <outputEntry id="r218b"><text>"Band 218"</text></outputEntry>
+        <outputEntry id="r218r"><text>3.68</text></outputEntry>
+      </rule>
+      <rule id="r219">
+        <inputEntry id="r219i"><text>[2190..2199]</text></inputEntry>
+        <outputEntry id="r219b"><text>"Band 219"</text></outputEntry>
+        <outputEntry id="r219r"><text>3.69</text></outputEntry>
+      </rule>
+      <rule id="r220">
+        <inputEntry id="r220i"><text>[2200..2209]</text></inputEntry>
+        <outputEntry id="r220b"><text>"Band 220"</text></outputEntry>
+        <outputEntry id="r220r"><text>3.70</text></outputEntry>
+      </rule>
+      <rule id="r221">
+        <inputEntry id="r221i"><text>[2210..2219]</text></inputEntry>
+        <outputEntry id="r221b"><text>"Band 221"</text></outputEntry>
+        <outputEntry id="r221r"><text>3.71</text></outputEntry>
+      </rule>
+      <rule id="r222">
+        <inputEntry id="r222i"><text>[2220..2229]</text></inputEntry>
+        <outputEntry id="r222b"><text>"Band 222"</text></outputEntry>
+        <outputEntry id="r222r"><text>3.72</text></outputEntry>
+      </rule>
+      <rule id="r223">
+        <inputEntry id="r223i"><text>[2230..2239]</text></inputEntry>
+        <outputEntry id="r223b"><text>"Band 223"</text></outputEntry>
+        <outputEntry id="r223r"><text>3.73</text></outputEntry>
+      </rule>
+      <rule id="r224">
+        <inputEntry id="r224i"><text>[2240..2249]</text></inputEntry>
+        <outputEntry id="r224b"><text>"Band 224"</text></outputEntry>
+        <outputEntry id="r224r"><text>3.74</text></outputEntry>
+      </rule>
+      <rule id="r225">
+        <inputEntry id="r225i"><text>[2250..2259]</text></inputEntry>
+        <outputEntry id="r225b"><text>"Band 225"</text></outputEntry>
+        <outputEntry id="r225r"><text>3.75</text></outputEntry>
+      </rule>
+      <rule id="r226">
+        <inputEntry id="r226i"><text>[2260..2269]</text></inputEntry>
+        <outputEntry id="r226b"><text>"Band 226"</text></outputEntry>
+        <outputEntry id="r226r"><text>3.76</text></outputEntry>
+      </rule>
+      <rule id="r227">
+        <inputEntry id="r227i"><text>[2270..2279]</text></inputEntry>
+        <outputEntry id="r227b"><text>"Band 227"</text></outputEntry>
+        <outputEntry id="r227r"><text>3.77</text></outputEntry>
+      </rule>
+      <rule id="r228">
+        <inputEntry id="r228i"><text>[2280..2289]</text></inputEntry>
+        <outputEntry id="r228b"><text>"Band 228"</text></outputEntry>
+        <outputEntry id="r228r"><text>3.78</text></outputEntry>
+      </rule>
+      <rule id="r229">
+        <inputEntry id="r229i"><text>[2290..2299]</text></inputEntry>
+        <outputEntry id="r229b"><text>"Band 229"</text></outputEntry>
+        <outputEntry id="r229r"><text>3.79</text></outputEntry>
+      </rule>
+      <rule id="r230">
+        <inputEntry id="r230i"><text>[2300..2309]</text></inputEntry>
+        <outputEntry id="r230b"><text>"Band 230"</text></outputEntry>
+        <outputEntry id="r230r"><text>3.80</text></outputEntry>
+      </rule>
+      <rule id="r231">
+        <inputEntry id="r231i"><text>[2310..2319]</text></inputEntry>
+        <outputEntry id="r231b"><text>"Band 231"</text></outputEntry>
+        <outputEntry id="r231r"><text>3.81</text></outputEntry>
+      </rule>
+      <rule id="r232">
+        <inputEntry id="r232i"><text>[2320..2329]</text></inputEntry>
+        <outputEntry id="r232b"><text>"Band 232"</text></outputEntry>
+        <outputEntry id="r232r"><text>3.82</text></outputEntry>
+      </rule>
+      <rule id="r233">
+        <inputEntry id="r233i"><text>[2330..2339]</text></inputEntry>
+        <outputEntry id="r233b"><text>"Band 233"</text></outputEntry>
+        <outputEntry id="r233r"><text>3.83</text></outputEntry>
+      </rule>
+      <rule id="r234">
+        <inputEntry id="r234i"><text>[2340..2349]</text></inputEntry>
+        <outputEntry id="r234b"><text>"Band 234"</text></outputEntry>
+        <outputEntry id="r234r"><text>3.84</text></outputEntry>
+      </rule>
+      <rule id="r235">
+        <inputEntry id="r235i"><text>[2350..2359]</text></inputEntry>
+        <outputEntry id="r235b"><text>"Band 235"</text></outputEntry>
+        <outputEntry id="r235r"><text>3.85</text></outputEntry>
+      </rule>
+      <rule id="r236">
+        <inputEntry id="r236i"><text>[2360..2369]</text></inputEntry>
+        <outputEntry id="r236b"><text>"Band 236"</text></outputEntry>
+        <outputEntry id="r236r"><text>3.86</text></outputEntry>
+      </rule>
+      <rule id="r237">
+        <inputEntry id="r237i"><text>[2370..2379]</text></inputEntry>
+        <outputEntry id="r237b"><text>"Band 237"</text></outputEntry>
+        <outputEntry id="r237r"><text>3.87</text></outputEntry>
+      </rule>
+      <rule id="r238">
+        <inputEntry id="r238i"><text>[2380..2389]</text></inputEntry>
+        <outputEntry id="r238b"><text>"Band 238"</text></outputEntry>
+        <outputEntry id="r238r"><text>3.88</text></outputEntry>
+      </rule>
+      <rule id="r239">
+        <inputEntry id="r239i"><text>[2390..2399]</text></inputEntry>
+        <outputEntry id="r239b"><text>"Band 239"</text></outputEntry>
+        <outputEntry id="r239r"><text>3.89</text></outputEntry>
+      </rule>
+      <rule id="r240">
+        <inputEntry id="r240i"><text>[2400..2409]</text></inputEntry>
+        <outputEntry id="r240b"><text>"Band 240"</text></outputEntry>
+        <outputEntry id="r240r"><text>3.90</text></outputEntry>
+      </rule>
+      <rule id="r241">
+        <inputEntry id="r241i"><text>[2410..2419]</text></inputEntry>
+        <outputEntry id="r241b"><text>"Band 241"</text></outputEntry>
+        <outputEntry id="r241r"><text>3.91</text></outputEntry>
+      </rule>
+      <rule id="r242">
+        <inputEntry id="r242i"><text>[2420..2429]</text></inputEntry>
+        <outputEntry id="r242b"><text>"Band 242"</text></outputEntry>
+        <outputEntry id="r242r"><text>3.92</text></outputEntry>
+      </rule>
+      <rule id="r243">
+        <inputEntry id="r243i"><text>[2430..2439]</text></inputEntry>
+        <outputEntry id="r243b"><text>"Band 243"</text></outputEntry>
+        <outputEntry id="r243r"><text>3.93</text></outputEntry>
+      </rule>
+      <rule id="r244">
+        <inputEntry id="r244i"><text>[2440..2449]</text></inputEntry>
+        <outputEntry id="r244b"><text>"Band 244"</text></outputEntry>
+        <outputEntry id="r244r"><text>3.94</text></outputEntry>
+      </rule>
+      <rule id="r245">
+        <inputEntry id="r245i"><text>[2450..2459]</text></inputEntry>
+        <outputEntry id="r245b"><text>"Band 245"</text></outputEntry>
+        <outputEntry id="r245r"><text>3.95</text></outputEntry>
+      </rule>
+      <rule id="r246">
+        <inputEntry id="r246i"><text>[2460..2469]</text></inputEntry>
+        <outputEntry id="r246b"><text>"Band 246"</text></outputEntry>
+        <outputEntry id="r246r"><text>3.96</text></outputEntry>
+      </rule>
+      <rule id="r247">
+        <inputEntry id="r247i"><text>[2470..2479]</text></inputEntry>
+        <outputEntry id="r247b"><text>"Band 247"</text></outputEntry>
+        <outputEntry id="r247r"><text>3.97</text></outputEntry>
+      </rule>
+      <rule id="r248">
+        <inputEntry id="r248i"><text>[2480..2489]</text></inputEntry>
+        <outputEntry id="r248b"><text>"Band 248"</text></outputEntry>
+        <outputEntry id="r248r"><text>3.98</text></outputEntry>
+      </rule>
+      <rule id="r249">
+        <inputEntry id="r249i"><text>[2490..2499]</text></inputEntry>
+        <outputEntry id="r249b"><text>"Band 249"</text></outputEntry>
+        <outputEntry id="r249r"><text>3.99</text></outputEntry>
+      </rule>
+      <rule id="r250">
+        <inputEntry id="r250i"><text>[2500..2509]</text></inputEntry>
+        <outputEntry id="r250b"><text>"Band 250"</text></outputEntry>
+        <outputEntry id="r250r"><text>4.00</text></outputEntry>
+      </rule>
+      <rule id="r251">
+        <inputEntry id="r251i"><text>[2510..2519]</text></inputEntry>
+        <outputEntry id="r251b"><text>"Band 251"</text></outputEntry>
+        <outputEntry id="r251r"><text>4.01</text></outputEntry>
+      </rule>
+      <rule id="r252">
+        <inputEntry id="r252i"><text>[2520..2529]</text></inputEntry>
+        <outputEntry id="r252b"><text>"Band 252"</text></outputEntry>
+        <outputEntry id="r252r"><text>4.02</text></outputEntry>
+      </rule>
+      <rule id="r253">
+        <inputEntry id="r253i"><text>[2530..2539]</text></inputEntry>
+        <outputEntry id="r253b"><text>"Band 253"</text></outputEntry>
+        <outputEntry id="r253r"><text>4.03</text></outputEntry>
+      </rule>
+      <rule id="r254">
+        <inputEntry id="r254i"><text>[2540..2549]</text></inputEntry>
+        <outputEntry id="r254b"><text>"Band 254"</text></outputEntry>
+        <outputEntry id="r254r"><text>4.04</text></outputEntry>
+      </rule>
+      <rule id="r255">
+        <inputEntry id="r255i"><text>[2550..2559]</text></inputEntry>
+        <outputEntry id="r255b"><text>"Band 255"</text></outputEntry>
+        <outputEntry id="r255r"><text>4.05</text></outputEntry>
+      </rule>
+      <rule id="r256">
+        <inputEntry id="r256i"><text>[2560..2569]</text></inputEntry>
+        <outputEntry id="r256b"><text>"Band 256"</text></outputEntry>
+        <outputEntry id="r256r"><text>4.06</text></outputEntry>
+      </rule>
+      <rule id="r257">
+        <inputEntry id="r257i"><text>[2570..2579]</text></inputEntry>
+        <outputEntry id="r257b"><text>"Band 257"</text></outputEntry>
+        <outputEntry id="r257r"><text>4.07</text></outputEntry>
+      </rule>
+      <rule id="r258">
+        <inputEntry id="r258i"><text>[2580..2589]</text></inputEntry>
+        <outputEntry id="r258b"><text>"Band 258"</text></outputEntry>
+        <outputEntry id="r258r"><text>4.08</text></outputEntry>
+      </rule>
+      <rule id="r259">
+        <inputEntry id="r259i"><text>[2590..2599]</text></inputEntry>
+        <outputEntry id="r259b"><text>"Band 259"</text></outputEntry>
+        <outputEntry id="r259r"><text>4.09</text></outputEntry>
+      </rule>
+      <rule id="r260">
+        <inputEntry id="r260i"><text>[2600..2609]</text></inputEntry>
+        <outputEntry id="r260b"><text>"Band 260"</text></outputEntry>
+        <outputEntry id="r260r"><text>4.10</text></outputEntry>
+      </rule>
+      <rule id="r261">
+        <inputEntry id="r261i"><text>[2610..2619]</text></inputEntry>
+        <outputEntry id="r261b"><text>"Band 261"</text></outputEntry>
+        <outputEntry id="r261r"><text>4.11</text></outputEntry>
+      </rule>
+      <rule id="r262">
+        <inputEntry id="r262i"><text>[2620..2629]</text></inputEntry>
+        <outputEntry id="r262b"><text>"Band 262"</text></outputEntry>
+        <outputEntry id="r262r"><text>4.12</text></outputEntry>
+      </rule>
+      <rule id="r263">
+        <inputEntry id="r263i"><text>[2630..2639]</text></inputEntry>
+        <outputEntry id="r263b"><text>"Band 263"</text></outputEntry>
+        <outputEntry id="r263r"><text>4.13</text></outputEntry>
+      </rule>
+      <rule id="r264">
+        <inputEntry id="r264i"><text>[2640..2649]</text></inputEntry>
+        <outputEntry id="r264b"><text>"Band 264"</text></outputEntry>
+        <outputEntry id="r264r"><text>4.14</text></outputEntry>
+      </rule>
+      <rule id="r265">
+        <inputEntry id="r265i"><text>[2650..2659]</text></inputEntry>
+        <outputEntry id="r265b"><text>"Band 265"</text></outputEntry>
+        <outputEntry id="r265r"><text>4.15</text></outputEntry>
+      </rule>
+      <rule id="r266">
+        <inputEntry id="r266i"><text>[2660..2669]</text></inputEntry>
+        <outputEntry id="r266b"><text>"Band 266"</text></outputEntry>
+        <outputEntry id="r266r"><text>4.16</text></outputEntry>
+      </rule>
+      <rule id="r267">
+        <inputEntry id="r267i"><text>[2670..2679]</text></inputEntry>
+        <outputEntry id="r267b"><text>"Band 267"</text></outputEntry>
+        <outputEntry id="r267r"><text>4.17</text></outputEntry>
+      </rule>
+      <rule id="r268">
+        <inputEntry id="r268i"><text>[2680..2689]</text></inputEntry>
+        <outputEntry id="r268b"><text>"Band 268"</text></outputEntry>
+        <outputEntry id="r268r"><text>4.18</text></outputEntry>
+      </rule>
+      <rule id="r269">
+        <inputEntry id="r269i"><text>[2690..2699]</text></inputEntry>
+        <outputEntry id="r269b"><text>"Band 269"</text></outputEntry>
+        <outputEntry id="r269r"><text>4.19</text></outputEntry>
+      </rule>
+      <rule id="r270">
+        <inputEntry id="r270i"><text>[2700..2709]</text></inputEntry>
+        <outputEntry id="r270b"><text>"Band 270"</text></outputEntry>
+        <outputEntry id="r270r"><text>4.20</text></outputEntry>
+      </rule>
+      <rule id="r271">
+        <inputEntry id="r271i"><text>[2710..2719]</text></inputEntry>
+        <outputEntry id="r271b"><text>"Band 271"</text></outputEntry>
+        <outputEntry id="r271r"><text>4.21</text></outputEntry>
+      </rule>
+      <rule id="r272">
+        <inputEntry id="r272i"><text>[2720..2729]</text></inputEntry>
+        <outputEntry id="r272b"><text>"Band 272"</text></outputEntry>
+        <outputEntry id="r272r"><text>4.22</text></outputEntry>
+      </rule>
+      <rule id="r273">
+        <inputEntry id="r273i"><text>[2730..2739]</text></inputEntry>
+        <outputEntry id="r273b"><text>"Band 273"</text></outputEntry>
+        <outputEntry id="r273r"><text>4.23</text></outputEntry>
+      </rule>
+      <rule id="r274">
+        <inputEntry id="r274i"><text>[2740..2749]</text></inputEntry>
+        <outputEntry id="r274b"><text>"Band 274"</text></outputEntry>
+        <outputEntry id="r274r"><text>4.24</text></outputEntry>
+      </rule>
+      <rule id="r275">
+        <inputEntry id="r275i"><text>[2750..2759]</text></inputEntry>
+        <outputEntry id="r275b"><text>"Band 275"</text></outputEntry>
+        <outputEntry id="r275r"><text>4.25</text></outputEntry>
+      </rule>
+      <rule id="r276">
+        <inputEntry id="r276i"><text>[2760..2769]</text></inputEntry>
+        <outputEntry id="r276b"><text>"Band 276"</text></outputEntry>
+        <outputEntry id="r276r"><text>4.26</text></outputEntry>
+      </rule>
+      <rule id="r277">
+        <inputEntry id="r277i"><text>[2770..2779]</text></inputEntry>
+        <outputEntry id="r277b"><text>"Band 277"</text></outputEntry>
+        <outputEntry id="r277r"><text>4.27</text></outputEntry>
+      </rule>
+      <rule id="r278">
+        <inputEntry id="r278i"><text>[2780..2789]</text></inputEntry>
+        <outputEntry id="r278b"><text>"Band 278"</text></outputEntry>
+        <outputEntry id="r278r"><text>4.28</text></outputEntry>
+      </rule>
+      <rule id="r279">
+        <inputEntry id="r279i"><text>[2790..2799]</text></inputEntry>
+        <outputEntry id="r279b"><text>"Band 279"</text></outputEntry>
+        <outputEntry id="r279r"><text>4.29</text></outputEntry>
+      </rule>
+      <rule id="r280">
+        <inputEntry id="r280i"><text>[2800..2809]</text></inputEntry>
+        <outputEntry id="r280b"><text>"Band 280"</text></outputEntry>
+        <outputEntry id="r280r"><text>4.30</text></outputEntry>
+      </rule>
+      <rule id="r281">
+        <inputEntry id="r281i"><text>[2810..2819]</text></inputEntry>
+        <outputEntry id="r281b"><text>"Band 281"</text></outputEntry>
+        <outputEntry id="r281r"><text>4.31</text></outputEntry>
+      </rule>
+      <rule id="r282">
+        <inputEntry id="r282i"><text>[2820..2829]</text></inputEntry>
+        <outputEntry id="r282b"><text>"Band 282"</text></outputEntry>
+        <outputEntry id="r282r"><text>4.32</text></outputEntry>
+      </rule>
+      <rule id="r283">
+        <inputEntry id="r283i"><text>[2830..2839]</text></inputEntry>
+        <outputEntry id="r283b"><text>"Band 283"</text></outputEntry>
+        <outputEntry id="r283r"><text>4.33</text></outputEntry>
+      </rule>
+      <rule id="r284">
+        <inputEntry id="r284i"><text>[2840..2849]</text></inputEntry>
+        <outputEntry id="r284b"><text>"Band 284"</text></outputEntry>
+        <outputEntry id="r284r"><text>4.34</text></outputEntry>
+      </rule>
+      <rule id="r285">
+        <inputEntry id="r285i"><text>[2850..2859]</text></inputEntry>
+        <outputEntry id="r285b"><text>"Band 285"</text></outputEntry>
+        <outputEntry id="r285r"><text>4.35</text></outputEntry>
+      </rule>
+      <rule id="r286">
+        <inputEntry id="r286i"><text>[2860..2869]</text></inputEntry>
+        <outputEntry id="r286b"><text>"Band 286"</text></outputEntry>
+        <outputEntry id="r286r"><text>4.36</text></outputEntry>
+      </rule>
+      <rule id="r287">
+        <inputEntry id="r287i"><text>[2870..2879]</text></inputEntry>
+        <outputEntry id="r287b"><text>"Band 287"</text></outputEntry>
+        <outputEntry id="r287r"><text>4.37</text></outputEntry>
+      </rule>
+      <rule id="r288">
+        <inputEntry id="r288i"><text>[2880..2889]</text></inputEntry>
+        <outputEntry id="r288b"><text>"Band 288"</text></outputEntry>
+        <outputEntry id="r288r"><text>4.38</text></outputEntry>
+      </rule>
+      <rule id="r289">
+        <inputEntry id="r289i"><text>[2890..2899]</text></inputEntry>
+        <outputEntry id="r289b"><text>"Band 289"</text></outputEntry>
+        <outputEntry id="r289r"><text>4.39</text></outputEntry>
+      </rule>
+      <rule id="r290">
+        <inputEntry id="r290i"><text>[2900..2909]</text></inputEntry>
+        <outputEntry id="r290b"><text>"Band 290"</text></outputEntry>
+        <outputEntry id="r290r"><text>4.40</text></outputEntry>
+      </rule>
+      <rule id="r291">
+        <inputEntry id="r291i"><text>[2910..2919]</text></inputEntry>
+        <outputEntry id="r291b"><text>"Band 291"</text></outputEntry>
+        <outputEntry id="r291r"><text>4.41</text></outputEntry>
+      </rule>
+      <rule id="r292">
+        <inputEntry id="r292i"><text>[2920..2929]</text></inputEntry>
+        <outputEntry id="r292b"><text>"Band 292"</text></outputEntry>
+        <outputEntry id="r292r"><text>4.42</text></outputEntry>
+      </rule>
+      <rule id="r293">
+        <inputEntry id="r293i"><text>[2930..2939]</text></inputEntry>
+        <outputEntry id="r293b"><text>"Band 293"</text></outputEntry>
+        <outputEntry id="r293r"><text>4.43</text></outputEntry>
+      </rule>
+      <rule id="r294">
+        <inputEntry id="r294i"><text>[2940..2949]</text></inputEntry>
+        <outputEntry id="r294b"><text>"Band 294"</text></outputEntry>
+        <outputEntry id="r294r"><text>4.44</text></outputEntry>
+      </rule>
+      <rule id="r295">
+        <inputEntry id="r295i"><text>[2950..2959]</text></inputEntry>
+        <outputEntry id="r295b"><text>"Band 295"</text></outputEntry>
+        <outputEntry id="r295r"><text>4.45</text></outputEntry>
+      </rule>
+      <rule id="r296">
+        <inputEntry id="r296i"><text>[2960..2969]</text></inputEntry>
+        <outputEntry id="r296b"><text>"Band 296"</text></outputEntry>
+        <outputEntry id="r296r"><text>4.46</text></outputEntry>
+      </rule>
+      <rule id="r297">
+        <inputEntry id="r297i"><text>[2970..2979]</text></inputEntry>
+        <outputEntry id="r297b"><text>"Band 297"</text></outputEntry>
+        <outputEntry id="r297r"><text>4.47</text></outputEntry>
+      </rule>
+      <rule id="r298">
+        <inputEntry id="r298i"><text>[2980..2989]</text></inputEntry>
+        <outputEntry id="r298b"><text>"Band 298"</text></outputEntry>
+        <outputEntry id="r298r"><text>4.48</text></outputEntry>
+      </rule>
+      <rule id="r299">
+        <inputEntry id="r299i"><text>[2990..2999]</text></inputEntry>
+        <outputEntry id="r299b"><text>"Band 299"</text></outputEntry>
+        <outputEntry id="r299r"><text>4.49</text></outputEntry>
+      </rule>
+      <rule id="r300">
+        <inputEntry id="r300i"><text>[3000..3009]</text></inputEntry>
+        <outputEntry id="r300b"><text>"Band 300"</text></outputEntry>
+        <outputEntry id="r300r"><text>4.50</text></outputEntry>
+      </rule>
+      <rule id="r301">
+        <inputEntry id="r301i"><text>[3010..3019]</text></inputEntry>
+        <outputEntry id="r301b"><text>"Band 301"</text></outputEntry>
+        <outputEntry id="r301r"><text>4.51</text></outputEntry>
+      </rule>
+      <rule id="r302">
+        <inputEntry id="r302i"><text>[3020..3029]</text></inputEntry>
+        <outputEntry id="r302b"><text>"Band 302"</text></outputEntry>
+        <outputEntry id="r302r"><text>4.52</text></outputEntry>
+      </rule>
+      <rule id="r303">
+        <inputEntry id="r303i"><text>[3030..3039]</text></inputEntry>
+        <outputEntry id="r303b"><text>"Band 303"</text></outputEntry>
+        <outputEntry id="r303r"><text>4.53</text></outputEntry>
+      </rule>
+      <rule id="r304">
+        <inputEntry id="r304i"><text>[3040..3049]</text></inputEntry>
+        <outputEntry id="r304b"><text>"Band 304"</text></outputEntry>
+        <outputEntry id="r304r"><text>4.54</text></outputEntry>
+      </rule>
+      <rule id="r305">
+        <inputEntry id="r305i"><text>[3050..3059]</text></inputEntry>
+        <outputEntry id="r305b"><text>"Band 305"</text></outputEntry>
+        <outputEntry id="r305r"><text>4.55</text></outputEntry>
+      </rule>
+      <rule id="r306">
+        <inputEntry id="r306i"><text>[3060..3069]</text></inputEntry>
+        <outputEntry id="r306b"><text>"Band 306"</text></outputEntry>
+        <outputEntry id="r306r"><text>4.56</text></outputEntry>
+      </rule>
+      <rule id="r307">
+        <inputEntry id="r307i"><text>[3070..3079]</text></inputEntry>
+        <outputEntry id="r307b"><text>"Band 307"</text></outputEntry>
+        <outputEntry id="r307r"><text>4.57</text></outputEntry>
+      </rule>
+      <rule id="r308">
+        <inputEntry id="r308i"><text>[3080..3089]</text></inputEntry>
+        <outputEntry id="r308b"><text>"Band 308"</text></outputEntry>
+        <outputEntry id="r308r"><text>4.58</text></outputEntry>
+      </rule>
+      <rule id="r309">
+        <inputEntry id="r309i"><text>[3090..3099]</text></inputEntry>
+        <outputEntry id="r309b"><text>"Band 309"</text></outputEntry>
+        <outputEntry id="r309r"><text>4.59</text></outputEntry>
+      </rule>
+      <rule id="r310">
+        <inputEntry id="r310i"><text>[3100..3109]</text></inputEntry>
+        <outputEntry id="r310b"><text>"Band 310"</text></outputEntry>
+        <outputEntry id="r310r"><text>4.60</text></outputEntry>
+      </rule>
+      <rule id="r311">
+        <inputEntry id="r311i"><text>[3110..3119]</text></inputEntry>
+        <outputEntry id="r311b"><text>"Band 311"</text></outputEntry>
+        <outputEntry id="r311r"><text>4.61</text></outputEntry>
+      </rule>
+      <rule id="r312">
+        <inputEntry id="r312i"><text>[3120..3129]</text></inputEntry>
+        <outputEntry id="r312b"><text>"Band 312"</text></outputEntry>
+        <outputEntry id="r312r"><text>4.62</text></outputEntry>
+      </rule>
+      <rule id="r313">
+        <inputEntry id="r313i"><text>[3130..3139]</text></inputEntry>
+        <outputEntry id="r313b"><text>"Band 313"</text></outputEntry>
+        <outputEntry id="r313r"><text>4.63</text></outputEntry>
+      </rule>
+      <rule id="r314">
+        <inputEntry id="r314i"><text>[3140..3149]</text></inputEntry>
+        <outputEntry id="r314b"><text>"Band 314"</text></outputEntry>
+        <outputEntry id="r314r"><text>4.64</text></outputEntry>
+      </rule>
+      <rule id="r315">
+        <inputEntry id="r315i"><text>[3150..3159]</text></inputEntry>
+        <outputEntry id="r315b"><text>"Band 315"</text></outputEntry>
+        <outputEntry id="r315r"><text>4.65</text></outputEntry>
+      </rule>
+      <rule id="r316">
+        <inputEntry id="r316i"><text>[3160..3169]</text></inputEntry>
+        <outputEntry id="r316b"><text>"Band 316"</text></outputEntry>
+        <outputEntry id="r316r"><text>4.66</text></outputEntry>
+      </rule>
+      <rule id="r317">
+        <inputEntry id="r317i"><text>[3170..3179]</text></inputEntry>
+        <outputEntry id="r317b"><text>"Band 317"</text></outputEntry>
+        <outputEntry id="r317r"><text>4.67</text></outputEntry>
+      </rule>
+      <rule id="r318">
+        <inputEntry id="r318i"><text>[3180..3189]</text></inputEntry>
+        <outputEntry id="r318b"><text>"Band 318"</text></outputEntry>
+        <outputEntry id="r318r"><text>4.68</text></outputEntry>
+      </rule>
+      <rule id="r319">
+        <inputEntry id="r319i"><text>[3190..3199]</text></inputEntry>
+        <outputEntry id="r319b"><text>"Band 319"</text></outputEntry>
+        <outputEntry id="r319r"><text>4.69</text></outputEntry>
+      </rule>
+      <rule id="r320">
+        <inputEntry id="r320i"><text>[3200..3209]</text></inputEntry>
+        <outputEntry id="r320b"><text>"Band 320"</text></outputEntry>
+        <outputEntry id="r320r"><text>4.70</text></outputEntry>
+      </rule>
+      <rule id="r321">
+        <inputEntry id="r321i"><text>[3210..3219]</text></inputEntry>
+        <outputEntry id="r321b"><text>"Band 321"</text></outputEntry>
+        <outputEntry id="r321r"><text>4.71</text></outputEntry>
+      </rule>
+      <rule id="r322">
+        <inputEntry id="r322i"><text>[3220..3229]</text></inputEntry>
+        <outputEntry id="r322b"><text>"Band 322"</text></outputEntry>
+        <outputEntry id="r322r"><text>4.72</text></outputEntry>
+      </rule>
+      <rule id="r323">
+        <inputEntry id="r323i"><text>[3230..3239]</text></inputEntry>
+        <outputEntry id="r323b"><text>"Band 323"</text></outputEntry>
+        <outputEntry id="r323r"><text>4.73</text></outputEntry>
+      </rule>
+      <rule id="r324">
+        <inputEntry id="r324i"><text>[3240..3249]</text></inputEntry>
+        <outputEntry id="r324b"><text>"Band 324"</text></outputEntry>
+        <outputEntry id="r324r"><text>4.74</text></outputEntry>
+      </rule>
+      <rule id="r325">
+        <inputEntry id="r325i"><text>[3250..3259]</text></inputEntry>
+        <outputEntry id="r325b"><text>"Band 325"</text></outputEntry>
+        <outputEntry id="r325r"><text>4.75</text></outputEntry>
+      </rule>
+      <rule id="r326">
+        <inputEntry id="r326i"><text>[3260..3269]</text></inputEntry>
+        <outputEntry id="r326b"><text>"Band 326"</text></outputEntry>
+        <outputEntry id="r326r"><text>4.76</text></outputEntry>
+      </rule>
+      <rule id="r327">
+        <inputEntry id="r327i"><text>[3270..3279]</text></inputEntry>
+        <outputEntry id="r327b"><text>"Band 327"</text></outputEntry>
+        <outputEntry id="r327r"><text>4.77</text></outputEntry>
+      </rule>
+      <rule id="r328">
+        <inputEntry id="r328i"><text>[3280..3289]</text></inputEntry>
+        <outputEntry id="r328b"><text>"Band 328"</text></outputEntry>
+        <outputEntry id="r328r"><text>4.78</text></outputEntry>
+      </rule>
+      <rule id="r329">
+        <inputEntry id="r329i"><text>[3290..3299]</text></inputEntry>
+        <outputEntry id="r329b"><text>"Band 329"</text></outputEntry>
+        <outputEntry id="r329r"><text>4.79</text></outputEntry>
+      </rule>
+      <rule id="r330">
+        <inputEntry id="r330i"><text>[3300..3309]</text></inputEntry>
+        <outputEntry id="r330b"><text>"Band 330"</text></outputEntry>
+        <outputEntry id="r330r"><text>4.80</text></outputEntry>
+      </rule>
+      <rule id="r331">
+        <inputEntry id="r331i"><text>[3310..3319]</text></inputEntry>
+        <outputEntry id="r331b"><text>"Band 331"</text></outputEntry>
+        <outputEntry id="r331r"><text>4.81</text></outputEntry>
+      </rule>
+      <rule id="r332">
+        <inputEntry id="r332i"><text>[3320..3329]</text></inputEntry>
+        <outputEntry id="r332b"><text>"Band 332"</text></outputEntry>
+        <outputEntry id="r332r"><text>4.82</text></outputEntry>
+      </rule>
+      <rule id="r333">
+        <inputEntry id="r333i"><text>[3330..3339]</text></inputEntry>
+        <outputEntry id="r333b"><text>"Band 333"</text></outputEntry>
+        <outputEntry id="r333r"><text>4.83</text></outputEntry>
+      </rule>
+      <rule id="r334">
+        <inputEntry id="r334i"><text>[3340..3349]</text></inputEntry>
+        <outputEntry id="r334b"><text>"Band 334"</text></outputEntry>
+        <outputEntry id="r334r"><text>4.84</text></outputEntry>
+      </rule>
+      <rule id="r335">
+        <inputEntry id="r335i"><text>[3350..3359]</text></inputEntry>
+        <outputEntry id="r335b"><text>"Band 335"</text></outputEntry>
+        <outputEntry id="r335r"><text>4.85</text></outputEntry>
+      </rule>
+      <rule id="r336">
+        <inputEntry id="r336i"><text>[3360..3369]</text></inputEntry>
+        <outputEntry id="r336b"><text>"Band 336"</text></outputEntry>
+        <outputEntry id="r336r"><text>4.86</text></outputEntry>
+      </rule>
+      <rule id="r337">
+        <inputEntry id="r337i"><text>[3370..3379]</text></inputEntry>
+        <outputEntry id="r337b"><text>"Band 337"</text></outputEntry>
+        <outputEntry id="r337r"><text>4.87</text></outputEntry>
+      </rule>
+      <rule id="r338">
+        <inputEntry id="r338i"><text>[3380..3389]</text></inputEntry>
+        <outputEntry id="r338b"><text>"Band 338"</text></outputEntry>
+        <outputEntry id="r338r"><text>4.88</text></outputEntry>
+      </rule>
+      <rule id="r339">
+        <inputEntry id="r339i"><text>[3390..3399]</text></inputEntry>
+        <outputEntry id="r339b"><text>"Band 339"</text></outputEntry>
+        <outputEntry id="r339r"><text>4.89</text></outputEntry>
+      </rule>
+      <rule id="r340">
+        <inputEntry id="r340i"><text>[3400..3409]</text></inputEntry>
+        <outputEntry id="r340b"><text>"Band 340"</text></outputEntry>
+        <outputEntry id="r340r"><text>4.90</text></outputEntry>
+      </rule>
+      <rule id="r341">
+        <inputEntry id="r341i"><text>[3410..3419]</text></inputEntry>
+        <outputEntry id="r341b"><text>"Band 341"</text></outputEntry>
+        <outputEntry id="r341r"><text>4.91</text></outputEntry>
+      </rule>
+      <rule id="r342">
+        <inputEntry id="r342i"><text>[3420..3429]</text></inputEntry>
+        <outputEntry id="r342b"><text>"Band 342"</text></outputEntry>
+        <outputEntry id="r342r"><text>4.92</text></outputEntry>
+      </rule>
+      <rule id="r343">
+        <inputEntry id="r343i"><text>[3430..3439]</text></inputEntry>
+        <outputEntry id="r343b"><text>"Band 343"</text></outputEntry>
+        <outputEntry id="r343r"><text>4.93</text></outputEntry>
+      </rule>
+      <rule id="r344">
+        <inputEntry id="r344i"><text>[3440..3449]</text></inputEntry>
+        <outputEntry id="r344b"><text>"Band 344"</text></outputEntry>
+        <outputEntry id="r344r"><text>4.94</text></outputEntry>
+      </rule>
+      <rule id="r345">
+        <inputEntry id="r345i"><text>[3450..3459]</text></inputEntry>
+        <outputEntry id="r345b"><text>"Band 345"</text></outputEntry>
+        <outputEntry id="r345r"><text>4.95</text></outputEntry>
+      </rule>
+      <rule id="r346">
+        <inputEntry id="r346i"><text>[3460..3469]</text></inputEntry>
+        <outputEntry id="r346b"><text>"Band 346"</text></outputEntry>
+        <outputEntry id="r346r"><text>4.96</text></outputEntry>
+      </rule>
+      <rule id="r347">
+        <inputEntry id="r347i"><text>[3470..3479]</text></inputEntry>
+        <outputEntry id="r347b"><text>"Band 347"</text></outputEntry>
+        <outputEntry id="r347r"><text>4.97</text></outputEntry>
+      </rule>
+      <rule id="r348">
+        <inputEntry id="r348i"><text>[3480..3489]</text></inputEntry>
+        <outputEntry id="r348b"><text>"Band 348"</text></outputEntry>
+        <outputEntry id="r348r"><text>4.98</text></outputEntry>
+      </rule>
+      <rule id="r349">
+        <inputEntry id="r349i"><text>[3490..3499]</text></inputEntry>
+        <outputEntry id="r349b"><text>"Band 349"</text></outputEntry>
+        <outputEntry id="r349r"><text>4.99</text></outputEntry>
+      </rule>
+      <rule id="r350">
+        <inputEntry id="r350i"><text>[3500..3509]</text></inputEntry>
+        <outputEntry id="r350b"><text>"Band 350"</text></outputEntry>
+        <outputEntry id="r350r"><text>5.00</text></outputEntry>
+      </rule>
+      <rule id="r351">
+        <inputEntry id="r351i"><text>[3510..3519]</text></inputEntry>
+        <outputEntry id="r351b"><text>"Band 351"</text></outputEntry>
+        <outputEntry id="r351r"><text>5.01</text></outputEntry>
+      </rule>
+      <rule id="r352">
+        <inputEntry id="r352i"><text>[3520..3529]</text></inputEntry>
+        <outputEntry id="r352b"><text>"Band 352"</text></outputEntry>
+        <outputEntry id="r352r"><text>5.02</text></outputEntry>
+      </rule>
+      <rule id="r353">
+        <inputEntry id="r353i"><text>[3530..3539]</text></inputEntry>
+        <outputEntry id="r353b"><text>"Band 353"</text></outputEntry>
+        <outputEntry id="r353r"><text>5.03</text></outputEntry>
+      </rule>
+      <rule id="r354">
+        <inputEntry id="r354i"><text>[3540..3549]</text></inputEntry>
+        <outputEntry id="r354b"><text>"Band 354"</text></outputEntry>
+        <outputEntry id="r354r"><text>5.04</text></outputEntry>
+      </rule>
+      <rule id="r355">
+        <inputEntry id="r355i"><text>[3550..3559]</text></inputEntry>
+        <outputEntry id="r355b"><text>"Band 355"</text></outputEntry>
+        <outputEntry id="r355r"><text>5.05</text></outputEntry>
+      </rule>
+      <rule id="r356">
+        <inputEntry id="r356i"><text>[3560..3569]</text></inputEntry>
+        <outputEntry id="r356b"><text>"Band 356"</text></outputEntry>
+        <outputEntry id="r356r"><text>5.06</text></outputEntry>
+      </rule>
+      <rule id="r357">
+        <inputEntry id="r357i"><text>[3570..3579]</text></inputEntry>
+        <outputEntry id="r357b"><text>"Band 357"</text></outputEntry>
+        <outputEntry id="r357r"><text>5.07</text></outputEntry>
+      </rule>
+      <rule id="r358">
+        <inputEntry id="r358i"><text>[3580..3589]</text></inputEntry>
+        <outputEntry id="r358b"><text>"Band 358"</text></outputEntry>
+        <outputEntry id="r358r"><text>5.08</text></outputEntry>
+      </rule>
+      <rule id="r359">
+        <inputEntry id="r359i"><text>[3590..3599]</text></inputEntry>
+        <outputEntry id="r359b"><text>"Band 359"</text></outputEntry>
+        <outputEntry id="r359r"><text>5.09</text></outputEntry>
+      </rule>
+      <rule id="r360">
+        <inputEntry id="r360i"><text>[3600..3609]</text></inputEntry>
+        <outputEntry id="r360b"><text>"Band 360"</text></outputEntry>
+        <outputEntry id="r360r"><text>5.10</text></outputEntry>
+      </rule>
+      <rule id="r361">
+        <inputEntry id="r361i"><text>[3610..3619]</text></inputEntry>
+        <outputEntry id="r361b"><text>"Band 361"</text></outputEntry>
+        <outputEntry id="r361r"><text>5.11</text></outputEntry>
+      </rule>
+      <rule id="r362">
+        <inputEntry id="r362i"><text>[3620..3629]</text></inputEntry>
+        <outputEntry id="r362b"><text>"Band 362"</text></outputEntry>
+        <outputEntry id="r362r"><text>5.12</text></outputEntry>
+      </rule>
+      <rule id="r363">
+        <inputEntry id="r363i"><text>[3630..3639]</text></inputEntry>
+        <outputEntry id="r363b"><text>"Band 363"</text></outputEntry>
+        <outputEntry id="r363r"><text>5.13</text></outputEntry>
+      </rule>
+      <rule id="r364">
+        <inputEntry id="r364i"><text>[3640..3649]</text></inputEntry>
+        <outputEntry id="r364b"><text>"Band 364"</text></outputEntry>
+        <outputEntry id="r364r"><text>5.14</text></outputEntry>
+      </rule>
+      <rule id="r365">
+        <inputEntry id="r365i"><text>[3650..3659]</text></inputEntry>
+        <outputEntry id="r365b"><text>"Band 365"</text></outputEntry>
+        <outputEntry id="r365r"><text>5.15</text></outputEntry>
+      </rule>
+      <rule id="r366">
+        <inputEntry id="r366i"><text>[3660..3669]</text></inputEntry>
+        <outputEntry id="r366b"><text>"Band 366"</text></outputEntry>
+        <outputEntry id="r366r"><text>5.16</text></outputEntry>
+      </rule>
+      <rule id="r367">
+        <inputEntry id="r367i"><text>[3670..3679]</text></inputEntry>
+        <outputEntry id="r367b"><text>"Band 367"</text></outputEntry>
+        <outputEntry id="r367r"><text>5.17</text></outputEntry>
+      </rule>
+      <rule id="r368">
+        <inputEntry id="r368i"><text>[3680..3689]</text></inputEntry>
+        <outputEntry id="r368b"><text>"Band 368"</text></outputEntry>
+        <outputEntry id="r368r"><text>5.18</text></outputEntry>
+      </rule>
+      <rule id="r369">
+        <inputEntry id="r369i"><text>[3690..3699]</text></inputEntry>
+        <outputEntry id="r369b"><text>"Band 369"</text></outputEntry>
+        <outputEntry id="r369r"><text>5.19</text></outputEntry>
+      </rule>
+      <rule id="r370">
+        <inputEntry id="r370i"><text>[3700..3709]</text></inputEntry>
+        <outputEntry id="r370b"><text>"Band 370"</text></outputEntry>
+        <outputEntry id="r370r"><text>5.20</text></outputEntry>
+      </rule>
+      <rule id="r371">
+        <inputEntry id="r371i"><text>[3710..3719]</text></inputEntry>
+        <outputEntry id="r371b"><text>"Band 371"</text></outputEntry>
+        <outputEntry id="r371r"><text>5.21</text></outputEntry>
+      </rule>
+      <rule id="r372">
+        <inputEntry id="r372i"><text>[3720..3729]</text></inputEntry>
+        <outputEntry id="r372b"><text>"Band 372"</text></outputEntry>
+        <outputEntry id="r372r"><text>5.22</text></outputEntry>
+      </rule>
+      <rule id="r373">
+        <inputEntry id="r373i"><text>[3730..3739]</text></inputEntry>
+        <outputEntry id="r373b"><text>"Band 373"</text></outputEntry>
+        <outputEntry id="r373r"><text>5.23</text></outputEntry>
+      </rule>
+      <rule id="r374">
+        <inputEntry id="r374i"><text>[3740..3749]</text></inputEntry>
+        <outputEntry id="r374b"><text>"Band 374"</text></outputEntry>
+        <outputEntry id="r374r"><text>5.24</text></outputEntry>
+      </rule>
+      <rule id="r375">
+        <inputEntry id="r375i"><text>[3750..3759]</text></inputEntry>
+        <outputEntry id="r375b"><text>"Band 375"</text></outputEntry>
+        <outputEntry id="r375r"><text>5.25</text></outputEntry>
+      </rule>
+      <rule id="r376">
+        <inputEntry id="r376i"><text>[3760..3769]</text></inputEntry>
+        <outputEntry id="r376b"><text>"Band 376"</text></outputEntry>
+        <outputEntry id="r376r"><text>5.26</text></outputEntry>
+      </rule>
+      <rule id="r377">
+        <inputEntry id="r377i"><text>[3770..3779]</text></inputEntry>
+        <outputEntry id="r377b"><text>"Band 377"</text></outputEntry>
+        <outputEntry id="r377r"><text>5.27</text></outputEntry>
+      </rule>
+      <rule id="r378">
+        <inputEntry id="r378i"><text>[3780..3789]</text></inputEntry>
+        <outputEntry id="r378b"><text>"Band 378"</text></outputEntry>
+        <outputEntry id="r378r"><text>5.28</text></outputEntry>
+      </rule>
+      <rule id="r379">
+        <inputEntry id="r379i"><text>[3790..3799]</text></inputEntry>
+        <outputEntry id="r379b"><text>"Band 379"</text></outputEntry>
+        <outputEntry id="r379r"><text>5.29</text></outputEntry>
+      </rule>
+      <rule id="r380">
+        <inputEntry id="r380i"><text>[3800..3809]</text></inputEntry>
+        <outputEntry id="r380b"><text>"Band 380"</text></outputEntry>
+        <outputEntry id="r380r"><text>5.30</text></outputEntry>
+      </rule>
+      <rule id="r381">
+        <inputEntry id="r381i"><text>[3810..3819]</text></inputEntry>
+        <outputEntry id="r381b"><text>"Band 381"</text></outputEntry>
+        <outputEntry id="r381r"><text>5.31</text></outputEntry>
+      </rule>
+      <rule id="r382">
+        <inputEntry id="r382i"><text>[3820..3829]</text></inputEntry>
+        <outputEntry id="r382b"><text>"Band 382"</text></outputEntry>
+        <outputEntry id="r382r"><text>5.32</text></outputEntry>
+      </rule>
+      <rule id="r383">
+        <inputEntry id="r383i"><text>[3830..3839]</text></inputEntry>
+        <outputEntry id="r383b"><text>"Band 383"</text></outputEntry>
+        <outputEntry id="r383r"><text>5.33</text></outputEntry>
+      </rule>
+      <rule id="r384">
+        <inputEntry id="r384i"><text>[3840..3849]</text></inputEntry>
+        <outputEntry id="r384b"><text>"Band 384"</text></outputEntry>
+        <outputEntry id="r384r"><text>5.34</text></outputEntry>
+      </rule>
+      <rule id="r385">
+        <inputEntry id="r385i"><text>[3850..3859]</text></inputEntry>
+        <outputEntry id="r385b"><text>"Band 385"</text></outputEntry>
+        <outputEntry id="r385r"><text>5.35</text></outputEntry>
+      </rule>
+      <rule id="r386">
+        <inputEntry id="r386i"><text>[3860..3869]</text></inputEntry>
+        <outputEntry id="r386b"><text>"Band 386"</text></outputEntry>
+        <outputEntry id="r386r"><text>5.36</text></outputEntry>
+      </rule>
+      <rule id="r387">
+        <inputEntry id="r387i"><text>[3870..3879]</text></inputEntry>
+        <outputEntry id="r387b"><text>"Band 387"</text></outputEntry>
+        <outputEntry id="r387r"><text>5.37</text></outputEntry>
+      </rule>
+      <rule id="r388">
+        <inputEntry id="r388i"><text>[3880..3889]</text></inputEntry>
+        <outputEntry id="r388b"><text>"Band 388"</text></outputEntry>
+        <outputEntry id="r388r"><text>5.38</text></outputEntry>
+      </rule>
+      <rule id="r389">
+        <inputEntry id="r389i"><text>[3890..3899]</text></inputEntry>
+        <outputEntry id="r389b"><text>"Band 389"</text></outputEntry>
+        <outputEntry id="r389r"><text>5.39</text></outputEntry>
+      </rule>
+      <rule id="r390">
+        <inputEntry id="r390i"><text>[3900..3909]</text></inputEntry>
+        <outputEntry id="r390b"><text>"Band 390"</text></outputEntry>
+        <outputEntry id="r390r"><text>5.40</text></outputEntry>
+      </rule>
+      <rule id="r391">
+        <inputEntry id="r391i"><text>[3910..3919]</text></inputEntry>
+        <outputEntry id="r391b"><text>"Band 391"</text></outputEntry>
+        <outputEntry id="r391r"><text>5.41</text></outputEntry>
+      </rule>
+      <rule id="r392">
+        <inputEntry id="r392i"><text>[3920..3929]</text></inputEntry>
+        <outputEntry id="r392b"><text>"Band 392"</text></outputEntry>
+        <outputEntry id="r392r"><text>5.42</text></outputEntry>
+      </rule>
+      <rule id="r393">
+        <inputEntry id="r393i"><text>[3930..3939]</text></inputEntry>
+        <outputEntry id="r393b"><text>"Band 393"</text></outputEntry>
+        <outputEntry id="r393r"><text>5.43</text></outputEntry>
+      </rule>
+      <rule id="r394">
+        <inputEntry id="r394i"><text>[3940..3949]</text></inputEntry>
+        <outputEntry id="r394b"><text>"Band 394"</text></outputEntry>
+        <outputEntry id="r394r"><text>5.44</text></outputEntry>
+      </rule>
+      <rule id="r395">
+        <inputEntry id="r395i"><text>[3950..3959]</text></inputEntry>
+        <outputEntry id="r395b"><text>"Band 395"</text></outputEntry>
+        <outputEntry id="r395r"><text>5.45</text></outputEntry>
+      </rule>
+      <rule id="r396">
+        <inputEntry id="r396i"><text>[3960..3969]</text></inputEntry>
+        <outputEntry id="r396b"><text>"Band 396"</text></outputEntry>
+        <outputEntry id="r396r"><text>5.46</text></outputEntry>
+      </rule>
+      <rule id="r397">
+        <inputEntry id="r397i"><text>[3970..3979]</text></inputEntry>
+        <outputEntry id="r397b"><text>"Band 397"</text></outputEntry>
+        <outputEntry id="r397r"><text>5.47</text></outputEntry>
+      </rule>
+      <rule id="r398">
+        <inputEntry id="r398i"><text>[3980..3989]</text></inputEntry>
+        <outputEntry id="r398b"><text>"Band 398"</text></outputEntry>
+        <outputEntry id="r398r"><text>5.48</text></outputEntry>
+      </rule>
+      <rule id="r399">
+        <inputEntry id="r399i"><text>[3990..3999]</text></inputEntry>
+        <outputEntry id="r399b"><text>"Band 399"</text></outputEntry>
+        <outputEntry id="r399r"><text>5.49</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_Decision_CreditBand" dmnElementRef="Decision_CreditBand">
+        <dc:Bounds height="80" width="180" x="260" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Score" dmnElementRef="InputData_Score">
+        <dc:Bounds height="45" width="125" x="287" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_Score" dmnElementRef="ir_Score">
+        <di:waypoint x="350" y="230" />
+        <di:waypoint x="350" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

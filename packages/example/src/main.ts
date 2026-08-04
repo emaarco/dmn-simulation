@@ -1,19 +1,9 @@
-import DmnModeler from 'dmn-js/lib/Modeler'
-
 import '@fontsource-variable/geist'
 import '@fontsource-variable/geist-mono'
-import 'dmn-js/dist/assets/diagram-js.css'
-import 'dmn-js/dist/assets/dmn-js-shared.css'
-import 'dmn-js/dist/assets/dmn-js-drd.css'
-import 'dmn-js/dist/assets/dmn-js-decision-table.css'
-import 'dmn-js/dist/assets/dmn-js-decision-table-controls.css'
-import 'dmn-js/dist/assets/dmn-js-literal-expression.css'
-import 'dmn-js/dist/assets/dmn-font/css/dmn-embedded.css'
 
-import DmnSimulationModule from '@emaarco/dmn-js-simulation'
-import '@emaarco/dmn-js-simulation/assets/dmn-js-simulation.css'
-
-import { buildShareUrl, readHashXml } from './share'
+import { readHashXml } from './share'
+import { BLANK_DMN, importAndOpen, modeler, openDecisionTable, saveXml, trackActiveView } from './editor'
+import { initHashAutosave, syncHash } from './persistence'
 import './style.css'
 
 const status = document.querySelector<HTMLElement>('#status')!
@@ -36,119 +26,33 @@ function showToast(message: string): void {
   toastTimer = window.setTimeout(() => (toast.hidden = true), 2200)
 }
 
-interface View {
-  type: string
-  element: { id: string }
+function setStatus(state: 'loading' | 'ready' | 'error', text = state): void {
+  status.textContent = state === 'loading' ? 'loading…' : text
+  status.dataset.state = state
 }
 
-/**
- * A minimal, empty DMN diagram: one decision holding a bare decision table with
- * a single input, output and rule — the smallest model you can meaningfully edit
- * from. Loading it lets the user model a diagram from scratch. The DMNDI shape
- * makes the decision appear in the DRD view, so the palette is usable straight
- * away.
- */
-const BLANK_DMN = `<?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_new" name="Neues Diagramm" namespace="http://camunda.org/schema/1.0/dmn">
-  <decision id="Decision_1" name="Neue Entscheidung">
-    <decisionTable id="DecisionTable_1">
-      <input id="Input_1" label="Eingabe">
-        <inputExpression id="InputExpression_1" typeRef="string">
-          <text></text>
-        </inputExpression>
-      </input>
-      <output id="Output_1" label="Ausgabe" name="ausgabe" typeRef="string" />
-      <rule id="Rule_1">
-        <inputEntry id="InputEntry_1"><text></text></inputEntry>
-        <outputEntry id="OutputEntry_1"><text></text></outputEntry>
-      </rule>
-    </decisionTable>
-  </decision>
-  <dmndi:DMNDI>
-    <dmndi:DMNDiagram>
-      <dmndi:DMNShape dmnElementRef="Decision_1">
-        <dc:Bounds height="80" width="180" x="160" y="100" />
-      </dmndi:DMNShape>
-    </dmndi:DMNDiagram>
-  </dmndi:DMNDI>
-</definitions>`
-
-const modeler = new DmnModeler({
-  container: '#canvas',
-  decisionTable: { additionalModules: [DmnSimulationModule.decisionTable] },
-  drd: { additionalModules: [DmnSimulationModule.decisionRequirementsDiagram] },
-})
-
-// Reflect the active view type on the canvas so CSS can pad the decision table
-// while the DRD stays full-bleed. `views.changed` fires for every switch —
-// including dmn-js's own "View DRD" button and drill-down — so it never goes stale.
-modeler.on('views.changed', (event: { activeView?: View }) => {
-  canvas.dataset.view = event.activeView?.type ?? ''
-  // Center the DRD whenever it becomes active — it otherwise renders at its
-  // DMNDI coordinates (top-left).
-  if (event.activeView?.type === 'drd') centerActiveDiagram()
-})
-
-/**
- * Center the active DRD diagram in the viewport. dmn-js renders it at its DMNDI
- * coordinates (top-left); we fit it to the viewport but never zoom a small
- * diagram past 100 % — so it sits centered at a natural size.
- */
-function centerActiveDiagram(): void {
-  const raf =
-    typeof requestAnimationFrame === 'function'
-      ? requestAnimationFrame
-      : (cb: FrameRequestCallback) => setTimeout(() => cb(0), 0)
-  raf(() => {
-    const viewer = (
-      modeler as unknown as { getActiveViewer?(): { get(name: string): unknown } | undefined }
-    ).getActiveViewer?.()
-    const canvas = viewer?.get('canvas') as { zoom(scale?: string | number, center?: string): number } | undefined
-    if (!canvas) return
-    canvas.zoom('fit-viewport', 'auto')
-    if (canvas.zoom() > 1) canvas.zoom(1)
-  })
-}
-
-/** Open a decision-table view by decision id (used by the drill-in E2E). */
-function openDecisionTable(decisionId: string): void {
-  const view = (modeler.getViews() as View[]).find(v => v.type === 'decisionTable' && v.element.id === decisionId)
-  if (view) void modeler.open(view as never)
-}
+trackActiveView(canvas)
+initHashAutosave()
 
 // Expose for E2E / debugging.
 Object.assign(window as object, { __modeler: modeler, __openDecisionTable: openDecisionTable })
 
-/** Import DMN XML and open the DRD view by default (the table is a drill-in). */
+/** Load DMN XML into the editor and mirror it into the URL hash. */
 async function applyXml(xml: string): Promise<void> {
-  status.textContent = 'loading…'
-  status.dataset.state = 'loading'
+  setStatus('loading')
   try {
-    await modeler.importXML(xml)
-
-    const views = modeler.getViews() as View[]
-    const decisionRequirementsDiagramView = views.find(v => v.type === 'drd')
-    const firstTableView = views.find(v => v.type === 'decisionTable')
-
-    if (decisionRequirementsDiagramView) {
-      await modeler.open(decisionRequirementsDiagramView as never)
-    } else if (firstTableView) {
-      await modeler.open(firstTableView as never)
-    }
-
-    status.textContent = 'ready'
-    status.dataset.state = 'ready'
+    await importAndOpen(xml)
+    setStatus('ready')
+    void syncHash(xml)
   } catch (err) {
-    status.textContent = `error: ${err instanceof Error ? err.message : String(err)}`
-    status.dataset.state = 'error'
+    setStatus('error', `error: ${err instanceof Error ? err.message : String(err)}`)
     console.error(err)
   }
 }
 
 /** Fetch one of the bundled example models and simulate it. */
 async function loadExample(path: string): Promise<void> {
-  status.textContent = 'loading…'
-  status.dataset.state = 'loading'
+  setStatus('loading')
   try {
     const url = new URL(path.replace(/^\//, ''), new URL(import.meta.env.BASE_URL, location.href)).href
     const xml = await fetch(url).then(r => {
@@ -157,8 +61,7 @@ async function loadExample(path: string): Promise<void> {
     })
     await applyXml(xml)
   } catch (err) {
-    status.textContent = `error: ${err instanceof Error ? err.message : String(err)}`
-    status.dataset.state = 'error'
+    setStatus('error', `error: ${err instanceof Error ? err.message : String(err)}`)
     console.error(err)
   }
 }
@@ -205,26 +108,6 @@ btnNew.addEventListener('click', () => {
 
 btnOpen.addEventListener('click', () => fileInput.click())
 
-// ---- Share (encode the current model into the URL hash) ---------------
-
-btnShare.addEventListener('click', async () => {
-  setMenuOpen(false)
-  try {
-    const { xml } = await (modeler as unknown as { saveXML(o: { format: boolean }): Promise<{ xml: string }> }).saveXML(
-      {
-        format: true,
-      },
-    )
-    const url = await buildShareUrl(xml)
-    history.replaceState(null, '', url.slice(url.indexOf('#')))
-    await navigator.clipboard.writeText(url)
-    showToast('Link in die Zwischenablage kopiert')
-  } catch (err) {
-    console.error(err)
-    showToast('Teilen fehlgeschlagen')
-  }
-})
-
 fileInput.addEventListener('change', () => {
   const file = fileInput.files?.[0]
   setMenuOpen(false)
@@ -245,9 +128,23 @@ canvas.addEventListener('drop', event => {
   if (file) void file.text().then(applyXml)
 })
 
-// Initial load: a model shared via the URL hash wins; otherwise the first
-// example (Recommend Bike). Wrapped in an IIFE rather than a top-level await,
-// which the Vite/esbuild build target (es2020) does not support.
+// ---- Share (the hash already mirrors the model — copy the current URL) ----
+
+btnShare.addEventListener('click', async () => {
+  setMenuOpen(false)
+  try {
+    const { xml } = await saveXml()
+    await syncHash(xml)
+    await navigator.clipboard.writeText(location.href)
+    showToast('Link in die Zwischenablage kopiert')
+  } catch (err) {
+    console.error(err)
+    showToast('Teilen fehlgeschlagen')
+  }
+})
+
+// Initial load: a model in the URL hash (a shared link or your own reload) wins,
+// otherwise the first example. IIFE since the es2020 build target has no top-level await.
 void (async () => {
   const sharedXml = await readHashXml()
   if (sharedXml) {
