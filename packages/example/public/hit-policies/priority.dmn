@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
              id="Definitions_Priority" name="Priority" namespace="http://miragon.io/miravelo/bike-leasing">
+  <inputData id="InputData_Score" name="Credit Score">
+    <variable id="Variable_Score" name="Score" typeRef="integer" />
+  </inputData>
   <decision id="Decision_Risk" name="Leasing Application Risk">
+    <informationRequirement id="ir_Score">
+      <requiredInput href="#InputData_Score" />
+    </informationRequirement>
     <decisionTable id="DT_Priority" hitPolicy="PRIORITY">
       <input id="in_score" label="Credit Score">
         <inputExpression id="ie_score" typeRef="integer"><text>Score</text></inputExpression>
@@ -23,4 +32,18 @@
       </rule>
     </decisionTable>
   </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_Decision_Risk" dmnElementRef="Decision_Risk">
+        <dc:Bounds height="80" width="180" x="260" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Score" dmnElementRef="InputData_Score">
+        <dc:Bounds height="45" width="125" x="287" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_Score" dmnElementRef="ir_Score">
+        <di:waypoint x="350" y="230" />
+        <di:waypoint x="350" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
 </definitions>

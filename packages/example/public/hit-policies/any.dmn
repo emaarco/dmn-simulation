@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
              id="Definitions_Any" name="Any" namespace="http://miragon.io/miravelo/shop">
+  <inputData id="InputData_Age" name="Age">
+    <variable id="Variable_Age" name="Age" typeRef="integer" />
+  </inputData>
   <decision id="Decision_Access" name="Test-Ride Eligibility">
+    <informationRequirement id="ir_Age">
+      <requiredInput href="#InputData_Age" />
+    </informationRequirement>
     <decisionTable id="DT_Any" hitPolicy="ANY">
       <input id="in_age" label="Age">
         <inputExpression id="ie_age" typeRef="integer"><text>Age</text></inputExpression>
@@ -17,4 +26,18 @@
       </rule>
     </decisionTable>
   </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_Decision_Access" dmnElementRef="Decision_Access">
+        <dc:Bounds height="80" width="180" x="260" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Age" dmnElementRef="InputData_Age">
+        <dc:Bounds height="45" width="125" x="287" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_Age" dmnElementRef="ir_Age">
+        <di:waypoint x="350" y="230" />
+        <di:waypoint x="350" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
 </definitions>
