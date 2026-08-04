@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="categorizeApplicantDefinitions" name="Categorize Applicant" namespace="http://camunda.org/schema/1.0/dmn">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="categorizeApplicantDefinitions" name="Categorize Applicant" namespace="http://camunda.org/schema/1.0/dmn">
+  <inputData id="InputData_age" name="Age">
+    <variable id="Variable_age" name="age" typeRef="integer" />
+  </inputData>
   <decision id="categorizeApplicant" name="Categorize Applicant" camunda:historyTimeToLive="180">
+    <informationRequirement id="ir_age">
+      <requiredInput href="#InputData_age" />
+    </informationRequirement>
     <decisionTable id="decisionTable_categorizeApplicant" hitPolicy="FIRST">
       <input id="input_age" label="Age">
         <inputExpression id="inputExpression_age" typeRef="integer">
@@ -33,6 +39,13 @@
       <dmndi:DMNShape dmnElementRef="categorizeApplicant">
         <dc:Bounds height="80" width="180" x="200" y="210" />
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_age" dmnElementRef="InputData_age">
+        <dc:Bounds height="45" width="125" x="227" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_age" dmnElementRef="ir_age">
+        <di:waypoint x="290" y="360" />
+        <di:waypoint x="290" y="290" />
+      </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </definitions>

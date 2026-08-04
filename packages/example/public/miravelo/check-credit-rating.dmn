@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="checkCreditRatingDefinitions" name="Check Credit Rating" namespace="http://miragon.io/miravelo/bike-leasing">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="checkCreditRatingDefinitions" name="Check Credit Rating" namespace="http://miragon.io/miravelo/bike-leasing">
+  <inputData id="InputData_age" name="Age">
+    <variable id="Variable_age" name="age" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_monthlyNetIncome" name="Monthly Net Income">
+    <variable id="Variable_monthlyNetIncome" name="monthlyNetIncome" typeRef="double" />
+  </inputData>
   <decision id="checkCreditRating" name="Check Credit Rating" camunda:historyTimeToLive="180">
+    <informationRequirement id="ir_age">
+      <requiredInput href="#InputData_age" />
+    </informationRequirement>
+    <informationRequirement id="ir_monthlyNetIncome">
+      <requiredInput href="#InputData_monthlyNetIncome" />
+    </informationRequirement>
     <decisionTable id="decisionTable_checkCreditRating" hitPolicy="FIRST">
       <input id="input_age" label="Age">
         <inputExpression id="inputExpression_age" typeRef="integer">
@@ -68,6 +80,20 @@
       <dmndi:DMNShape dmnElementRef="checkCreditRating">
         <dc:Bounds height="80" width="180" x="200" y="210" />
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_age" dmnElementRef="InputData_age">
+        <dc:Bounds height="45" width="125" x="100" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_monthlyNetIncome" dmnElementRef="InputData_monthlyNetIncome">
+        <dc:Bounds height="45" width="125" x="320" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_age" dmnElementRef="ir_age">
+        <di:waypoint x="163" y="360" />
+        <di:waypoint x="250" y="290" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ir_monthlyNetIncome" dmnElementRef="ir_monthlyNetIncome">
+        <di:waypoint x="383" y="360" />
+        <di:waypoint x="330" y="290" />
+      </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </definitions>

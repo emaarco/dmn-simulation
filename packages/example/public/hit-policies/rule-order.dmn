@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
              id="Definitions_RuleOrder" name="RuleOrder" namespace="http://miragon.io/miravelo/service">
+  <inputData id="InputData_Kilometers" name="Kilometers Ridden">
+    <variable id="Variable_Kilometers" name="Kilometers" typeRef="integer" />
+  </inputData>
   <decision id="Decision_Warnings" name="Service Reminders">
+    <informationRequirement id="ir_Kilometers">
+      <requiredInput href="#InputData_Kilometers" />
+    </informationRequirement>
     <decisionTable id="DT_RuleOrder" hitPolicy="RULE ORDER">
       <input id="in_temp" label="Kilometers Ridden">
         <inputExpression id="ie_temp" typeRef="integer"><text>Kilometers</text></inputExpression>
@@ -17,4 +26,18 @@
       </rule>
     </decisionTable>
   </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_Decision_Warnings" dmnElementRef="Decision_Warnings">
+        <dc:Bounds height="80" width="180" x="260" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_Kilometers" dmnElementRef="InputData_Kilometers">
+        <dc:Bounds height="45" width="125" x="287" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_Kilometers" dmnElementRef="ir_Kilometers">
+        <di:waypoint x="350" y="230" />
+        <di:waypoint x="350" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
 </definitions>
