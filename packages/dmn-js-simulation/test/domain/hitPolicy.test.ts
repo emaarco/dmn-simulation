@@ -90,6 +90,22 @@ describe('OUTPUT ORDER', () => {
   })
 })
 
+describe('PRIORITY / OUTPUT ORDER without output values', () => {
+  it('flags a violation when >1 rule matches and no output ordering is defined', () => {
+    const priority = applyHitPolicy(makeModel('PRIORITY'), [0, 1], outputs('A', 'B'))
+    const outputOrder = applyHitPolicy(makeModel('OUTPUT ORDER'), [0, 1], outputs('A', 'B'))
+    expect(priority.violation).toMatch(/PRIORITY hit policy: no output values/)
+    expect(outputOrder.violation).toMatch(/OUTPUT ORDER hit policy: no output values/)
+    // Falls back to table order rather than throwing.
+    expect(priority.reportedRuleIndices).toEqual([0])
+    expect(outputOrder.reportedRuleIndices).toEqual([0, 1])
+  })
+
+  it('does not flag a single match (ordering is irrelevant)', () => {
+    expect(applyHitPolicy(makeModel('PRIORITY'), [0], outputs('A')).violation).toBeUndefined()
+  })
+})
+
 describe('RULE ORDER', () => {
   it('lists all matches in table order', () => {
     const r = applyHitPolicy(makeModel('RULE ORDER'), [0, 1], outputs('A', 'B'))
@@ -109,6 +125,15 @@ describe('COLLECT', () => {
     const r = applyHitPolicy(model, [0, 1], outputs(5, 10))
     expect(r.aggregation).toEqual({ fn: 'SUM', output: 'Out', value: 15 })
     expect(r.outputs).toEqual([])
+  })
+
+  it('reports null for MIN / MAX over no numeric values (not a fake 0)', () => {
+    const min = applyHitPolicy(makeModel('COLLECT', { aggregation: 'MIN' }), [0, 1], outputs('a', 'b'))
+    const max = applyHitPolicy(makeModel('COLLECT', { aggregation: 'MAX' }), [0, 1], outputs('a', 'b'))
+    const sum = applyHitPolicy(makeModel('COLLECT', { aggregation: 'SUM' }), [0, 1], outputs('a', 'b'))
+    expect(min.aggregation?.value).toBeNull()
+    expect(max.aggregation?.value).toBeNull()
+    expect(sum.aggregation?.value).toBe(0) // sum of nothing is still 0
   })
 
   it('MIN / MAX / COUNT aggregate correctly', () => {

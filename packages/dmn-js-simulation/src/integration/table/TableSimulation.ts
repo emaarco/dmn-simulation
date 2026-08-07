@@ -22,6 +22,7 @@ import { SimulationFormComponent } from '../../ui/SimulationForm'
 
 interface EventBus {
   on(event: string, callback: (...args: unknown[]) => void): void
+  off(event: string, callback: (...args: unknown[]) => void): void
 }
 interface Sheet {
   getRoot(): { businessObject?: ModdleElement } | null | undefined
@@ -44,6 +45,11 @@ export class TableSimulation {
   private readonly store: SimulationStore
   private readonly bridge: ModelerBridge | null
 
+  /** Teardown callbacks run on `diagram.destroy` (event listeners, subscriptions). */
+  private readonly disposers: Array<() => void> = []
+  private destroyed = false
+  private scheduled?: { cancel: () => void }
+
   constructor(
     eventBus: EventBus,
     sheet: Sheet,
@@ -63,13 +69,30 @@ export class TableSimulation {
     // structure changes. Re-apply the highlight a frame later: a table-js
     // re-render creates fresh <tr> nodes and drops our direct-DOM classes, so the
     // highlight (local run, or a reflected DRD run) must be restored afterwards.
-    eventBus.on('import.render.complete', () => this.onRender())
-    eventBus.on('elements.changed', () => this.onRender())
+    const onRender = (): void => this.onRender()
+    eventBus.on('import.render.complete', onRender)
+    eventBus.on('elements.changed', onRender)
+    this.disposers.push(() => {
+      eventBus.off('import.render.complete', onRender)
+      eventBus.off('elements.changed', onRender)
+    })
 
     // Reflect every store change (run / reset / input edit) in the table rows.
-    this.store.subscribe(() => this.highlight())
-    // Reflect a DRD run when the user drills into this decision table.
-    this.bridge?.subscribe(() => this.onBridgeChange())
+    this.disposers.push(this.store.subscribe(() => this.highlight()))
+    // Reflect a DRD run when the user drills into this decision table. The bridge
+    // outlives this viewer (one per parent Manager), so we MUST unsubscribe on
+    // destroy or every reimport leaks a listener pinning this whole viewer.
+    const bridgeOff = this.bridge?.subscribe(() => this.onBridgeChange())
+    if (bridgeOff) this.disposers.push(bridgeOff)
+
+    eventBus.on('diagram.destroy', () => this.destroy())
+  }
+
+  private destroy(): void {
+    this.destroyed = true
+    this.scheduled?.cancel()
+    this.scheduled = undefined
+    for (const dispose of this.disposers.splice(0)) dispose()
   }
 
   private onRender(): void {
@@ -95,20 +118,40 @@ export class TableSimulation {
     if (!model) return
 
     const reflection = this.bridge.getTableReflection(model.decisionId)
+    if (!reflection) {
+      // The DRD run was cleared/reset — drop any reflected result we were showing
+      // so the highlight and result bar don't stick around.
+      this.store.clearHydrated()
+      return
+    }
     // Same reflection already shown (stable object until the next DRD run) — skip
     // to avoid redundant re-renders on unrelated `elements.changed` events.
-    if (!reflection || this.store.getResult() === reflection.result) return
+    if (this.store.getResult() === reflection.result) return
 
     this.store.hydrate(reflection.inputs, reflection.result)
   }
 
-  /** Re-apply the highlight after the DOM has committed the current render. */
+  /**
+   * Re-apply the highlight after the DOM has committed the current render.
+   * Cancellable and a no-op once destroyed, so a queued frame never runs against
+   * a torn-down renderer.
+   */
   private scheduleHighlight(): void {
-    const raf =
-      typeof requestAnimationFrame === 'function'
-        ? requestAnimationFrame
-        : (cb: FrameRequestCallback) => setTimeout(() => cb(0), 0)
-    raf(() => this.highlight())
+    if (this.destroyed) return
+    this.scheduled?.cancel()
+    if (typeof requestAnimationFrame === 'function') {
+      const id = requestAnimationFrame(() => {
+        this.scheduled = undefined
+        this.highlight()
+      })
+      this.scheduled = { cancel: () => cancelAnimationFrame(id) }
+    } else {
+      const id = setTimeout(() => {
+        this.scheduled = undefined
+        this.highlight()
+      }, 0)
+      this.scheduled = { cancel: () => clearTimeout(id) }
+    }
   }
 
   private refreshModel(): void {
@@ -132,6 +175,7 @@ export class TableSimulation {
   }
 
   private highlight(): void {
+    if (this.destroyed) return
     const container = this.renderer.getContainer()
     if (!container) return
 

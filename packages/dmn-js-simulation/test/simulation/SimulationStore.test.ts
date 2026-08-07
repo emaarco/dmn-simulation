@@ -47,6 +47,25 @@ describe('SimulationStore', () => {
     expect(store.isLocalRun()).toBe(false)
   })
 
+  it('clearHydrated drops a reflected result but keeps a local run', () => {
+    const store = new SimulationStore()
+    store.setModel(model())
+
+    // Reflected (hydrated) result is cleared.
+    store.hydrate(['Winter'], { matchedRuleIndices: [1], reportedRuleIndices: [1], outputs: [{ Dish: 'Roastbeef' }] })
+    expect(store.getResult()).not.toBeNull()
+    store.clearHydrated()
+    expect(store.getResult()).toBeNull()
+    expect(store.isLocalRun()).toBe(false)
+
+    // A local run is never dropped by clearHydrated.
+    store.setValue(0, 'Winter')
+    store.run()
+    store.clearHydrated()
+    expect(store.getResult()).not.toBeNull()
+    expect(store.isLocalRun()).toBe(true)
+  })
+
   it('run marks the result as local; setModel/reset clear that flag', () => {
     const store = new SimulationStore()
     store.setModel(model())
