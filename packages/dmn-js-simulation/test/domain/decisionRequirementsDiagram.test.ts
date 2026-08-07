@@ -72,6 +72,37 @@ describe('evaluateDecisionRequirementsDiagram', () => {
     expect(result.results.Y.skipped).toBe(true)
   })
 
+  it('propagates skip to a decision that requires a decision with no logic', () => {
+    const model: DecisionRequirementsDiagramModel = {
+      inputData: [],
+      decisions: [
+        // A has no decision logic — it is skipped and never binds `A`.
+        {
+          id: 'A',
+          name: 'A',
+          variableName: 'A',
+          requiredDecisionIds: [],
+          requiredInputIds: [],
+          logic: { kind: 'none' },
+        },
+        // B requires A, so it must be skipped too rather than evaluate `A + 1`
+        // against a missing (null) `A`.
+        {
+          id: 'B',
+          name: 'B',
+          variableName: 'B',
+          requiredDecisionIds: ['A'],
+          requiredInputIds: [],
+          logic: { kind: 'literalExpression', expression: 'A + 1' },
+        },
+      ],
+    }
+    const result = evaluateDecisionRequirementsDiagram(model, {})
+    expect(result.results.A.skipped).toBe(true)
+    expect(result.results.B.skipped).toBe(true)
+    expect(result.results.B.value).toBeNull()
+  })
+
   it('ignores requirements that point outside the graph', () => {
     const model: DecisionRequirementsDiagramModel = {
       inputData: [],

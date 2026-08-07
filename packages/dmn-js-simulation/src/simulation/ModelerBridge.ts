@@ -62,7 +62,8 @@ export class ModelerBridge {
   }
 
   private emit(): void {
-    for (const listener of this.listeners) listener()
+    // Snapshot: a listener may (un)subscribe during notification.
+    for (const listener of [...this.listeners]) listener()
   }
 }
 

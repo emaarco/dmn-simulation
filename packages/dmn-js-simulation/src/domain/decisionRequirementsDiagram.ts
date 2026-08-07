@@ -128,12 +128,22 @@ export function evaluateDecisionRequirementsDiagram(
   const byId = new Map(model.decisions.map(d => [d.id, d]))
   const { order, cyclic } = topologicalOrder(model.decisions)
   const results: Record<string, DecisionEvaluation> = {}
+  const skipped = new Set<string>()
 
   for (const id of order) {
     const decision = byId.get(id) as DecisionRequirementsDiagramDecision
+    // A decision whose required decision was skipped (no logic, or itself
+    // skipped) cannot be resolved — its input would silently be `null`, yielding
+    // a bogus result. Propagate the skip instead of evaluating.
+    if (decision.requiredDecisionIds.some(req => skipped.has(req))) {
+      results[id] = { decisionId: id, value: null, skipped: true }
+      skipped.add(id)
+      continue
+    }
     const evaluation = evaluateDecisionNode(decision, context)
     results[id] = evaluation
-    if (!evaluation.skipped) context[decision.variableName] = evaluation.value
+    if (evaluation.skipped) skipped.add(id)
+    else context[decision.variableName] = evaluation.value
   }
 
   for (const id of cyclic) {

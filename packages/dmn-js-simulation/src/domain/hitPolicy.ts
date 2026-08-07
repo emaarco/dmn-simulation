@@ -18,7 +18,8 @@ export interface AggregationResult {
   fn: Aggregation
   /** Name of the (single) output the aggregate was computed over. */
   output: string
-  value: number
+  /** `null` for MIN/MAX over an empty set — no real minimum/maximum exists. */
+  value: number | null
 }
 
 export interface HitPolicyResult {
@@ -56,6 +57,22 @@ function byPriority(outputsByRule: Record<number, RuleOutput>, outputs: DmnOutpu
   }
 }
 
+/**
+ * PRIORITY / OUTPUT ORDER need an output-value ordering (`<outputValues>`) to
+ * rank rules. Without one they silently degrade to table order, which quietly
+ * turns PRIORITY into FIRST and OUTPUT ORDER into RULE ORDER — flag it so the
+ * user knows the ordering was not applied. Only relevant when >1 rule matched.
+ */
+function priorityOrderingWarning(
+  policy: 'PRIORITY' | 'OUTPUT ORDER',
+  model: DecisionModel,
+  matchedRuleIndices: number[],
+): string | undefined {
+  if (matchedRuleIndices.length <= 1) return undefined
+  if (model.outputs.some(o => o.priorityValues.length)) return undefined
+  return `${policy} hit policy: no output values defined to order by — falling back to rule order`
+}
+
 /** Aggregate the matched rules' first output column (COLLECT + SUM/MIN/MAX/COUNT). */
 function aggregate(
   fn: Aggregation,
@@ -68,11 +85,11 @@ function aggregate(
 
   const numbers = matched.map(ri => Number(outputsByRule[ri][name])).filter(n => !Number.isNaN(n))
 
-  let value = 0
-  if (fn === 'SUM') value = numbers.reduce((sum, n) => sum + n, 0)
-  else if (fn === 'MIN') value = numbers.length ? Math.min(...numbers) : 0
-  else if (fn === 'MAX') value = numbers.length ? Math.max(...numbers) : 0
-  return { fn, output: name, value }
+  // SUM of nothing is 0; MIN/MAX of nothing is undefined — report null rather
+  // than a fabricated 0 that reads as a real result.
+  if (fn === 'SUM') return { fn, output: name, value: numbers.reduce((sum, n) => sum + n, 0) }
+  if (!numbers.length) return { fn, output: name, value: null }
+  return { fn, output: name, value: fn === 'MIN' ? Math.min(...numbers) : Math.max(...numbers) }
 }
 
 /**
@@ -114,10 +131,12 @@ export function applyHitPolicy(
     }
 
     case 'PRIORITY':
+      violation = priorityOrderingWarning('PRIORITY', model, matchedRuleIndices)
       reportedRuleIndices = [...matchedRuleIndices].sort(byPriority(outputsByRule, model.outputs)).slice(0, 1)
       break
 
     case 'OUTPUT ORDER':
+      violation = priorityOrderingWarning('OUTPUT ORDER', model, matchedRuleIndices)
       reportedRuleIndices = [...matchedRuleIndices].sort(byPriority(outputsByRule, model.outputs))
       break
 

@@ -84,6 +84,18 @@ export class SimulationStore {
     this.emit()
   }
 
+  /**
+   * Drop a reflected (hydrated) DRD result when that run is cleared/reset, so a
+   * drilled-in table stops showing the stale outcome. No-op on a local run (the
+   * user's own run always wins) or when there is no result to clear. The entered
+   * (reflected) input values are kept so the user can re-run from here.
+   */
+  clearHydrated(): void {
+    if (this.resultIsLocal || this.result === null) return
+    this.result = null
+    this.emit()
+  }
+
   /** Set one input value; any change invalidates the previous run. */
   setValue(index: number, value: RawValue): void {
     if (index < 0 || index >= this.values.length) return
@@ -129,6 +141,7 @@ export class SimulationStore {
 
   private emit(): void {
     const snapshot: SimulationSnapshot = { model: this.model, values: this.values, result: this.result }
-    for (const listener of this.listeners) listener(snapshot)
+    // Snapshot the listeners: a listener may (un)subscribe during notification.
+    for (const listener of [...this.listeners]) listener(snapshot)
   }
 }
