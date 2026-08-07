@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/emaarco/dmn-js-simulation/compare/v0.1.0...v0.2.0) (2026-08-07)
+
+
+### Features
+
+* temporal & duration inputs, native pickers, and rule-derived bounds ([#29](https://github.com/emaarco/dmn-js-simulation/issues/29)) ([552ac30](https://github.com/emaarco/dmn-js-simulation/commit/552ac300f43b13ac65a28ee750d644b834a0181f))
+
+
+### Bug Fixes
+
+* simulation lifecycle, DRD chaining, hit-policy and format correctness ([#28](https://github.com/emaarco/dmn-js-simulation/issues/28)) ([809f7e2](https://github.com/emaarco/dmn-js-simulation/commit/809f7e2a229bbf041654761a71478e833445f3e8))
+
 ## 0.1.0 (2026-08-03)
 
 
