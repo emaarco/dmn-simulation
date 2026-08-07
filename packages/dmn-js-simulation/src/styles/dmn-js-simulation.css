@@ -114,6 +114,22 @@
   box-shadow: 0 0 0 3px var(--dmn-sim-accent-soft);
 }
 
+/* --- duration composer (amount + unit) --- */
+.dmn-sim-duration {
+  display: flex;
+  gap: var(--dmn-sim-space-1);
+}
+
+.dmn-sim-duration-amount {
+  flex: 1 1 auto;
+  min-width: 80px;
+}
+
+.dmn-sim-duration-unit {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 /* --- buttons --- */
 .dmn-sim-run,
 .dmn-sim-reset {

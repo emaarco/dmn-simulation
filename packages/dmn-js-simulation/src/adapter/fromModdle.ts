@@ -17,7 +17,7 @@ import type {
   DecisionRequirementsDiagramInputData,
   DecisionRequirementsDiagramModel,
 } from '../domain/decisionRequirementsDiagram'
-import { collectColumnOptions, parseOutputValueList } from './util'
+import { collectColumnBounds, collectColumnOptions, parseOutputValueList } from './util'
 
 /** The minimal structural view of a moddle businessObject that we read. */
 export interface ModdleElement {
@@ -73,8 +73,10 @@ export function decisionTableToModel(decisionTable: ModdleElement): DecisionMode
     const expression = entryText(expressionEl)
     const label = str(input.label) || expression || `Input ${ci + 1}`
     const typeRef = str(expressionEl?.typeRef) || 'string'
-    const options = collectColumnOptions(rules.map(r => r.inputEntries[ci] ?? ''))
-    return { id: str(input.id) || `input_${ci}`, label, expression, typeRef, options }
+    const columnCells = rules.map(r => r.inputEntries[ci] ?? '')
+    const options = collectColumnOptions(columnCells)
+    const { min, max } = collectColumnBounds(columnCells, typeRef)
+    return { id: str(input.id) || `input_${ci}`, label, expression, typeRef, options, min, max }
   })
 
   const outputs: DmnOutput[] = outputEls.map((output, ci) => {

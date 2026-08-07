@@ -17,6 +17,14 @@ export interface DmnInput {
   typeRef: string
   /** Distinct string literals used in this column — drives a dropdown. */
   options: string[]
+  /**
+   * Lower / upper bound for the native input's `min` / `max`, derived from the
+   * column's rules. Only set when the column is fully bounded on that side (no
+   * open-ended `<` / `>` test), so a value outside the range truly matches no
+   * rule. Formatted for the native control (number string, or `yyyy-mm-dd`).
+   */
+  min?: string
+  max?: string
 }
 
 export interface DmnOutput {

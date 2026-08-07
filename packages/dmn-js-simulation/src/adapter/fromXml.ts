@@ -9,15 +9,7 @@
  */
 
 import type { DecisionModel, DmnInput, DmnOutput, DmnRule, HitPolicy } from '../domain/model'
-
-/** Split a FEEL `outputValues` list (`"a","b","c"`) into ordered bare values. */
-function parseOutputValues(text: string): string[] {
-  if (!text) return []
-  return text
-    .split(',')
-    .map(part => part.trim().replace(/^"(.*)"$/, '$1'))
-    .filter(part => part.length > 0)
-}
+import { collectColumnBounds, collectColumnOptions, parseOutputValueList } from './util'
 
 /** Namespace-agnostic lookup — DMN files use a default (prefix-less) namespace. */
 function byLocalName(scope: Element | Document, localName: string): Element[] {
@@ -83,21 +75,17 @@ export function parseDecisionModelFromXml(xml: string, decisionId?: string): Dec
     const label = input.getAttribute('label') || expression || `Input ${ci + 1}`
     const typeRef = expressionEl?.getAttribute('typeRef') || 'string'
 
-    // Collect the distinct string literals used in this column so the form can
-    // offer a dropdown instead of a free-text field.
-    const options: string[] = []
-    for (const rule of rules) {
-      const match = /^"(.*)"$/.exec(rule.inputEntries[ci] ?? '')
-      if (match && !options.includes(match[1])) options.push(match[1])
-    }
+    const columnCells = rules.map(r => r.inputEntries[ci] ?? '')
+    const options = collectColumnOptions(columnCells)
+    const { min, max } = collectColumnBounds(columnCells, typeRef)
 
-    return { id: input.getAttribute('id') || `input_${ci}`, label, expression, typeRef, options }
+    return { id: input.getAttribute('id') || `input_${ci}`, label, expression, typeRef, options, min, max }
   })
 
   const outputs: DmnOutput[] = outputEls.map((output, ci) => {
     const label = output.getAttribute('label') || ''
     const name = output.getAttribute('name') || label || `Output ${ci + 1}`
-    const priorityValues = parseOutputValues(entryText(firstByLocalName(output, 'outputValues') ?? undefined))
+    const priorityValues = parseOutputValueList(entryText(firstByLocalName(output, 'outputValues') ?? undefined))
     return {
       id: output.getAttribute('id') || `output_${ci}`,
       name,

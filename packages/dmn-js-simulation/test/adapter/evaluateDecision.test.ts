@@ -45,6 +45,20 @@ describe('evaluateDecision — FIRST decision table (example.dmn)', () => {
   })
 })
 
+describe('evaluateDecision — date input (end-to-end)', () => {
+  const dateModel = parseDecisionModelFromXml(readFileSync(resolve(process.cwd(), 'test/fixtures/date.dmn'), 'utf-8'))
+
+  it('coerces a date input and matches temporal unary tests', () => {
+    expect(evaluateDecision(dateModel, ['2020-01-15']).outputs).toEqual([{ Season: 'First Half' }])
+    expect(evaluateDecision(dateModel, ['2020-07-15']).outputs).toEqual([{ Season: 'Summer' }])
+    expect(evaluateDecision(dateModel, ['2020-11-15']).outputs).toEqual([{ Season: 'Second Half' }])
+  })
+
+  it('reports no match for an unparseable date', () => {
+    expect(evaluateDecision(dateModel, ['not-a-date']).matchedRuleIndices).toEqual([])
+  })
+})
+
 describe('evaluateDecision — COLLECT with SUM aggregation (end-to-end)', () => {
   const sumXml = `<?xml version="1.0" encoding="UTF-8"?>
     <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="d" name="d">

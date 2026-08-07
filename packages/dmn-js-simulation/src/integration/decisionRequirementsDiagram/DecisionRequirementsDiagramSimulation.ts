@@ -14,12 +14,20 @@ import {
   type DecisionRequirementsDiagramModel,
 } from '../../domain/decisionRequirementsDiagram'
 import type { RawValue } from '../../domain/feel'
-import { isNumericType } from '../../domain/model'
 import { getModelerBridge, type ModelerBridge } from '../../simulation/ModelerBridge'
 import { formatValue } from '../../ui/formatValue'
+import { htmlInputType } from '../../ui/inputType'
+import {
+  composeDuration,
+  DEFAULT_DURATION_UNIT,
+  DURATION_UNITS,
+  isDurationType,
+  type DurationUnit,
+} from '../../ui/duration'
 
 interface EventBus {
   on(event: string, callback: (...args: unknown[]) => void): void
+  off(event: string, callback: (...args: unknown[]) => void): void
 }
 interface Canvas {
   getContainer(): HTMLElement
@@ -60,7 +68,8 @@ export class DecisionRequirementsDiagramSimulation {
   private panel?: HTMLElement
   private fieldsHost?: HTMLElement
   private runButton?: HTMLButtonElement
-  private readonly inputs = new Map<string, HTMLInputElement | HTMLSelectElement>()
+  /** Per-input-data accessor: read the current value, or reset the control(s). */
+  private readonly inputs = new Map<string, { read: () => string; reset: () => void }>()
 
   constructor(
     eventBus: EventBus,
@@ -75,7 +84,15 @@ export class DecisionRequirementsDiagramSimulation {
     this.parent = injector.get('_parent', false)
     this.bridge = getModelerBridge(this.parent)
 
-    eventBus.on('import.done', () => this.refresh())
+    const onImportDone = (): void => this.refresh()
+    eventBus.on('import.done', onImportDone)
+    eventBus.on('diagram.destroy', () => {
+      eventBus.off('import.done', onImportDone)
+      this.clearResult()
+      this.panel?.remove()
+      this.panel = undefined
+      this.inputs.clear()
+    })
   }
 
   private refresh(): void {
@@ -113,14 +130,10 @@ export class DecisionRequirementsDiagramSimulation {
       const label = document.createElement('span')
       label.className = 'dmn-sim-field-label'
       label.textContent = input.label
-      const control = document.createElement('input')
-      control.className = 'dmn-sim-input'
-      control.type = isNumericType(input.typeRef) ? 'number' : 'text'
-      control.placeholder = input.typeRef
-      control.addEventListener('input', () => this.syncRunState())
-      this.inputs.set(input.id, control)
+      const control = this.buildControl(input.typeRef)
+      this.inputs.set(input.id, { read: control.read, reset: control.reset })
       field.appendChild(label)
-      field.appendChild(control)
+      field.appendChild(control.node)
       this.fieldsHost.appendChild(field)
     }
     this.panel.appendChild(this.fieldsHost)
@@ -143,15 +156,54 @@ export class DecisionRequirementsDiagramSimulation {
     this.syncRunState()
   }
 
+  /** One field control: a single input, or a duration composer (number + unit). */
+  private buildControl(typeRef: string): { node: HTMLElement; read: () => string; reset: () => void } {
+    if (isDurationType(typeRef)) {
+      const wrapper = createDiv('dmn-sim-duration')
+      const amount = document.createElement('input')
+      amount.className = 'dmn-sim-input dmn-sim-duration-amount'
+      amount.type = 'number'
+      amount.min = '0'
+      amount.placeholder = 'amount'
+      const unit = document.createElement('select')
+      unit.className = 'dmn-sim-input dmn-sim-duration-unit'
+      for (const u of DURATION_UNITS) {
+        const opt = document.createElement('option')
+        opt.value = u.value
+        opt.textContent = u.label
+        unit.appendChild(opt)
+      }
+      unit.value = DEFAULT_DURATION_UNIT
+      amount.addEventListener('input', () => this.syncRunState())
+      unit.addEventListener('change', () => this.syncRunState())
+      wrapper.appendChild(amount)
+      wrapper.appendChild(unit)
+      return {
+        node: wrapper,
+        read: () => composeDuration(amount.value, unit.value as DurationUnit),
+        reset: () => {
+          amount.value = ''
+          unit.value = DEFAULT_DURATION_UNIT
+        },
+      }
+    }
+    const control = document.createElement('input')
+    control.className = 'dmn-sim-input'
+    control.type = htmlInputType(typeRef)
+    control.placeholder = typeRef
+    control.addEventListener('input', () => this.syncRunState())
+    return { node: control, read: () => control.value, reset: () => (control.value = '') }
+  }
+
   private syncRunState(): void {
     if (!this.runButton) return
-    const complete = [...this.inputs.values()].every(control => control.value.trim() !== '')
+    const complete = [...this.inputs.values()].every(control => control.read().trim() !== '')
     this.runButton.disabled = !complete
   }
 
   private collectValues(): Record<string, RawValue> {
     const values: Record<string, RawValue> = {}
-    for (const [id, control] of this.inputs) values[id] = control.value
+    for (const [id, control] of this.inputs) values[id] = control.read()
     return values
   }
 
@@ -184,7 +236,7 @@ export class DecisionRequirementsDiagramSimulation {
   }
 
   private reset(): void {
-    for (const control of this.inputs.values()) control.value = ''
+    for (const control of this.inputs.values()) control.reset()
     this.clearResult()
     this.syncRunState()
   }
