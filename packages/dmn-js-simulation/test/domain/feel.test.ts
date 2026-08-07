@@ -21,6 +21,27 @@ describe('coerceValue', () => {
     expect(coerceValue(null, 'string')).toBeUndefined()
     expect(coerceValue('abc', 'integer')).toBeUndefined()
   })
+
+  it('treats a whitespace-only numeric input as missing (not 0)', () => {
+    expect(coerceValue('   ', 'integer')).toBeUndefined()
+    expect(coerceValue('\t', 'string')).toBeUndefined()
+  })
+
+  it('parses temporal typeRefs into real FEEL temporals', () => {
+    const date = coerceValue('2020-01-01', 'date') as { toISODate?: () => string }
+    expect(date?.toISODate?.()).toBe('2020-01-01')
+
+    const dateTime = coerceValue('2020-01-01T10:00:00', 'dateTime') as { toISO?: () => string }
+    expect(typeof dateTime?.toISO?.()).toBe('string')
+
+    // A real FEEL temporal compares like-typed in a unary test.
+    expect(evaluateUnaryTest('< date("2020-06-01")', date)).toBe(true)
+    expect(evaluateUnaryTest('> date("2020-06-01")', date)).toBe(false)
+  })
+
+  it('returns undefined for an unparseable temporal value', () => {
+    expect(coerceValue('not-a-date', 'date')).toBeUndefined()
+  })
 })
 
 describe('evaluateUnaryTest', () => {

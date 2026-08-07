@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="seasonalCampaignDefinitions" name="Seasonal Campaign" namespace="http://miragon.io/miravelo/bike-leasing">
+  <inputData id="InputData_orderDate" name="Order Date">
+    <variable id="Variable_orderDate" name="orderDate" typeRef="date" />
+  </inputData>
+  <decision id="seasonalCampaign" name="Seasonal Campaign" camunda:historyTimeToLive="180">
+    <informationRequirement id="ir_orderDate">
+      <requiredInput href="#InputData_orderDate" />
+    </informationRequirement>
+    <decisionTable id="decisionTable_seasonalCampaign" hitPolicy="FIRST">
+      <input id="input_orderDate" label="Order Date">
+        <inputExpression id="inputExpression_orderDate" typeRef="date">
+          <text>orderDate</text>
+        </inputExpression>
+      </input>
+      <output id="output_campaign" label="Campaign" name="campaign" typeRef="string" />
+      <rule id="rule_winter">
+        <description>New-year lull: a small nudge to keep the wheels turning</description>
+        <inputEntry id="inputEntry_winter">
+          <text>&lt; date("2026-03-01")</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_winter">
+          <text>"Winter Warm-Up – 5%"</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_spring">
+        <description>Spring Sale: the riding season kicks off</description>
+        <inputEntry id="inputEntry_spring">
+          <text>[date("2026-03-01")..date("2026-05-31")]</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_spring">
+          <text>"Spring Sale – 10%"</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_summer">
+        <description>Summer Tour: peak-season demand, headline campaign</description>
+        <inputEntry id="inputEntry_summer">
+          <text>[date("2026-06-01")..date("2026-08-31")]</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_summer">
+          <text>"Summer Tour – 15%"</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_autumn">
+        <description>Autumn Clearance: make room for next year's models</description>
+        <inputEntry id="inputEntry_autumn">
+          <text>&gt; date("2026-08-31")</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_autumn">
+          <text>"Autumn Clearance – 20%"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="seasonalCampaign">
+        <dc:Bounds height="80" width="180" x="200" y="210" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_orderDate" dmnElementRef="InputData_orderDate">
+        <dc:Bounds height="45" width="125" x="228" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_orderDate" dmnElementRef="ir_orderDate">
+        <di:waypoint x="290" y="360" />
+        <di:waypoint x="290" y="290" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

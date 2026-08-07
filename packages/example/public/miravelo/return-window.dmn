@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="returnWindowDefinitions" name="Return Window" namespace="http://miragon.io/miravelo/bike-leasing">
+  <inputData id="InputData_sincePurchase" name="Time Since Purchase">
+    <variable id="Variable_sincePurchase" name="sincePurchase" typeRef="dayTimeDuration" />
+  </inputData>
+  <decision id="returnWindow" name="Return Window" camunda:historyTimeToLive="180">
+    <informationRequirement id="ir_sincePurchase">
+      <requiredInput href="#InputData_sincePurchase" />
+    </informationRequirement>
+    <decisionTable id="decisionTable_returnWindow" hitPolicy="FIRST">
+      <input id="input_sincePurchase" label="Time Since Purchase">
+        <inputExpression id="inputExpression_sincePurchase" typeRef="dayTimeDuration">
+          <text>sincePurchase</text>
+        </inputExpression>
+      </input>
+      <output id="output_outcome" label="Outcome" name="outcome" typeRef="string" />
+      <rule id="rule_fullRefund">
+        <description>Within two weeks: a no-questions-asked full refund</description>
+        <inputEntry id="inputEntry_fullRefund">
+          <text>&lt;= duration("P14D")</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_fullRefund">
+          <text>"Full refund"</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_storeCredit">
+        <description>Up to a month: store credit instead of cash back</description>
+        <inputEntry id="inputEntry_storeCredit">
+          <text>&lt;= duration("P30D")</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_storeCredit">
+          <text>"Store credit"</text>
+        </outputEntry>
+      </rule>
+      <rule id="rule_noReturn">
+        <description>After a month the sale is final</description>
+        <inputEntry id="inputEntry_noReturn">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="outputEntry_noReturn">
+          <text>"No return"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="returnWindow">
+        <dc:Bounds height="80" width="180" x="200" y="210" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_sincePurchase" dmnElementRef="InputData_sincePurchase">
+        <dc:Bounds height="45" width="125" x="228" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_ir_sincePurchase" dmnElementRef="ir_sincePurchase">
+        <di:waypoint x="290" y="360" />
+        <di:waypoint x="290" y="290" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

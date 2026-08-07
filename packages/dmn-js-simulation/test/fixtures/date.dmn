@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             id="Definitions_Date"
+             name="Date Decision"
+             namespace="http://camunda.org/schema/1.0/dmn">
+
+  <inputData id="InputData_When" name="When">
+    <variable id="Variable_When" name="When" typeRef="date" />
+  </inputData>
+
+  <decision id="Decision_Season" name="Season">
+    <variable id="Variable_Season" name="Season" typeRef="string" />
+    <informationRequirement id="IR_When">
+      <requiredInput href="#InputData_When" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_Season" hitPolicy="FIRST">
+      <input id="Input_When" label="When">
+        <inputExpression id="InputExpression_When" typeRef="date">
+          <text>When</text>
+        </inputExpression>
+      </input>
+      <output id="Output_Season" label="Season" name="Season" typeRef="string" />
+      <rule id="Rule_Before">
+        <inputEntry id="Entry_Before"><text>&lt; date("2020-06-01")</text></inputEntry>
+        <outputEntry id="Out_Before"><text>"First Half"</text></outputEntry>
+      </rule>
+      <rule id="Rule_Range">
+        <inputEntry id="Entry_Range"><text>[date("2020-06-01")..date("2020-08-31")]</text></inputEntry>
+        <outputEntry id="Out_Range"><text>"Summer"</text></outputEntry>
+      </rule>
+      <rule id="Rule_After">
+        <inputEntry id="Entry_After"><text>&gt; date("2020-08-31")</text></inputEntry>
+        <outputEntry id="Out_After"><text>"Second Half"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

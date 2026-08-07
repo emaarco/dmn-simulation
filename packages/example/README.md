@@ -22,7 +22,7 @@ During `dev`, Vite aliases `@emaarco/dmn-js-simulation` straight to the sibling 
 - Sample models under [`public/`](./public):
   - **`hit-policies/`** — one table per DMN hit policy (`unique`, `first`, `any`, `priority`, `collect`, `collect-sum`, `rule-order`, `output-order`).
   - **`chaining/`** — multi-decision DRDs that exercise DRD chaining across 2–3 levels.
-  - **`miravelo/`** and `recommend-bike.dmn` — larger, realistic decisions.
+  - **`miravelo/`** and `recommend-bike.dmn` — larger, realistic decisions, including `seasonal-campaign.dmn` (a **`date`** input against temporal FEEL tests — native date picker) and `return-window.dmn` (a **`dayTimeDuration`** input via the amount + unit composer).
 
 ## End-to-end tests
 

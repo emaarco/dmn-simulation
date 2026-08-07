@@ -55,6 +55,38 @@ test('shows a miss result and no highlight when nothing matches', async ({ page 
   await expect(page.locator('tr.dmn-sim-match')).toHaveCount(0)
 })
 
+test('simulates a date input and matches a temporal rule', async ({ page }) => {
+  await selectExample(page, '/miravelo/seasonal-campaign.dmn')
+  await openTable(page, 'seasonalCampaign')
+
+  // Single date input (free-text) — an April order falls in the Spring Sale range.
+  await page.locator('.dmn-sim-field').nth(0).locator('input').fill('2026-04-15')
+  const run = page.locator('.dmn-sim-run')
+  await expect(run).toBeEnabled()
+  await run.click()
+
+  await expect(page.locator('.dmn-sim-result')).toContainText('Spring Sale')
+  await expect(page.locator('tr.dmn-sim-match')).toHaveCount(1)
+})
+
+test('composes a duration input from amount + unit and matches a rule', async ({ page }) => {
+  await selectExample(page, '/miravelo/return-window.dmn')
+  await openTable(page, 'returnWindow')
+
+  // Duration composer: number field + unit dropdown (defaults to Days).
+  const field = page.locator('.dmn-sim-field').first()
+  await field.locator('.dmn-sim-duration-amount').fill('10')
+  await expect(field.locator('.dmn-sim-duration-unit')).toHaveValue('D')
+
+  const run = page.locator('.dmn-sim-run')
+  await expect(run).toBeEnabled()
+  await run.click()
+
+  // 10 days ≤ P14D → Full refund (first rule).
+  await expect(page.locator('.dmn-sim-result')).toContainText('Full refund')
+  await expect(page.locator('tr.dmn-sim-match')).toHaveCount(1)
+})
+
 test('COLLECT + SUM aggregates and highlights every matching rule', async ({ page }) => {
   await selectExample(page, '/hit-policies/collect-sum.dmn')
   await openTable(page, 'Decision_Points')

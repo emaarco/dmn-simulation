@@ -10,10 +10,19 @@
  */
 import { createElement } from 'inferno-create-element'
 import { Component } from 'inferno'
-import { isNumericType } from '../domain/model'
 import type { EvaluationResult } from '../domain/evaluateDecision'
 import type { SimulationStore } from '../simulation/SimulationStore'
 import { formatValue } from './formatValue'
+import { htmlInputType } from './inputType'
+import {
+  composeDuration,
+  DEFAULT_DURATION_UNIT,
+  DURATION_UNITS,
+  isDurationType,
+  parseDuration,
+  type DurationUnit,
+} from './duration'
+import type { DmnInput } from '../domain/model'
 
 /** The result line — output pills, aggregation, violation and reported rules. */
 function ResultBar({ result }: { result: EvaluationResult }): any {
@@ -26,7 +35,7 @@ function ResultBar({ result }: { result: EvaluationResult }): any {
         'span',
         { className: 'dmn-sim-output' },
         `${result.aggregation.fn}(${result.aggregation.output}) = `,
-        createElement('strong', null, String(result.aggregation.value)),
+        createElement('strong', null, formatValue(result.aggregation.value)),
       )
     : result.outputs.length
       ? result.outputs.map((output, oi) =>
@@ -67,6 +76,8 @@ function selectOptions(options: string[], value: unknown): string[] {
 export class SimulationFormComponent extends Component<Record<string, never>, { tick: number }> {
   private readonly store: SimulationStore
   private unsubscribe?: () => void
+  /** Remembered duration unit per input index (survives a blank amount). */
+  private readonly durationUnits = new Map<number, DurationUnit>()
 
   constructor(props: Record<string, never>, context: any) {
     super(props, context)
@@ -86,10 +97,81 @@ export class SimulationFormComponent extends Component<Record<string, never>, { 
     this.store.setValue(index, (event.target as HTMLInputElement | HTMLSelectElement).value)
   }
 
+  private durationUnit(index: number): DurationUnit {
+    return (
+      this.durationUnits.get(index) ??
+      parseDuration(String(this.store.getValues()[index] ?? ''))?.unit ??
+      DEFAULT_DURATION_UNIT
+    )
+  }
+
+  private readonly onDurationAmount = (index: number) => (event: Event) => {
+    const unit = this.durationUnit(index)
+    this.durationUnits.set(index, unit)
+    this.store.setValue(index, composeDuration((event.target as HTMLInputElement).value, unit))
+  }
+
+  private readonly onDurationUnit = (index: number) => (event: Event) => {
+    const unit = (event.target as HTMLSelectElement).value as DurationUnit
+    this.durationUnits.set(index, unit)
+    const amount = parseDuration(String(this.store.getValues()[index] ?? ''))?.amount ?? ''
+    this.store.setValue(index, composeDuration(amount, unit))
+  }
+
+  /** The input control for one column: dropdown, duration composer or field. */
+  private renderControl(input: DmnInput, i: number, value: unknown): any {
+    if (input.options.length) {
+      return createElement(
+        'select',
+        { className: 'dmn-sim-input', value: value ?? '', onChange: this.onChange(i) },
+        createElement('option', { value: '' }, '–'),
+        // Include a reflected value that isn't one of the rule literals
+        // (e.g. an upstream decision's output) so the select can show it.
+        selectOptions(input.options, value).map(option =>
+          createElement('option', { value: option, key: option }, option),
+        ),
+      )
+    }
+    if (isDurationType(input.typeRef)) {
+      const parsed = parseDuration(String(value ?? ''))
+      const amount = parsed?.amount ?? ''
+      const unit = parsed?.unit ?? this.durationUnit(i)
+      return createElement(
+        'span',
+        { className: 'dmn-sim-duration' },
+        createElement('input', {
+          className: 'dmn-sim-input dmn-sim-duration-amount',
+          type: 'number',
+          min: '0',
+          placeholder: 'amount',
+          value: amount,
+          onInput: this.onDurationAmount(i),
+        }),
+        createElement(
+          'select',
+          { className: 'dmn-sim-input dmn-sim-duration-unit', value: unit, onChange: this.onDurationUnit(i) },
+          DURATION_UNITS.map(u => createElement('option', { value: u.value, key: u.value }, u.label)),
+        ),
+      )
+    }
+    return createElement('input', {
+      className: 'dmn-sim-input',
+      type: htmlInputType(input.typeRef),
+      placeholder: input.typeRef,
+      // Native min/max guidance, only present for fully-bounded columns.
+      min: input.min,
+      max: input.max,
+      value: value ?? '',
+      onInput: this.onChange(i),
+    })
+  }
+
   private readonly onSubmit = (event: Event) => {
     event.preventDefault()
     this.store.run()
   }
+
+  private readonly onRun = () => this.store.run()
 
   private readonly onReset = () => this.store.reset()
 
@@ -112,33 +194,19 @@ export class SimulationFormComponent extends Component<Record<string, never>, { 
             'label',
             { className: 'dmn-sim-field', key: input.id },
             createElement('span', { className: 'dmn-sim-field-label' }, input.label),
-            input.options.length
-              ? createElement(
-                  'select',
-                  { className: 'dmn-sim-input', value: values[i] ?? '', onChange: this.onChange(i) },
-                  createElement('option', { value: '' }, '–'),
-                  // Include a reflected value that isn't one of the rule literals
-                  // (e.g. an upstream decision's output) so the select can show it.
-                  selectOptions(input.options, values[i]).map(option =>
-                    createElement('option', { value: option, key: option }, option),
-                  ),
-                )
-              : createElement('input', {
-                  className: 'dmn-sim-input',
-                  type: isNumericType(input.typeRef) ? 'number' : 'text',
-                  placeholder: input.typeRef,
-                  value: values[i] ?? '',
-                  onInput: this.onChange(i),
-                }),
+            this.renderControl(input, i, values[i]),
           ),
         ),
         createElement(
           'button',
           {
-            type: 'submit',
+            // A plain button, not a submit: native min/max guidance must never
+            // block running the simulation (e.g. an out-of-range value → a miss).
+            type: 'button',
             className: 'dmn-sim-run',
             disabled: !complete,
             title: complete ? 'Run the simulation' : 'Fill in every input first',
+            onClick: this.onRun,
           },
           'Simulate',
         ),
