@@ -35,6 +35,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unused files/deps/exports (knip)
+        run: npm run knip
+
       - name: Architecture check (dependency-cruiser)
         # dependency-cruiser requires Node >= 22; the library still supports
         # Node 20 at runtime, so only run this dev-time check on 22.

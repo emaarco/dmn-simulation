@@ -21,6 +21,8 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "lint:deps": "npm run lint:deps -w @emaarco/dmn-js-simulation",
+    "knip": "knip",
+    "knip:fix": "knip --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -28,6 +30,7 @@
     "@eslint/js": "10.0.1",
     "eslint": "10.7.0",
     "eslint-config-prettier": "10.1.8",
+    "knip": "6.32.0",
     "prettier": "3.9.6",
     "typescript-eslint": "8.65.0"
   }
