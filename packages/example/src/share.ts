@@ -28,13 +28,13 @@ async function pipe(bytes: Uint8Array, stream: CompressionStream | Decompression
 }
 
 /** DMN XML → compressed, URL-safe Base64. */
-export async function encodeXml(xml: string): Promise<string> {
+async function encodeXml(xml: string): Promise<string> {
   const deflated = await pipe(new TextEncoder().encode(xml), new CompressionStream('deflate-raw'))
   return toBase64Url(deflated)
 }
 
 /** Compressed, URL-safe Base64 → DMN XML. */
-export async function decodeXml(encoded: string): Promise<string> {
+async function decodeXml(encoded: string): Promise<string> {
   const inflated = await pipe(fromBase64Url(encoded), new DecompressionStream('deflate-raw'))
   return new TextDecoder().decode(inflated)
 }

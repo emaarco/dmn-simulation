@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json"
+
+  // Knip finds unused files, dependencies and exports across the workspaces.
+  // It runs zero-config here: the workspaces come from package.json, and the
+  // entry points are discovered by Knip's framework plugins from the existing
+  // config — vite + index.html (example app), vitest (unit tests), playwright
+  // (e2e specs), rollup (library bundle input) — plus the `test:distro` script
+  // that runs the built-bundle smoke test. Add `entry`/`project` overrides here
+  // only if that auto-detection ever misses a file.
+}
